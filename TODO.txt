@@ -1,0 +1,15 @@
+
+--PRIORITY
+
+	- Implement BTree
+	- Implement randomizer
+
+--REQUIRED
+
+	- Get rid of glib
+	- Implement Octree
+
+--OPTIONAL
+
+	- Implement Hash Table
+	- Implement networking

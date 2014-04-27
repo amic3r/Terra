@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Terra", "Terra.vcxproj", "{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Terra_Test", "Terra_Test.vcxproj", "{5B323C2E-1633-42C8-96FF-F1A3678A394A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}.Debug|Win32.Build.0 = Debug|Win32
+		{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}.Release|Win32.ActiveCfg = Release|Win32
+		{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}.Release|Win32.Build.0 = Release|Win32
+		{5B323C2E-1633-42C8-96FF-F1A3678A394A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B323C2E-1633-42C8-96FF-F1A3678A394A}.Debug|Win32.Build.0 = Debug|Win32
+		{5B323C2E-1633-42C8-96FF-F1A3678A394A}.Release|Win32.ActiveCfg = Release|Win32
+		{5B323C2E-1633-42C8-96FF-F1A3678A394A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

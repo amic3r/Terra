@@ -8,6 +8,8 @@
 
 void print_credits(void);
 
+#include <glib.h>
+
 #include "debugging/debug.h"
 //#include "debugging/memory_leak.h"
 //#include "debugging/profiler.h"

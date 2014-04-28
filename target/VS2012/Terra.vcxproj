@@ -66,6 +66,7 @@
     <ClInclude Include="..\..\src\structures\Tree.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\src\terra.h" />
     <ClInclude Include="..\..\src\utilities\filesys.h" />
     <ClInclude Include="..\..\src\utilities\integer.h" />
     <ClInclude Include="..\..\src\utilities\math.h" />

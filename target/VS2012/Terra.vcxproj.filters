@@ -126,6 +126,7 @@
     <ClInclude Include="..\..\src\structures\Quadtree.h">
       <Filter>structures</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\terra.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="debugging">

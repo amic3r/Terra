@@ -3,7 +3,7 @@
 
 #include "io_writer.h"
 
-#include "particle/particle.h"
+#include "thread/thread.h"
 
 #define LINE_ENDING_LENGTH 4
 #define DEFAULT_COMMENT_FORMAT "#","\n"

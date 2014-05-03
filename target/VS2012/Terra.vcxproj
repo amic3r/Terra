@@ -21,26 +21,22 @@
     <ClCompile Include="..\..\src\io\file_system.c" />
     <ClCompile Include="..\..\src\io\io_reader.c" />
     <ClCompile Include="..\..\src\io\io_writer.c" />
-    <ClCompile Include="..\..\src\particle\particle.c" />
+    <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\stdafx.c" />
-    <ClCompile Include="..\..\src\structures\Array.c" />
-    <ClCompile Include="..\..\src\structures\Heap.c" />
-    <ClCompile Include="..\..\src\structures\List.c" />
-    <ClCompile Include="..\..\src\structures\Octree.c">
+    <ClCompile Include="..\..\src\structure\Array.c" />
+    <ClCompile Include="..\..\src\structure\Heap.c" />
+    <ClCompile Include="..\..\src\structure\List.c" />
+    <ClCompile Include="..\..\src\structure\Octree.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\src\structures\Quadtree.c" />
-    <ClCompile Include="..\..\src\structures\SList.c" />
-    <ClCompile Include="..\..\src\structures\Tree.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\src\structure\Quadtree.c" />
+    <ClCompile Include="..\..\src\structure\SList.c" />
     <ClCompile Include="..\..\src\terra.c" />
-    <ClCompile Include="..\..\src\utilities\filesys.c" />
-    <ClCompile Include="..\..\src\utilities\integer.c" />
-    <ClCompile Include="..\..\src\utilities\math.c" />
-    <ClCompile Include="..\..\src\utilities\rand.c" />
-    <ClCompile Include="..\..\src\utilities\string.c" />
-    <ClCompile Include="..\..\src\utilities\time.c" />
+    <ClCompile Include="..\..\src\thread\thread.c" />
+    <ClCompile Include="..\..\src\ttime.c" />
+    <ClCompile Include="..\..\src\utility\filesys.c" />
+    <ClCompile Include="..\..\src\utility\integer.c" />
+    <ClCompile Include="..\..\src\utility\string.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\debugging\debug.h" />
@@ -50,29 +46,30 @@
     <ClInclude Include="..\..\src\debugging\profiler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\src\define.h" />
+    <ClInclude Include="..\..\src\geometry\cuboid.h" />
+    <ClInclude Include="..\..\src\geometry\line.h" />
+    <ClInclude Include="..\..\src\geometry\rectangle.h" />
     <ClInclude Include="..\..\src\io\file_system.h" />
     <ClInclude Include="..\..\src\io\io_reader.h" />
     <ClInclude Include="..\..\src\io\io_writer.h" />
-    <ClInclude Include="..\..\src\particle\particle.h" />
+    <ClInclude Include="..\..\src\tmath.h" />
+    <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\stdafx.h" />
-    <ClInclude Include="..\..\src\structures\Array.h" />
-    <ClInclude Include="..\..\src\structures\Heap.h" />
-    <ClInclude Include="..\..\src\structures\List.h" />
-    <ClInclude Include="..\..\src\structures\Octree.h">
+    <ClInclude Include="..\..\src\structure\Array.h" />
+    <ClInclude Include="..\..\src\structure\Heap.h" />
+    <ClInclude Include="..\..\src\structure\List.h" />
+    <ClInclude Include="..\..\src\structure\Octree.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\src\structures\Quadtree.h" />
-    <ClInclude Include="..\..\src\structures\SList.h" />
-    <ClInclude Include="..\..\src\structures\Tree.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\..\src\structure\Quadtree.h" />
+    <ClInclude Include="..\..\src\structure\SList.h" />
     <ClInclude Include="..\..\src\terra.h" />
-    <ClInclude Include="..\..\src\utilities\filesys.h" />
-    <ClInclude Include="..\..\src\utilities\integer.h" />
-    <ClInclude Include="..\..\src\utilities\math.h" />
-    <ClInclude Include="..\..\src\utilities\rand.h" />
-    <ClInclude Include="..\..\src\utilities\string.h" />
-    <ClInclude Include="..\..\src\utilities\time.h" />
+    <ClInclude Include="..\..\src\thread\thread.h" />
+    <ClInclude Include="..\..\src\ttime.h" />
+    <ClInclude Include="..\..\src\utility\filesys.h" />
+    <ClInclude Include="..\..\src\utility\integer.h" />
+    <ClInclude Include="..\..\src\utility\string.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\contrib\glib\lib\glib-2.0.lib" />

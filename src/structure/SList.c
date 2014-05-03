@@ -24,17 +24,17 @@ void slist_init(SList *list)
 	list->previous = 0;
 }
 
-void slist_free(SList *list,void (*free_func)(void *))
+void slist_free(SList *list,TFreeFunc func)
 {
-	slist_empty(list,free_func);
+	slist_empty(list,func);
 	free(list);
 }
 
-void slist_empty(SList *list,void (*free_func)(void *))
+void slist_empty(SList *list,TFreeFunc func)
 {
 	while (list->head) {
 		SListNode *remove = list->head;
-		if(free_func) free_func(list->head->data);
+		if(func) func(list->head->data);
 		list->head = list->head->next;
 		free(remove);
 	}
@@ -105,7 +105,7 @@ void slist_concat(SList *list,const SList *list2)
 	}
 }
 
-void *slist_foreach(const SList *list, void *(*func)(void *,void *),void *user_data)
+void *slist_foreach(const SList *list, TIterFunc func, void *user_data)
 {
 	SListNode *cur = list->head;
 
@@ -144,11 +144,11 @@ __inline void mergeinsert(SList *mlist,SList *sublist)
 	sublist->len -= 1;
 }
 
-void slistmerge(SList *mlist, SList *left, SList *right,int (*comparison)(void *,void *))
+void slistmerge(SList *mlist, SList *left, SList *right,TCompareFunc func)
 {
 	while(left->len || right->len) {
 		if (left->len && right->len)
-			mergeinsert(mlist,comparison(left->head->data,right->head->data) ? right : left);
+			mergeinsert(mlist,func(left->head->data,right->head->data) ? right : left);
 		else if (left->len)
 			mergeinsert(mlist,left);
 		else
@@ -156,7 +156,7 @@ void slistmerge(SList *mlist, SList *left, SList *right,int (*comparison)(void *
 	}
 }
 
-void slist_sort(SList *list,int (*comparison)(void *,void *))
+void slist_sort(SList *list,TCompareFunc func)
 {
 	SList left,right;
 	size_t i,middle;
@@ -184,10 +184,10 @@ void slist_sort(SList *list,int (*comparison)(void *,void *))
 	left.end->next = 0;
 	slist_init(list);
 
-	slist_sort(&left,comparison);
-	slist_sort(&right,comparison);
+	slist_sort(&left,func);
+	slist_sort(&right,func);
 
-	slistmerge(list,&left,&right,comparison);
+	slistmerge(list,&left,&right,func);
 }
 
 void *slist_pop(SList *list, unsigned int index) {

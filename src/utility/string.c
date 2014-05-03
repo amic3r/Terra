@@ -1,11 +1,11 @@
 
 #include "stdafx.h"
 
-#include "structures/SList.h"
+#include "structure/SList.h"
 
 #include "string.h"
 
-#include "time.h"
+#include "ttime.h"
 
 static const char * hex_index = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 "abcdefghijklmnopqrstuvwxyz"

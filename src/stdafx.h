@@ -93,6 +93,8 @@ typedef __int64 intptr_t;
 
 #include <glib.h>
 
+#include "define.h"
+
 #include "debugging/debug.h"
 
 #endif // __included_stdafx_h

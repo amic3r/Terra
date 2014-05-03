@@ -3,7 +3,7 @@
 
 #include "io_reader.h"
 
-#include "particle/particle.h"
+#include "thread/thread.h"
 
 #define DEFAULT_SEPERATOR_CHARS " \t\n\r:,"
 

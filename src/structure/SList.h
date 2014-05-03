@@ -25,9 +25,9 @@ SList *slist_new(void);
 
 void slist_init(SList *list);
 
-void slist_free(SList *list,void (*free_func)(void *));
+void slist_free(SList *list,TFreeFunc func);
 
-void slist_empty(SList *list,void (*free_func)(void *));
+void slist_empty(SList *list,TFreeFunc func);
 
 void slist_insert(SList *list,void *data, unsigned int index);
 
@@ -47,12 +47,12 @@ void slist_replace(SList *list,void *data, unsigned int index);
 
 void slist_concat(SList *list,const SList *list2);
 
-void *slist_foreach(const SList *list, void *(*func)(void *,void *),void *user_data);
+void *slist_foreach(const SList *list,TIterFunc func,void *user_data);
 void *slist_get(SList *list,unsigned int index);
 __inline void *slist_first(SList *list) { return slist_get(list, 0); }
 void *slist_next(SList *list);
 
-void slist_sort(SList *list,int (*comparison)(void *,void *));
+void slist_sort(SList *list,TCompareFunc func);
 
 void *slist_pop(SList *list, unsigned int index);
 

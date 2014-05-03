@@ -3,7 +3,7 @@
 
 #include "Array.h"
 
-#include "utilities/integer.h"
+#include "utility/integer.h"
 
 void array_grow(Array *arr,size_t minsize)
 {

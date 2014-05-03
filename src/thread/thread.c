@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-#include "particle.h"
+#include "thread.h"
 
 #ifndef _WINDOWS
 #include <pthread.h>

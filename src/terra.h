@@ -10,27 +10,31 @@ void print_credits(void);
 
 #include <glib.h>
 
+#include "define.h"
+
 #include "debugging/debug.h"
 //#include "debugging/memory_leak.h"
 //#include "debugging/profiler.h"
 
-#include "particle/particle.h"
+#include "tmath.h"
+#include "trand.h"
+#include "ttime.h"
 
-#include "structures/slist.h"
+#include "thread/thread.h"
 
-#include "utilities/filesys.h"
-#include "utilities/integer.h"
-#include "utilities/math.h"
-#include "utilities/rand.h"
-#include "utilities/string.h"
-#include "utilities/time.h"
+#include "structure/slist.h"
 
-#include "structures/array.h"
-#include "structures/list.h"
-//#include "structures/tree.h"
-#include "structures/heap.h"
-#include "structures/quadtree.h"
-//#include "structures/octree.h"
+#include "utility/filesys.h"
+#include "utility/integer.h"
+
+#include "utility/string.h"
+
+#include "structure/array.h"
+#include "structure/list.h"
+//#include "structure/RBtree.h"
+#include "structure/heap.h"
+#include "structure/quadtree.h"
+//#include "structure/octree.h"
 
 #include "io/io_reader.h"
 #include "io/io_writer.h"

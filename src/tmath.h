@@ -6,25 +6,13 @@
 
 //Default storage
 
-typedef struct {
-	int x, y;
-} Tuple2i;
+typedef struct { int x, y; } Tuple2i;
+typedef struct { float x, y; } Tuple2f;
 
-typedef struct {
-	float x, y;
-} Tuple2f;
+typedef struct { int x, y, z; } Tuple3i;
+typedef struct { float x, y, z; } Tuple3f;
 
-typedef struct {
-	int x, y, z;
-} Tuple3i;
-
-typedef struct {
-	float x, y, z;
-} Tuple3f;
-
-typedef struct {
-	float x, y, z, w;
-} Tuple4f;
+typedef struct { float x, y, z, w; } Tuple4f;
 
 typedef union _Matrix3f{
 	struct {
@@ -76,7 +64,7 @@ typedef union _Matrix4f {
 // assuming IEEE-754(GLfloat), which i believe has max precision of 7 bits
 #define Epsilon 1.0e-5
 
-__inline static void PointAdd(Point *to, const Point *from)
+inline static void PointAdd(Point *to, const Point *from)
 {
 	AppAssert(to && from);
 
@@ -84,7 +72,7 @@ __inline static void PointAdd(Point *to, const Point *from)
 	to->y += from->y;
 }
 
-__inline static void PointSub(Point *to, const Point *from)
+inline static void PointSub(Point *to, const Point *from)
 {
 	AppAssert(to && from);
 
@@ -92,37 +80,56 @@ __inline static void PointSub(Point *to, const Point *from)
 	to->y -= from->y;
 }
 
-__inline float euclidian_distance(const Point *to, const Point *from)
+inline float euclidian_distance(const Point *to, const Point *from)
 {
 	float y = to->y-from->y, x = to->x-from->x;
 	return sqrtf(y*y + x*x);
 }
 
-__inline void Tuple3fSet(Tuple3f *tuple, float x, float y, float z)
+inline void Tuple3fSet(Tuple3f *t, float x, float y, float z)
 {
-	tuple->x = x; tuple->y = y; tuple->z =  z;
+	t->x = x; t->y = y; t->z = z;
 }
 
-__inline unsigned char Tuple3fEqual(const Tuple3f *t1,const Tuple3f *t2)
+inline void Tuple3fCopy(Tuple3f *t1, const Tuple3f *t2)
+{
+	t1->x = t2->x; t1->y = t2->y; t1->z = t2->z;
+}
+
+inline unsigned char Tuple3fEqual(const Tuple3f *t1,const Tuple3f *t2)
 {
 	return t1->x == t2->x && t1->y == t2->y &&t1->z == t2->z;
 }
 
-__inline void Tuple3fAdd(Tuple3f *t1,const Tuple3f *t2)
+inline void Tuple3fMin(Tuple3f *t1,const Tuple3f *t2)
+{
+	t1->x = min(t1->x,t2->x);
+	t1->y = min(t1->y,t2->y);
+	t1->z = min(t1->z,t2->z);
+}
+
+inline void Tuple3fMax(Tuple3f *t1,const Tuple3f *t2)
+{
+	t1->x = max(t1->x,t2->x);
+	t1->y = max(t1->y,t2->y);
+	t1->z = max(t1->z,t2->z);
+}
+
+inline void Tuple3fAdd(Tuple3f *t1,const Tuple3f *t2)
 {
 	t1->x += t2->x;
 	t1->y += t2->y;
 	t1->z += t2->z;
 }
 
-__inline void Tuple3fSub(Tuple3f *t1,const Tuple3f *t2)
+inline void Tuple3fSub(Tuple3f *t1,const Tuple3f *t2)
 {
 	t1->x -= t2->x;
 	t1->y -= t2->y;
 	t1->z -= t2->z;
 }
 
-__inline void Tuple3fRotate(Vector *vector, const Tuple3f *cosangles, const Tuple3f *sinangles)
+inline void Tuple3fRotate(Vector *vector, const Tuple3f *cosangles, const Tuple3f *sinangles)
 {
 	float cx = cosangles->x, sx = sinangles->x;
 	float cy = cosangles->y, sy = sinangles->y;
@@ -153,7 +160,7 @@ __inline void Tuple3fRotate(Vector *vector, const Tuple3f *cosangles, const Tupl
 #define VectorSet Tuple3fSet
 #define VectorRotate Tuple3fRotate
 
-__inline static Vector VectorCross(const Vector *v1, const Vector *v2)
+inline static Vector VectorCross(const Vector *v1, const Vector *v2)
 {
 	Vector result;
 
@@ -166,28 +173,28 @@ __inline static Vector VectorCross(const Vector *v1, const Vector *v2)
 	return result;
 }
 
-__inline static float VectorDot(const Vector *v1, const Vector *v2)
+inline static float VectorDot(const Vector *v1, const Vector *v2)
 {
 	AppAssert(v1 && v2);
 
 	return (v1->x * v2->x) + (v1->y * v2->y) + (v1->z * v2->z);
 }
 
-__inline static float VectorLengthSquared(const Vector *v)
+inline static float VectorLengthSquared(const Vector *v)
 {
 	AppAssert(v);
 
 	return (v->x * v->x) + (v->y * v->y) + (v->z * v->z);
 }
 
-__inline static float VectorLength(const Vector *v)
+inline static float VectorLength(const Vector *v)
 {
 	AppAssert(v);
 
 	return sqrtf(VectorLengthSquared(v));
 }
 
-__inline static void VectorNormalize(Vector *v)
+inline static void VectorNormalize(Vector *v)
 {
 	float length = VectorLength(v);
 
@@ -196,17 +203,12 @@ __inline static void VectorNormalize(Vector *v)
 	v->z /= length;
 }
 
-__inline Vector NormalfromTuples(const Tuple3f *v1,const Tuple3f *v2,const Tuple3f *v3)
+inline Vector NormalfromTuples(const Tuple3f *v1,const Tuple3f *v2,const Tuple3f *v3)
 {
-	Vector vec1,vec2,out;
+	Vector vec1 = *v1,vec2 = *v2,out;
 
-	vec1.x = v1->x - v2->x;
-	vec1.y = v1->y - v2->y;
-	vec1.z = v1->z - v2->z;
-
-	vec2.x = v2->x - v3->x;
-	vec2.y = v2->y - v3->y;
-	vec2.z = v2->z - v3->z;
+	Tuple3fSub(&vec1,v2);
+	Tuple3fSub(&vec2,v3);
 
 	out = VectorCross(&vec1,&vec2);
 	VectorNormalize(&out);
@@ -214,19 +216,19 @@ __inline Vector NormalfromTuples(const Tuple3f *v1,const Tuple3f *v2,const Tuple
 	return out;
 }
 
-__inline static void Matrix3fSetZero(Matrix3f *mat)
+inline static void Matrix3fSetZero(Matrix3f *mat)
 {
 	mat->s.m00 = mat->s.m01 = mat->s.m02 = mat->s.m10 = mat->s.m11 = mat->s.m12 = mat->s.m20 = mat->s.m21 = mat->s.m22 = 0.0f;
 }
 
-__inline static void Matrix3fSetIdentity(Matrix3f * mat)
+inline static void Matrix3fSetIdentity(Matrix3f * mat)
 {
 	Matrix3fSetZero(mat);
 
 	mat->s.m00 = mat->s.m11 = mat->s.m22 = 1.0f;
 }
 
-__inline static void Matrix3fSetRotationFromQuat(Matrix3f *mat, const Quat * q1)
+inline static void Matrix3fSetRotationFromQuat(Matrix3f *mat, const Quat * q1)
 {
 	float n, s;
 	float xs, ys, zs;
@@ -249,7 +251,7 @@ __inline static void Matrix3fSetRotationFromQuat(Matrix3f *mat, const Quat * q1)
 	mat->s.zx = xz - wy;          mat->s.yz = yz + wx;          mat->s.zz = 1.0f - (xx + yy);
 }
 
-__inline static void Matrix3fMulMatrix3f(Matrix3f *m1, const Matrix3f * m2)
+inline static void Matrix3fMulMatrix3f(Matrix3f *m1, const Matrix3f * m2)
 {
 	AppAssert(m1 && m2);
 
@@ -266,7 +268,7 @@ __inline static void Matrix3fMulMatrix3f(Matrix3f *m1, const Matrix3f * m2)
 	m1->s.m22 = (m1->s.m20 * m2->s.m02) + (m1->s.m21 * m2->s.m12) + (m1->s.m22 * m2->s.m22);
 }
 
-__inline static void Matrix4fSetZero(Matrix4f *mat)
+inline static void Matrix4fSetZero(Matrix4f *mat)
 {
 	mat->s.m00 = mat->s.m01 = mat->s.m02 = mat->s.m03 = 0.0f;
 	mat->s.m10 = mat->s.m11 = mat->s.m12 = mat->s.m13 = 0.0f;
@@ -274,14 +276,14 @@ __inline static void Matrix4fSetZero(Matrix4f *mat)
 	mat->s.m30 = mat->s.m31 = mat->s.m32 = mat->s.m33 = 0.0f;
 }
 
-__inline static void Matrix4fSetIdentity(Matrix4f * mat)
+inline static void Matrix4fSetIdentity(Matrix4f * mat)
 {
 	Matrix4fSetZero(mat);
 
 	mat->s.m00 = mat->s.m11 = mat->s.m22 = mat->s.m33 = 1.0f;
 }
 
-__inline static void Matrix4fSetRotationScaleFromMatrix4f(Matrix4f * m1, const Matrix4f * m2)
+inline static void Matrix4fSetRotationScaleFromMatrix4f(Matrix4f * m1, const Matrix4f * m2)
 {
 	AppAssert(m1 && m2);
 
@@ -290,7 +292,7 @@ __inline static void Matrix4fSetRotationScaleFromMatrix4f(Matrix4f * m1, const M
 	m1->s.xz = m2->s.xz; m1->s.yz = m2->s.yz; m1->s.zz = m2->s.zz;
 }
 
-__inline static float Matrix4fSVD(const Matrix4f *m, Matrix3f *rot3, Matrix4f *rot4)
+inline static float Matrix4fSVD(const Matrix4f *m, Matrix3f *rot3, Matrix4f *rot4)
 {
 	float s, n;
 
@@ -353,7 +355,7 @@ __inline static float Matrix4fSVD(const Matrix4f *m, Matrix3f *rot3, Matrix4f *r
 	return s;
 }
 
-__inline static void Matrix4fSetRotationScaleFromMatrix3f(Matrix4f *m1, const Matrix3f *m2)
+inline static void Matrix4fSetRotationScaleFromMatrix3f(Matrix4f *m1, const Matrix3f *m2)
 {
 	AppAssert(m1 && m2);
 
@@ -362,7 +364,7 @@ __inline static void Matrix4fSetRotationScaleFromMatrix3f(Matrix4f *m1, const Ma
 	m1->s.xz = m2->s.xz; m1->s.yz = m2->s.yz; m1->s.zz = m2->s.zz;
 }
 
-__inline static void Matrix4fMulRotationScale(Matrix4f *m, float scale)
+inline static void Matrix4fMulRotationScale(Matrix4f *m, float scale)
 {
 	AppAssert(m);
 
@@ -371,7 +373,7 @@ __inline static void Matrix4fMulRotationScale(Matrix4f *m, float scale)
 	m->s.xz *= scale; m->s.yz *= scale; m->s.zz *= scale;
 }
 
-__inline static void Matrix4fSetRotationFromMatrix3f(Matrix4f *m1, const Matrix3f *m2)
+inline static void Matrix4fSetRotationFromMatrix3f(Matrix4f *m1, const Matrix3f *m2)
 {
 	float scale;
 
@@ -383,122 +385,8 @@ __inline static void Matrix4fSetRotationFromMatrix3f(Matrix4f *m1, const Matrix3
 	Matrix4fMulRotationScale(m1,scale);
 }
 
-//-------------------------------------------------------//
-
-typedef struct {
-	float x1,y1;
-	float x2,y2;
-} Line;
-
-Line *line_new(void);
-Line *line_newset(float x1, float y1, float x2, float y2);
-
-void line_set(Line *l,float x1, float y1, float x2, float y2);
-
-__inline void line_free(Line *l) { free(l); }
-
-unsigned char line_intersect(const Line *l1,const Line *l2, float *x, float *y);
-
-//-------------------------------------------------------//
-
-typedef struct {
-	int x,y;
-	int w,h;
-} URectangle; //Blame wingdi for this name
-
-__inline void rectangle_set(URectangle *r,int x, int y, unsigned int w, unsigned int h)
-{
-	r->x = x;
-	r->y = y;
-	r->w = w;
-	r->h = h;
-}
-
-__inline void rectangle_cpy(URectangle *r1,const URectangle *r2)
-{
-	r1->x = r2->x;
-	r1->y = r2->y;
-	r1->w = r2->w;
-	r1->h = r2->h;
-}
-
-__inline unsigned char rectangle_intersect(const URectangle *r1, const URectangle *r2)
-{
-	return (r1->x+r1->w >= r2->x || r1->x <= r2->x+r2->w) &&
-		   (r1->y+r1->h >= r2->y || r1->y <= r2->y+r2->h);
-}
-
-__inline unsigned char rectangle_contains(const URectangle *r1, const URectangle *r2)
-{
-	return (r1->x+r1->w >= r2->x+r2->w && r1->x <= r2->x) &&
-		   (r1->y+r1->h >= r2->y+r2->h && r1->y <= r2->y);
-}
-
-__inline unsigned char rectangle_contains_point(const URectangle *r, int x, int y)
-{
-	return (r->x+r->w >= x && r->x <= x) &&
-		   (r->y+r->h >= y && r->y <= y);
-}
-
-__inline unsigned char rectangle_equal(const URectangle *r1, const URectangle *r2)
-{
-	return r2->x == r1->x && r2->y == r1->y && r2->w == r1->w && r2->h == r1->h;
-}
-
-__inline void rectangle_move(URectangle *r, int x, int y)
-{
-	r->x = x;
-	r->y = y;
-}
-
-__inline void rectangle_resize(URectangle *r, unsigned int w, unsigned int h)
-{
-	r->w = w;
-	r->h = h;
-}
-
-__inline void rectangle_merge(URectangle *r1, const URectangle *r2)
-{
-	if(r2->x == -1) return;
-
-	if (r1->x == -1) {
-		r1->x = r2->x;
-		r1->w = r2->w;
-	} else {
-		int x2 = r1->x + r1->w;
-		r1->x = min(r1->x,r2->x);
-		r1->w = max(x2,r2->x + r2->w) - r1->x;
-	}
-
-	if (r1->y == -1) {
-		r1->y = r2->y;
-		r1->h = r2->h;
-	} else {
-		int y2 = r1->y + r1->h;
-		r1->y = min(r1->y,r2->y);
-		r1->h = max(y2,r2->y + r2->h) - r1->y;
-	}
-}
-
-//-------------------------------------------------------
-
-typedef struct {
-	int x,y,z;
-	int w,h,d;
-} Cuboid;
-
-__inline void cuboid_cpy(Cuboid *c1,const Cuboid *c2)
-{
-	c1->x = c2->x;
-	c1->y = c2->y;
-	c1->z = c2->z;
-	c1->w = c2->w;
-	c1->h = c2->h;
-	c1->d = c2->d;
-}
-
-
-
-//-------------------------------------------------------//
+#include "geometry/line.h"
+#include "geometry/rectangle.h"
+#include "geometry/cuboid.h"
 
 #endif

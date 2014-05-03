@@ -6,7 +6,7 @@
 #include <direct.h>
 #endif
 
-#include "structures/SList.h"
+#include "structure/SList.h"
 
 #include "filesys.h"
 

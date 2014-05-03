@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 #include "SList.h"
-#include "utilities/math.h"
+#include "math.h"
 
 #include "quadtree.h"
 
@@ -18,11 +18,11 @@ QuadPt *quadpt_new(const Point *p, void *data)
 
 typedef struct _QuadNode {
 	struct _QuadNode *nodes[4];
-	URectangle bounds;
+	TRectangle bounds;
 	SList *pts;
 } QuadNode;
 
-void quadnode_init(QuadNode *q,const URectangle *bounds)
+void quadnode_init(QuadNode *q,const TRectangle *bounds)
 {
 	AppAssert(q);
 
@@ -32,7 +32,7 @@ void quadnode_init(QuadNode *q,const URectangle *bounds)
 }
 
 
-QuadNode *quadnode_new(const URectangle *bounds)
+QuadNode *quadnode_new(const TRectangle *bounds)
 {
 	QuadNode *qn = (QuadNode *) malloc(sizeof(QuadNode));
 	quadnode_init(qn,bounds);
@@ -63,7 +63,7 @@ void quadnode_free(QuadNode *q,void (*data_free)(void *))
 
 void quadnode_split(QuadNode *q)
 {
-	URectangle bounds = {q->bounds.x,q->bounds.y,q->bounds.w/2,q->bounds.h/2};
+	TRectangle bounds = {q->bounds.x,q->bounds.y,q->bounds.w/2,q->bounds.h/2};
 	QuadNode *s;
 	QuadPt *pt;
 
@@ -161,7 +161,7 @@ const SList *quadnode_fetch(const QuadNode *q, int x, int y)
 	return found;
 }
 
-SList *quadnode_fetch_all(const QuadNode *q,const URectangle *rect)
+SList *quadnode_fetch_all(const QuadNode *q,const TRectangle *rect)
 {
 	SList *found, nodes;
 
@@ -193,7 +193,7 @@ SList *quadnode_fetch_all(const QuadNode *q,const URectangle *rect)
 SList *quadnode_fetch_near(const QuadNode *q,const Point *p, float dist)
 {
 	// find all data near the point
-	URectangle rect = {p->x-dist,p->y-dist,dist*2,dist*2};
+	TRectangle rect = {p->x-dist,p->y-dist,dist*2,dist*2};
 	SList *found, nodes;
 
 	if(!rectangle_contains_point(&q->bounds,p->x,p->y)) return 0;
@@ -226,7 +226,7 @@ struct _QuadTree {
 	size_t obj_limit, level_limit;
 };
 
-QuadTree *quadtree_new(const URectangle *bounds)
+QuadTree *quadtree_new(const TRectangle *bounds)
 {
 	QuadTree *qt = (QuadTree *) malloc(sizeof(QuadTree));
 
@@ -248,7 +248,7 @@ void quadtree_set(QuadTree *qt, size_t obj_limit, size_t level_limit)
 
 void quadtree_empty(QuadTree *qt, void (*data_free)(void *))
 {
-	URectangle bounds = qt->head->bounds;
+	TRectangle bounds = qt->head->bounds;
 	quadnode_free(qt->head,data_free);
 
 	qt->head = quadnode_new(&bounds);
@@ -274,7 +274,7 @@ const SList *quadtree_fetch(const QuadTree *qt, int x, int y) {
 	return quadnode_fetch(qt->head,x,y);
 }
 
-SList *quadtree_fetch_all(const QuadTree *qt,const URectangle *rect) {
+SList *quadtree_fetch_all(const QuadTree *qt,const TRectangle *rect) {
 	AppAssert(qt);
 
 	return quadnode_fetch_all(qt->head,rect);

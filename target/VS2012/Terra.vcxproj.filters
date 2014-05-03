@@ -21,48 +21,38 @@
     <ClCompile Include="..\..\src\io\io_writer.c">
       <Filter>io</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utilities\filesys.c">
-      <Filter>utilities</Filter>
+    <ClCompile Include="..\..\src\thread\thread.c">
+      <Filter>thread</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utilities\integer.c">
-      <Filter>utilities</Filter>
+    <ClCompile Include="..\..\src\utility\filesys.c">
+      <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utilities\math.c">
-      <Filter>utilities</Filter>
+    <ClCompile Include="..\..\src\utility\integer.c">
+      <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utilities\rand.c">
-      <Filter>utilities</Filter>
+    <ClCompile Include="..\..\src\utility\string.c">
+      <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utilities\string.c">
-      <Filter>utilities</Filter>
+    <ClCompile Include="..\..\src\structure\Array.c">
+      <Filter>structure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utilities\time.c">
-      <Filter>utilities</Filter>
+    <ClCompile Include="..\..\src\structure\Heap.c">
+      <Filter>structure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\structures\Array.c">
-      <Filter>structures</Filter>
+    <ClCompile Include="..\..\src\structure\List.c">
+      <Filter>structure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\structures\Heap.c">
-      <Filter>structures</Filter>
+    <ClCompile Include="..\..\src\structure\Octree.c">
+      <Filter>structure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\structures\List.c">
-      <Filter>structures</Filter>
+    <ClCompile Include="..\..\src\structure\Quadtree.c">
+      <Filter>structure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\structures\Octree.c">
-      <Filter>structures</Filter>
+    <ClCompile Include="..\..\src\structure\SList.c">
+      <Filter>structure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\structures\SList.c">
-      <Filter>structures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structures\Tree.c">
-      <Filter>structures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\particle\particle.c">
-      <Filter>particle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structures\Quadtree.c">
-      <Filter>structures</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\src\trand.c" />
+    <ClCompile Include="..\..\src\ttime.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
@@ -84,49 +74,50 @@
     <ClInclude Include="..\..\src\io\io_writer.h">
       <Filter>io</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utilities\filesys.h">
-      <Filter>utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utilities\integer.h">
-      <Filter>utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utilities\math.h">
-      <Filter>utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utilities\rand.h">
-      <Filter>utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utilities\string.h">
-      <Filter>utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utilities\time.h">
-      <Filter>utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structures\Array.h">
-      <Filter>structures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structures\Heap.h">
-      <Filter>structures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structures\List.h">
-      <Filter>structures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structures\Octree.h">
-      <Filter>structures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structures\SList.h">
-      <Filter>structures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structures\Tree.h">
-      <Filter>structures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\particle\particle.h">
-      <Filter>particle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structures\Quadtree.h">
-      <Filter>structures</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\terra.h" />
+    <ClInclude Include="..\..\src\thread\thread.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\filesys.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\integer.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\string.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\Array.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\Heap.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\List.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\Octree.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\Quadtree.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\SList.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\cuboid.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\rectangle.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\line.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\define.h" />
+    <ClInclude Include="..\..\src\tmath.h" />
+    <ClInclude Include="..\..\src\trand.h" />
+    <ClInclude Include="..\..\src\ttime.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="debugging">
@@ -135,14 +126,17 @@
     <Filter Include="io">
       <UniqueIdentifier>{2a4ab9f1-20f5-485e-9e1f-1ac7b34cbdfe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="particle">
-      <UniqueIdentifier>{b89394e6-d312-4215-bafb-b57d61b06247}</UniqueIdentifier>
+    <Filter Include="thread">
+      <UniqueIdentifier>{1c3aeaad-bdb7-4cd3-a0f8-23ed1f4347dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="structures">
-      <UniqueIdentifier>{f5850e95-5a66-43d5-989b-d0a49ac80e34}</UniqueIdentifier>
+    <Filter Include="utility">
+      <UniqueIdentifier>{c9439028-2f4b-4ad2-a7b1-6ef84239dd0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="utilities">
-      <UniqueIdentifier>{51125c4a-2e0b-4788-97b6-3b91d8536417}</UniqueIdentifier>
+    <Filter Include="structure">
+      <UniqueIdentifier>{c72c8ac1-2d04-4bbe-910d-a5ff122580e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="geometry">
+      <UniqueIdentifier>{9c63dc19-f10b-4fca-b310-b42db6ac1704}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

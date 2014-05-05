@@ -90,15 +90,15 @@ void array_init(Array *arr,size_t size)
 	arr->lastindex = 0;
 }
 
-void array_free(Array *arr,void (*free_func)(void *))
+void array_free(Array *arr,TFreeFunc func)
 {
 	if(arr) {
-		if(free_func) {
+		if(func) {
 			size_t i = 0;
 			for(; i < arr->size && arr->used; ++i) {
 				if(arr->data[i]) {
 					arr->used--;
-					free_func(arr->data[i]);
+					func(arr->data[i]);
 					arr->data[i] = 0;
 				}
 			}
@@ -109,22 +109,22 @@ void array_free(Array *arr,void (*free_func)(void *))
 	}
 }
 
-void array_empty(Array *arr,void (*free_func)(void *))
+void array_empty(Array *arr,TFreeFunc func)
 {
 	size_t i = 0;
 	for(; i < arr->lastindex && arr->used; ++i) {
 		if(arr->data[i]) {
 			arr->used--;
-			free_func(arr->data[i]);
+			func(arr->data[i]);
 			arr->data[i] = 0;
 		}
 	}
 	arr->lastindex = 0;
 }
 
-void array_empty_full(Array *arr,void (*free_func)(void *))
+void array_empty_full(Array *arr,TFreeFunc func)
 {
-	array_empty(arr,free_func);
+	array_empty(arr,func);
 	free(arr->data);
 	arr->data = 0;
 	arr->size = 0;
@@ -208,4 +208,175 @@ void array_remove_clear(Array *arr,size_t index)
 	if(arr->data[index]) arr->used -= 1;
 
 	arr->data[index] = 0;
+}
+
+//------------- Integer Array ---------------//
+
+void int_array_grow(IntArray *arr,size_t minsize)
+{
+	if(!arr->size) {
+		arr->data = (int *) malloc(sizeof(int) * minsize);
+		AppAssert(arr->data);
+
+		arr->size = minsize;
+		memset(arr->data,0,sizeof(int) * minsize);
+	} else {
+		size_t oldsize = arr->size;
+		arr->size = upper_power_of_two(minsize);
+
+		arr->data = (int *) realloc(arr->data,sizeof(int) * arr->size);
+		AppAssert(arr->data);
+
+		memset(arr->data+oldsize,0,sizeof(int) *(arr->size-oldsize));
+	}
+}
+
+void int_array_shrink(IntArray *arr)
+{
+	if(arr->lastindex >= 1) {
+		arr->size = upper_power_of_two(arr->lastindex);
+
+		arr->data = (int *) realloc(arr->data,sizeof(int) * arr->size);
+		AppAssert(arr->data);
+	}
+}
+
+IntArray *int_array_new(size_t size)
+{
+	IntArray *arr = (IntArray *) malloc(sizeof(IntArray));
+	AppAssert(arr);
+
+	int_array_init(arr,size);
+
+	return arr;
+}
+
+IntArray *int_array_copy(const IntArray *arr)
+{
+	IntArray *cpy;
+	size_t i = 0;
+	
+	if(!arr) return 0;
+
+	cpy = int_array_new(arr->size);
+	
+	cpy->lastindex = arr->lastindex;
+
+	for(; i < arr->lastindex; ++i) cpy->data[i] = arr->data[i];
+
+	return cpy;
+}
+
+void int_array_copy_inplace(IntArray *to, const IntArray *arr)
+{
+	size_t i = 0;
+	if(!to || !arr) return;
+
+	if(to->size < arr->size) int_array_grow(to,arr->lastindex);
+
+	to->lastindex = arr->lastindex;
+
+	for(; i < arr->lastindex; ++i) to->data[i] = arr->data[i];
+}
+
+void int_array_init(IntArray *arr,size_t size)
+{
+	if(size) {
+		arr->data = (int *) malloc(sizeof(int) * size);
+		AppAssert(arr->data);
+
+		memset(arr->data,0,size);
+	} else {
+		arr->data = 0;
+	}
+
+	arr->size = size;
+	arr->lastindex = 0;
+}
+
+void int_array_free(IntArray *arr)
+{
+	if(arr) {
+		free(arr->data);
+		free(arr);
+	}
+}
+
+void int_array_empty(IntArray *arr)
+{
+	arr->lastindex = 0;
+}
+
+void int_array_empty_full(IntArray *arr)
+{
+	arr->lastindex = 0;
+	free(arr->data);
+	arr->data = 0;
+	arr->size = 0;
+}
+
+size_t int_array_append(IntArray *arr,int data)
+{
+	int_array_insert(arr,data,arr->lastindex);
+	return arr->lastindex-1;
+}
+
+void int_array_insert(IntArray *arr, int data, size_t index)
+{
+	if(index >= arr->size) int_array_grow(arr,index+1);
+	arr->data[index] = data;
+	arr->lastindex = max(index+1,arr->lastindex);
+}
+
+void *int_array_foreach(IntArray *arr, TIterFunc func,void *user_data)
+{
+	size_t i = 0;
+	for(; i < arr->lastindex; ++i) {
+		void *value = func(&arr->data[i],user_data);
+		if(value) return value;
+	}
+
+	return 0;
+}
+
+int int_array_pop(IntArray *arr,size_t index)
+{
+	int data;
+
+	if(index >= arr->lastindex) return 0;
+
+	data = arr->data[index];
+
+	for(; index < arr->lastindex-1; ++index) arr->data[index] = arr->data[index+1];
+	arr->lastindex -= 1;
+
+	if(arr->lastindex <= (arr->size >> 2)) int_array_shrink(arr);
+
+	return data;
+}
+
+void int_array_sort(IntArray *arr)
+{
+	//TODO
+}
+
+void int_array_remove(IntArray *arr,size_t index)
+{
+	if(index >= arr->lastindex) return;
+
+	for(; index < arr->lastindex-1; ++index) arr->data[index] = arr->data[index+1];
+	arr->lastindex -= 1;
+
+	if(arr->lastindex <= (arr->size >> 2)) int_array_shrink(arr);
+}
+
+void int_array_remove_fast(IntArray *arr,size_t index)
+{
+	if(index >= arr->lastindex) return;
+
+	arr->data[index] = arr->data[arr->lastindex-1];
+	arr->data[arr->lastindex-1] = 0;
+	arr->lastindex -= 1;
+
+	if(arr->lastindex <= (arr->size >> 2)) int_array_shrink(arr);
 }

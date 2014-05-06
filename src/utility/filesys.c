@@ -6,8 +6,6 @@
 #include <direct.h>
 #endif
 
-#include "structure/SList.h"
-
 #include "filesys.h"
 
 #include "string.h"

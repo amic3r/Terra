@@ -2,10 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\tests\test.c" />
+    <ClCompile Include="..\..\src\tests\array_test.c" />
+    <ClCompile Include="..\..\src\tests\heap_test.c" />
+    <ClCompile Include="..\..\src\tests\io_reader_test.c" />
+    <ClCompile Include="..\..\src\tests\test_utils.c" />
+    <ClCompile Include="..\..\src\stdafx.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\tests\test.h" />
-    <ClInclude Include="..\..\src\terra.h" />
+    <ClInclude Include="..\..\src\tests\array_test.h" />
+    <ClInclude Include="..\..\src\tests\heap_test.h" />
+    <ClInclude Include="..\..\src\tests\io_reader_test.h" />
+    <ClInclude Include="..\..\src\tests\test_utils.h" />
+    <ClInclude Include="..\..\src\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\contrib\glib\lib\glib-2.0.lib" />

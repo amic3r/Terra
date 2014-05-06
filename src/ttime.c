@@ -1,6 +1,7 @@
 
-
 #include "stdafx.h"
+
+#include "ttime.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,7 +12,7 @@ static double current_time;
 #ifdef _WINDOWS
 static double s_tickInterval = 1.0;
 
-void InitialiseHighResTime()
+void ttime_initialise()
 {
 	LARGE_INTEGER freq;
 	QueryPerformanceFrequency(&freq);
@@ -19,7 +20,7 @@ void InitialiseHighResTime()
 	current_time = 0.0;
 }
 
-void ComputeHighResTime()
+void ttime_compute_time()
 {
 	LARGE_INTEGER count;
 	QueryPerformanceCounter(&count);
@@ -27,35 +28,35 @@ void ComputeHighResTime()
 }
 #endif
 
-#ifdef TARGET_OS_MACOSX
+#ifdef _MACOSX
 
 uint64_t					s_start;
 mach_timebase_info_data_t 	s_timebase;
 
-void InitialiseHighResTime()
+void ttime_initialise()
 {
 	mach_timebase_info(&s_timebase);
 	s_start = mach_absolute_time();
 	current_time = 0.0;
 }
 
-void ComputeHighResTime()
+void ttime_compute_time()
 {
 	uint64_t elapsed = mach_absolute_time() - s_start;
 	current_time = double(elapsed) * (s_timebase.numer / s_timebase.denom) / 1000000000.0;
 }
 #endif
 
-#ifdef TARGET_OS_LINUX
+#ifdef _LINUX
 static timeval s_start;
 
-void InitialiseHighResTime()
+void ttime_initialise()
 {
 	gettimeofday(&s_start, NULL);
 	current_time = 0.0;
 }
 
-void ComputeHighResTime()
+void ttime_compute_time()
 {
 	timeval now;
 	gettimeofday(&now, NULL);
@@ -64,15 +65,24 @@ void ComputeHighResTime()
 }
 #endif
 
-double GetHighResTime()
+double ttime_get_time()
 {
-	ComputeHighResTime();
+	ttime_compute_time();
 	return current_time;
 }
 
-double fetchHighResTime()
+double ttime_fetch_time()
 {
 	return current_time;
+}
+
+//------------- TTimer ---------------//
+
+TTimer *ttimer_new(void)
+{
+	TTimer *t = (TTimer *) malloc(sizeof(TTimer));
+	ttimer_init(t);
+	return t;
 }
 
 #ifdef __cplusplus

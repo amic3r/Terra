@@ -7,12 +7,19 @@
 #define __included_stdafx_h
 
 #undef __cplusplus
-#define inline _inline
-#define snprintf _snprintf
+
+#define NULL 0
+
+#ifndef bool
+#define bool unsigned char
+#define false 0
+#define true !false
+#endif
 
 #if defined(_WIN32) || defined(_WIN64)
 #define _WINDOWS 1
-#define NULL 0
+#define inline _inline
+#define snprintf _snprintf
 #endif
 
 #ifdef _MSC_VER

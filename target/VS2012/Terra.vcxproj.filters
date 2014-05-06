@@ -53,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\ttime.c" />
+    <ClCompile Include="..\..\src\debugging\tlog.c">
+      <Filter>debugging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
@@ -118,6 +121,9 @@
     <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\ttime.h" />
+    <ClInclude Include="..\..\src\debugging\tlog.h">
+      <Filter>debugging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="debugging">

@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "structure/Heap.h"
+
 #include "heap_test.h"
 
 static Heap *test = 0;

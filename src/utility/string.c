@@ -257,7 +257,7 @@ char *string_ase_encrypt(const char *src, unsigned char key)
 	if(!result)
 		AppAbort("Memory Allocation Failed");
 
-	last_char = key ^ ((int)(fetchHighResTime()/125)*8 % 255);
+	last_char = key ^ ((int)(ttime_fetch_time()/125)*8 % 255);
 	resptr = result;
 
 	for (; *ptr != 0; ptr++, resptr++) {

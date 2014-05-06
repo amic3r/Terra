@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\debugging\debug.c" />
+    <ClCompile Include="..\..\src\debugging\tlog.c" />
     <ClCompile Include="..\..\src\debugging\memory_leak.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -40,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\debugging\debug.h" />
+    <ClInclude Include="..\..\src\debugging\tlog.h" />
     <ClInclude Include="..\..\src\debugging\memory_leak.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

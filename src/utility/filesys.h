@@ -2,6 +2,8 @@
 #ifndef __included_terra_filesys_utils
 #define __included_terra_filesys_utils
 
+#include "structure/SList.h"
+
 void ListDirectory(SList *list, const char *_dir, const char *_filter, unsigned char fullFilename);
 void ListSubDirectoryNames(SList *list, const char *_dir);
 

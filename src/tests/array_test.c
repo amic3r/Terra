@@ -1,5 +1,9 @@
 #include "stdafx.h"
 
+#include "debugging/tlog.h"
+#include "structure/Array.h"
+#include "utility/integer.h"
+
 #include "array_test.h"
 
 static Array testarray;
@@ -20,6 +24,11 @@ void array_test_insert(void)
 
 	AppAssert(*((int *) array_get(&testarray,4)) == 5);
 	AppAssert(array_get(&testarray,2) == 0);
+}
+
+void array_test_move(void)
+{
+	//array_move(&testarray,0,5,-2);
 }
 
 static void *test_loop_1(void *data,void *udata)
@@ -80,13 +89,19 @@ void array_test_free(void)
 
 void array_test(void)
 {
+	tlog_report(T_LOG_PROGRESS,"Testing array...\n");
+
 	array_test_init();
 
 	array_test_insert();
+
+	array_test_move();
 
 	array_test_foreach();
 
 	array_test_remove();
 
 	array_test_free();
+
+	tlog_report(T_LOG_PROGRESS,"Array tests completed.\n");
 }

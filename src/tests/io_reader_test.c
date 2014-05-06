@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
-#include "eclipse.h"
+#include "io/io_reader.h"
+#include "utility/filesys.h"
 
 #include "test_utils.h"
 

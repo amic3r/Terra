@@ -13,6 +13,7 @@ void print_credits(void);
 #include "define.h"
 
 #include "debugging/debug.h"
+#include "debugging/tlog.h"
 //#include "debugging/memory_leak.h"
 //#include "debugging/profiler.h"
 

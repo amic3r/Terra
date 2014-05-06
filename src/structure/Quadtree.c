@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 #include "SList.h"
-#include "math.h"
+#include "tmath.h"
 
 #include "quadtree.h"
 
@@ -75,9 +75,9 @@ void quadnode_split(QuadNode *q)
 	pt = (QuadPt *) slist_pop(q->pts,0);
 	while(pt) {
 		Point *p = &pt->pt;
-		if(rectangle_contains_point(&q->nodes[0]->bounds,p->x,p->y)) s = q->nodes[0];
-		else if(rectangle_contains_point(&q->nodes[1]->bounds,p->x,p->y)) s = q->nodes[1];
-		else if(rectangle_contains_point(&q->nodes[2]->bounds,p->x,p->y)) s = q->nodes[2];
+		if(terra_rectangle_contains_point(&q->nodes[0]->bounds,(int)p->x,(int)p->y)) s = q->nodes[0];
+		else if(terra_rectangle_contains_point(&q->nodes[1]->bounds,(int)p->x,(int)p->y)) s = q->nodes[1];
+		else if(terra_rectangle_contains_point(&q->nodes[2]->bounds,(int)p->x,(int)p->y)) s = q->nodes[2];
 		else s = q->nodes[3];
 
 		slist_append(s->pts,pt);
@@ -94,15 +94,15 @@ void quadnode_insert(QuadNode *q,const Point *p, void *data, int limit, int leve
 	int level = 1;
 	QuadPt *pt;
 
-	if(!rectangle_contains_point(&q->bounds,p->x,p->y)) return;
+	if(!terra_rectangle_contains_point(&q->bounds,p->x,p->y)) return;
 
 	pt = quadpt_new(p,data);
 
 	while(q) {
 		if(q->nodes[0]) {
-			if(rectangle_contains_point(&q->nodes[0]->bounds,p->x,p->y)) q = q->nodes[0];
-			else if(rectangle_contains_point(&q->nodes[1]->bounds,p->x,p->y)) q = q->nodes[1];
-			else if(rectangle_contains_point(&q->nodes[2]->bounds,p->x,p->y)) q = q->nodes[2];
+			if(terra_rectangle_contains_point(&q->nodes[0]->bounds,p->x,p->y)) q = q->nodes[0];
+			else if(terra_rectangle_contains_point(&q->nodes[1]->bounds,p->x,p->y)) q = q->nodes[1];
+			else if(terra_rectangle_contains_point(&q->nodes[2]->bounds,p->x,p->y)) q = q->nodes[2];
 			else q = q->nodes[3];
 			level++;
 		} else {
@@ -115,13 +115,13 @@ void quadnode_insert(QuadNode *q,const Point *p, void *data, int limit, int leve
 
 void quadnode_remove(QuadNode *q,const Point *pt, void (*data_free)(void *))
 {
-	if(!rectangle_contains_point(&q->bounds,pt->x,pt->y)) return;
+	if(!terra_rectangle_contains_point(&q->bounds,pt->x,pt->y)) return;
 
 	while(q) {
 		if(q->nodes[0]) {
-			if(rectangle_contains_point(&q->nodes[0]->bounds,pt->x,pt->y)) q = q->nodes[0];
-			else if(rectangle_contains_point(&q->nodes[1]->bounds,pt->x,pt->y)) q = q->nodes[1];
-			else if(rectangle_contains_point(&q->nodes[2]->bounds,pt->x,pt->y)) q = q->nodes[2];
+			if(terra_rectangle_contains_point(&q->nodes[0]->bounds,pt->x,pt->y)) q = q->nodes[0];
+			else if(terra_rectangle_contains_point(&q->nodes[1]->bounds,pt->x,pt->y)) q = q->nodes[1];
+			else if(terra_rectangle_contains_point(&q->nodes[2]->bounds,pt->x,pt->y)) q = q->nodes[2];
 			else q = q->nodes[3];
 		} else {
 			QuadPt *c = (QuadPt *) slist_first(q->pts);
@@ -144,13 +144,13 @@ const SList *quadnode_fetch(const QuadNode *q, int x, int y)
 {
 	const SList *found = 0;
 
-	if(!rectangle_contains_point(&q->bounds,x,y)) return 0;
+	if(!terra_rectangle_contains_point(&q->bounds,x,y)) return 0;
 
 	while(q) {
 		if(q->nodes[0]) {
-			if(rectangle_contains_point(&q->nodes[0]->bounds,x,y)) q = q->nodes[0];
-			else if(rectangle_contains_point(&q->nodes[1]->bounds,x,y)) q = q->nodes[1];
-			else if(rectangle_contains_point(&q->nodes[2]->bounds,x,y)) q = q->nodes[2];
+			if(terra_rectangle_contains_point(&q->nodes[0]->bounds,x,y)) q = q->nodes[0];
+			else if(terra_rectangle_contains_point(&q->nodes[1]->bounds,x,y)) q = q->nodes[1];
+			else if(terra_rectangle_contains_point(&q->nodes[2]->bounds,x,y)) q = q->nodes[2];
 			else q = q->nodes[3];
 		} else {
 			found = q->pts;
@@ -165,21 +165,21 @@ SList *quadnode_fetch_all(const QuadNode *q,const TRectangle *rect)
 {
 	SList *found, nodes;
 
-	if(!rectangle_contains(&q->bounds,rect)) return 0;
+	if(!terra_rectangle_contains(&q->bounds,rect)) return 0;
 
 	found = slist_new();
 	slist_init(&nodes);
 
 	do {
 		if(q->nodes[0]) {
-			if(rectangle_contains(&q->nodes[0]->bounds,rect)) slist_append(&nodes,q->nodes[0]);
-			if(rectangle_contains(&q->nodes[1]->bounds,rect)) slist_append(&nodes,q->nodes[1]);
-			if(rectangle_contains(&q->nodes[2]->bounds,rect)) slist_append(&nodes,q->nodes[2]);
-			if(rectangle_contains(&q->nodes[3]->bounds,rect)) slist_append(&nodes,q->nodes[3]);
+			if(terra_rectangle_contains(&q->nodes[0]->bounds,rect)) slist_append(&nodes,q->nodes[0]);
+			if(terra_rectangle_contains(&q->nodes[1]->bounds,rect)) slist_append(&nodes,q->nodes[1]);
+			if(terra_rectangle_contains(&q->nodes[2]->bounds,rect)) slist_append(&nodes,q->nodes[2]);
+			if(terra_rectangle_contains(&q->nodes[3]->bounds,rect)) slist_append(&nodes,q->nodes[3]);
 		} else {
 			Point *p = (Point *) slist_first(q->pts);
 			while(p) {
-				if(rectangle_contains_point(rect,p->x,p->y)) slist_append(found,p);
+				if(terra_rectangle_contains_point(rect,p->x,p->y)) slist_append(found,p);
 				p = (Point *) slist_next(q->pts);
 			}
 		}
@@ -196,17 +196,17 @@ SList *quadnode_fetch_near(const QuadNode *q,const Point *p, float dist)
 	TRectangle rect = {p->x-dist,p->y-dist,dist*2,dist*2};
 	SList *found, nodes;
 
-	if(!rectangle_contains_point(&q->bounds,p->x,p->y)) return 0;
+	if(!terra_rectangle_contains_point(&q->bounds,p->x,p->y)) return 0;
 
 	found = slist_new();
 	slist_init(&nodes);
 	
 	do {
 		if(q->nodes[0]) {
-			if(rectangle_contains(&q->nodes[0]->bounds,&rect)) slist_append(&nodes,q->nodes[0]);
-			if(rectangle_contains(&q->nodes[1]->bounds,&rect)) slist_append(&nodes,q->nodes[1]);
-			if(rectangle_contains(&q->nodes[2]->bounds,&rect)) slist_append(&nodes,q->nodes[2]);
-			if(rectangle_contains(&q->nodes[3]->bounds,&rect)) slist_append(&nodes,q->nodes[3]);
+			if(terra_rectangle_contains(&q->nodes[0]->bounds,&rect)) slist_append(&nodes,q->nodes[0]);
+			if(terra_rectangle_contains(&q->nodes[1]->bounds,&rect)) slist_append(&nodes,q->nodes[1]);
+			if(terra_rectangle_contains(&q->nodes[2]->bounds,&rect)) slist_append(&nodes,q->nodes[2]);
+			if(terra_rectangle_contains(&q->nodes[3]->bounds,&rect)) slist_append(&nodes,q->nodes[3]);
 		} else {
 			Point *p2 = (Point *) slist_first(q->pts);
 			while(p2) {

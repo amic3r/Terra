@@ -144,6 +144,41 @@ void array_insert(Array *arr,void *data, size_t index)
 	arr->lastindex = max(index+1,arr->lastindex);
 }
 
+void array_move(Array *arr, size_t start, size_t end, int space)
+{
+	if(!arr || start > end || !array_valid(arr,start) || !space) return;
+
+	if(end > arr->lastindex) end = arr->lastindex;
+
+	if(space > 0) {
+		int i;
+		int li = (int)end + space - 1;
+
+		if(li > arr->size) array_grow(arr,li);
+
+		for(i = end-1; i >= (int)start; i--) {
+			arr->data[i+space] = arr->data[i];
+			arr->data[i] = 0;
+		}
+
+		arr->lastindex = (size_t)(li + 1);
+	} else {
+		size_t i;
+
+		if((int)start + space < 0) start = (size_t)(-space);
+
+		for(i = start; i < end; ++i) {
+			arr->data[i+space] = arr->data[i];
+			arr->data[i] = 0;
+		}
+
+		if(arr->lastindex <= (arr->size >> 2)) array_shrink(arr);
+
+		arr->lastindex = max(end,arr->lastindex);
+	}
+
+}
+
 void *array_foreach(Array *arr, void *(*func)(void *,void *),void *user_data)
 {
 	size_t i = 0;
@@ -326,6 +361,41 @@ void int_array_insert(IntArray *arr, int data, size_t index)
 	if(index >= arr->size) int_array_grow(arr,index+1);
 	arr->data[index] = data;
 	arr->lastindex = max(index+1,arr->lastindex);
+}
+
+void int_array_move(IntArray *arr, size_t start, size_t end, int space)
+{
+	if(!arr || start > end || !int_array_valid(arr,start) || !space) return;
+
+	if(end > arr->lastindex) end = arr->lastindex;
+
+	if(space > 0) {
+		int i;
+		int li = (int)end + space - 1;
+
+		if(li > arr->size) int_array_grow(arr,li);
+
+		for(i = end-1; i >= (int)start; i--) {
+			arr->data[i+space] = arr->data[i];
+			arr->data[i] = 0;
+		}
+
+		arr->lastindex = (size_t)(li + 1);
+	} else {
+		size_t i;
+
+		if((int)start + space < 0) start = (size_t)(-space);
+
+		for(i = start; i < end; ++i) {
+			arr->data[i+space] = arr->data[i];
+			arr->data[i] = 0;
+		}
+
+		if(arr->lastindex <= (arr->size >> 2)) int_array_shrink(arr);
+
+		arr->lastindex = max(end,arr->lastindex);
+	}
+
 }
 
 void *int_array_foreach(IntArray *arr, TIterFunc func,void *user_data)

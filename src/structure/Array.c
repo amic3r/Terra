@@ -289,15 +289,22 @@ IntArray *int_array_new(size_t size)
 int int_array_resize(IntArray *arr, size_t _size)
 {
 	if(arr) {
-		int *res = (int *) realloc(arr->data,sizeof(int) * _size);
-		if(!res) return 1;
+		if(_size == 0) {
+			free(arr->data);
+			arr->data = 0;
+			arr->lastindex = 0;
+			arr->size = 0;
+		} else {
+			int *res = (int *) realloc(arr->data,sizeof(int) * _size);
+			if(!res) return 1;
 
-		arr->data = res;
+			arr->data = res;
 
-		if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(int) *(_size-arr->size));
-		else arr->lastindex = min(arr->lastindex,_size);
+			if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(int) *(_size-arr->size));
+			else arr->lastindex = min(arr->lastindex,_size);
 
-		arr->size = _size;
+			arr->size = _size;
+		}
 	}
 
 	return 0;

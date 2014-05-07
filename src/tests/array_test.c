@@ -7,6 +7,7 @@
 #include "array_test.h"
 
 static Array testarray;
+static IntArray iarr;
 static char *yay = "yay";
 
 void array_test_init(void)
@@ -85,6 +86,13 @@ void array_test_remove(void)
 void array_test_free(void)
 {
 	array_empty_full(&testarray,free);
+}
+
+static void *intarr_print(int *v, void *udata)
+{
+	printf("%d",*v);
+
+	return 0;
 }
 
 void array_test(void)

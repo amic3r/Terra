@@ -64,19 +64,21 @@ typedef struct _IntArray {
 } IntArray;
 
 IntArray *int_array_new(size_t size);
+void int_array_init(IntArray *arr,size_t size);
+void int_array_free(IntArray *arr);
+
+int int_array_resize(IntArray *arr, size_t _size);
 
 IntArray *int_array_copy(const IntArray *arr);
 void int_array_copy_inplace(IntArray *to, const IntArray *arr);
-
-void int_array_init(IntArray *arr,size_t size);
-
-void int_array_free(IntArray *arr);
 
 void int_array_empty(IntArray *arr);
 void int_array_empty_full(IntArray *arr);
 
 size_t int_array_append(IntArray *arr,int data);
 void int_array_insert(IntArray *arr,int data, size_t index);
+
+void int_array_move(IntArray *arr, size_t start, size_t end, int space);
 
 void *int_array_foreach(IntArray *arr, TIterFunc func,void *user_data);
 

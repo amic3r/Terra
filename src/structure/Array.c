@@ -286,6 +286,23 @@ IntArray *int_array_new(size_t size)
 	return arr;
 }
 
+int int_array_resize(IntArray *arr, size_t _size)
+{
+	if(arr) {
+		int *res = (int *) realloc(arr->data,sizeof(int) * _size);
+		if(!res) return 1;
+
+		arr->data = res;
+
+		if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(int) *(_size-arr->size));
+		else arr->lastindex = min(arr->lastindex,_size);
+
+		arr->size = _size;
+	}
+
+	return 0;
+}
+
 IntArray *int_array_copy(const IntArray *arr)
 {
 	IntArray *cpy;

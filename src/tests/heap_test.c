@@ -1,67 +1,64 @@
 #include "stdafx.h"
 
-#include "structure/Heap.h"
+#include "debugging/tdebug.h"
+
+#include "structure/theap.h"
 
 #include "heap_test.h"
 
-static Heap *test = 0;
+static THeap *test = 0;
 
 char *strarr[] = {"bleh","blah","blih","bluh","blyh"};
 
 void heap_test_init(void)
 {
-	test = heap_new(0);
-	AppAssert(test);
+	test = THeapNew(0);
+	TAssert(test);
 }
 
 void heap_test_init2(void)
 {
-	test = heap_new(1);
-	AppAssert(test);
+	test = THeapNew(1);
+	TAssert(test);
 }
 
 void heap_test_push(void)
 {
-	heap_push(test,10,strarr[0]);
-	heap_push(test,5,strarr[1]);
-	heap_push(test,2,strarr[2]);
-	heap_push(test,12,strarr[3]);
-	heap_push(test,7,strarr[4]);
+	THeapPush(test,10,strarr[0]);
+	THeapPush(test,5,strarr[1]);
+	THeapPush(test,2,strarr[2]);
+	THeapPush(test,12,strarr[3]);
+	THeapPush(test,7,strarr[4]);
 
-	AppAssert(heap_num_elements(test) == 5);
-}
-
-static void dataprint(void *data)
-{
-	printf((const char *) data);
+	TAssert(THeapNumElements(test) == 5);
 }
 
 void heap_test_print(void)
 {
-	heap_print(test,dataprint);
+	THeapPrint(test,(TIterFunc) printf);
 }
 
 void heap_test_pop(void)
 {
-	AppAssert(heap_pop(test) == strarr[3]);
-	AppAssert(heap_pop(test) == strarr[0]);
-	AppAssert(heap_pop(test) == strarr[4]);
-	AppAssert(heap_pop(test) == strarr[1]);
-	AppAssert(heap_pop(test) == strarr[2]);
+	TAssert(THeapPop(test) == strarr[3]);
+	TAssert(THeapPop(test) == strarr[0]);
+	TAssert(THeapPop(test) == strarr[4]);
+	TAssert(THeapPop(test) == strarr[1]);
+	TAssert(THeapPop(test) == strarr[2]);
 }
 
 void heap_test_pop2(void)
 {
-	AppAssert(heap_pop(test) == strarr[2]);
-	AppAssert(heap_pop(test) == strarr[1]);
-	AppAssert(heap_pop(test) == strarr[4]);
-	AppAssert(heap_pop(test) == strarr[0]);
-	AppAssert(heap_pop(test) == strarr[3]);
+	TAssert(THeapPop(test) == strarr[2]);
+	TAssert(THeapPop(test) == strarr[1]);
+	TAssert(THeapPop(test) == strarr[4]);
+	TAssert(THeapPop(test) == strarr[0]);
+	TAssert(THeapPop(test) == strarr[3]);
 }
 
 void heap_test_free(void)
 {
-	heap_free(test,0);
+	THeapFree(test,0);
 }
 
 void heap_test(void)

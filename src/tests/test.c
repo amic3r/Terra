@@ -7,11 +7,11 @@
 
 int main(int argc, char **argv)
 {
-	tlog_report(T_LOG_PROGRESS,"Running tests...\n");
+	TLogReport(T_LOG_PROGRESS,0,"Running tests...\n");
 
 	array_test();
 
-	tlog_report(T_LOG_PROGRESS,"All Tests have been executed.\n");
+	TLogReport(T_LOG_PROGRESS,0,"All Tests have been executed.\n");
 	
 	return 0;
 }

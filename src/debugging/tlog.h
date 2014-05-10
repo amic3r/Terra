@@ -8,8 +8,13 @@ enum T_LOG_EVENT {
 	T_LOG_ERROR,
 };
 
-void tlog_set_file(FILE *_file);
+void TLogSetFile(FILE *_file);
 
-void tlog_report(int category, const char *format,...);
+void TLogReport(int category, const char *function, const char *format,...);
+
+void TLogStartReport(int category, const char *function);
+
+void TLogWrite(const char *format,...);
+void TLogWriteV(const char *format,va_list ap);
 
 #endif

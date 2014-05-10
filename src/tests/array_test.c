@@ -1,30 +1,30 @@
 #include "stdafx.h"
 
-#include "debugging/tlog.h"
-#include "structure/Array.h"
-#include "utility/integer.h"
+#include "debugging/tdebug.h"
+#include "structure/tarray.h"
+#include "utility/tinteger.h"
 
 #include "array_test.h"
 
-static Array testarray;
-static IntArray iarr;
+static TArray testarray;
+static TIArray iarr;
 static char *yay = "yay";
 
 void array_test_init(void)
 {
-	array_init(&testarray,0);
+	TArrayInit(&testarray,0);
 }
 
 void array_test_insert(void)
 {
-	array_append(&testarray,integer_to_ptr(1));
+	TArrayAppend(&testarray,TIntegerToPtr(1));
 
-	AppAssert(*((int *) array_get(&testarray,0)) == 1);
+	TAssert(*((int *) TArrayGet(&testarray,0)) == 1);
 
-	array_insert(&testarray,integer_to_ptr(5),4);
+	TArrayInsert(&testarray,TIntegerToPtr(5),4);
 
-	AppAssert(*((int *) array_get(&testarray,4)) == 5);
-	AppAssert(array_get(&testarray,2) == 0);
+	TAssert(*((int *) TArrayGet(&testarray,4)) == 5);
+	TAssert(TArrayGet(&testarray,2) == 0);
 }
 
 void array_test_move(void)
@@ -55,37 +55,37 @@ void array_test_foreach(void)
 	int temp;
 
 	printf("test array content : ");
-	array_foreach(&testarray,test_loop_1,&temp);
+	TArrayForeachData(&testarray,test_loop_1,&temp);
 
-	AppAssert(temp == 5);
+	TAssert(temp == 5);
 
-	AppAssert(array_foreach(&testarray,test_loop_2,0) == yay);
+	TAssert(TArrayForeachData(&testarray,test_loop_2,0) == yay);
 }
 
 void array_test_remove(void)
 {
-	array_remove(&testarray,0);
+	TArrayRemove(&testarray,0);
 
-	AppAssert(*((int *) array_get(&testarray,3)) == 5);
+	TAssert(*((int *) TArrayGet(&testarray,3)) == 5);
 
-	array_insert(&testarray,integer_to_ptr(1),0);
+	TArrayInsert(&testarray,TIntegerToPtr(1),0);
 
-	array_remove_fast(&testarray,0);
+	TArrayRemoveFast(&testarray,0);
 
-	AppAssert(*((int *) array_get(&testarray,0)) == 5);
+	TAssert(*((int *) TArrayGet(&testarray,0)) == 5);
 
-	array_remove_clear(&testarray,0);
+	TArrayRemoveClear(&testarray,0);
 
-	AppAssert(!array_get(&testarray,0));
+	TAssert(!TArrayGet(&testarray,0));
 
-	AppAssert(!array_pop(&testarray,0));
+	TAssert(!TArrayPopIndex(&testarray,0));
 
-	array_remove(&testarray,0);
+	TArrayRemove(&testarray,0);
 }
 
 void array_test_free(void)
 {
-	array_empty_full(&testarray,free);
+	TArrayEmptyFull(&testarray,free);
 }
 
 static void *intarr_print(int *v, void *udata)
@@ -97,7 +97,7 @@ static void *intarr_print(int *v, void *udata)
 
 void array_test(void)
 {
-	tlog_report(T_LOG_PROGRESS,"Testing array...\n");
+	TLogReport(T_LOG_PROGRESS,0,"Testing array...\n");
 
 	array_test_init();
 
@@ -111,5 +111,5 @@ void array_test(void)
 
 	array_test_free();
 
-	tlog_report(T_LOG_PROGRESS,"Array tests completed.\n");
+	TLogReport(T_LOG_PROGRESS,0,"Array tests completed.\n");
 }

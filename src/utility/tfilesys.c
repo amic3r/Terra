@@ -1,14 +1,18 @@
 
 #include "stdafx.h"
 
+#include "tfilesys.h"
+
 #ifdef _WINDOWS
 #include <io.h>
 #include <direct.h>
+#include <windows.h>
 #endif
 
-#include "filesys.h"
+#include <ctype.h>
+#include "tstring.h"
 
-#include "string.h"
+#include "talloc.h"
 
 #define FILE_PATH_BUFFER_SIZE 256
 static char s_filePathBuffer[FILE_PATH_BUFFER_SIZE + 1];
@@ -65,7 +69,7 @@ static unsigned char FilterMatch(const char *_filename, const char *_filter)
 	}
 }*/
 
-void ListDirectory(SList *list, const char *_dir, const char *_filter, unsigned char _fullFilename)
+int TFileSysListDirectory(TSList *list, const char *_dir, const char *_filter, unsigned char _fullFilename)
 {
 #ifdef _WINDOWS
 	unsigned int dirlen = 0;
@@ -75,15 +79,15 @@ void ListDirectory(SList *list, const char *_dir, const char *_filter, unsigned 
 	char *dir = 0;
 #endif
 
-	if(!list) return;
+	if(!list) return 1;
 	if(_filter == NULL || _filter[0] == '\0') _filter = "*";
 	if(_dir == NULL || _dir[0] == '\0')       _dir = ".";
 
 	// Now add on all files found locally
 #ifdef _WINDOWS
 	dirlen = strlen(_dir);
-	dir = ConcatPaths(_dir, _filter, NULL);
-	AppAssert(dir);
+	dir = TFileSysConcatPaths(_dir, _filter, NULL);
+	if(!dir) return 1;
 
 	fileindex = _findfirst(dir, &thisfile);
 	free(dir);
@@ -101,40 +105,42 @@ void ListDirectory(SList *list, const char *_dir, const char *_filter, unsigned 
 				else
 					sprintf(newname, "%s", thisfile.name);
 
-				slist_append(list,newname);
+				TSListAppend(list,newname);
 			}
 		} while(!_findnext(fileindex, &thisfile));
 	}
 #else
 	DIR *dir = opendir(_dir);
 	if(dir == NULL)
-		return result;
+		return 1;
 	for(struct dirent *entry;(entry = readdir(dir))!= NULL;) {
 		if(FilterMatch(entry->d_name, _filter)) {
 			char fullname[strlen(_dir) + strlen(entry->d_name) + 2];
 			sprintf(fullname, "%s%s%s", _dir, _dir[0] ? "/" : "", entry->d_name);
-			if(!IsDirectory(fullname))
-				slist_append(list,strdup(_fullFilename ? fullname : entry->d_name));
+			if(!TFileSysIsDirectory(fullname))
+				TSListAppend(list,strdup(_fullFilename ? fullname : entry->d_name));
 		}
 	}
 	closedir(dir);
 #endif
+
+	return 0;
 }
 
-void ListSubDirectoryNames(SList *list, const char *_dir)
+int TFileSysListSubDirectoryNames(TSList *list, const char *_dir)
 {
 #ifdef _WINDOWS
 	struct _finddata_t thisfile;
-	char *dir = ConcatPaths(_dir, "*", NULL);
+	char *dir = TFileSysConcatPaths(_dir, "*", NULL);
 	long fileindex = _findfirst(dir, &thisfile);
 
-	if(!list) return;
+	if(!list) return 1;
 	if(fileindex != -1) {
 		while(!_findnext(fileindex, &thisfile)) {
 			if(thisfile.name[0] != '.' && thisfile.attrib & _A_SUBDIR) {
 				char *newname = strdup(thisfile.name);
 				
-				slist_append(list,newname);
+				TSListAppend(list,newname);
 			}
 		} 
 	}
@@ -143,9 +149,9 @@ void ListSubDirectoryNames(SList *list, const char *_dir)
 #else
 	DIR *dir = opendir(_dir);
 
-	if(!list) return;
+	if(!list) return 1;
 	if(dir == NULL)
-		return result;
+		return 1;
 	for(struct dirent *entry;(entry = readdir(dir))!= NULL;) {
 		if(entry->d_name[0] == '.')
 			continue;
@@ -153,16 +159,17 @@ void ListSubDirectoryNames(SList *list, const char *_dir)
 		char fullname[strlen(_dir) + strlen(entry->d_name) + 2];
 		sprintf(fullname, "%s%s%s", _dir, _dir[0] ? "/" : "", entry->d_name);
 
-		if(IsDirectory(fullname))
+		if(TFileSysIsDirectory(fullname))
 			slist_append(list,strdup(entry->d_name));
 	}
 	closedir(dir);
 #endif
+	return 0;
 }
 
-unsigned char FileExists(const char *_fullPath)
+unsigned char TFileSysFileExists(const char *_fullPath)
 {
-	FILE *f = fopen(FindCaseInsensitive(_fullPath), "r");
+	FILE *f = fopen(TFileSysFindCaseInsensitive(_fullPath), "r");
 	if(f) {
 		fclose(f);
 		return 1;
@@ -171,16 +178,16 @@ unsigned char FileExists(const char *_fullPath)
 	return 0;
 }
 
-char *ConcatPathsList(SList *list)
+char *TFileSysConcatPathsList(TSList *list)
 {
-	const char *component = (const char *) slist_first(list);
+	const char *component = (const char *) TSListFirst(list);
 	char *buffer, *returnBuffer;
 	unsigned int bufferlen = 0;
 	
 	buffer = strdup(component);
 	bufferlen = strlen(buffer) + 1;
 	
-	while(component = (const char *) slist_next(list))
+	while(component = (const char *) TSListNext(list))
 	{
 		if(!strcmp(component,"..")) {
 			char *lastpath = strrchr(buffer,'/');
@@ -204,7 +211,7 @@ char *ConcatPathsList(SList *list)
 	return returnBuffer;
 }
 
-char *ConcatPaths(const char *_firstComponent, ...)
+char *TFileSysConcatPaths(const char *_firstComponent, ...)
 {
 	va_list components;
 	const char *component;
@@ -237,7 +244,7 @@ char *ConcatPaths(const char *_firstComponent, ...)
 	return returnBuffer;
 }
 
-char *GetDirectoryPart(const char *_fullFilePath)
+char *TFileSysGetDirectoryPart(const char *_fullFilePath)
 {
 	char *finalSlash = 0;
 	strncpy(s_filePathBuffer, _fullFilePath, FILE_PATH_BUFFER_SIZE);
@@ -251,17 +258,17 @@ char *GetDirectoryPart(const char *_fullFilePath)
 	return 0;
 }
 
-const char *GetFilenamePart(const char *_fullFilePath)
+const char *TFileSysGetFilenamePart(const char *_fullFilePath)
 {
 	return strrchr(_fullFilePath, '/') + 1;
 }
 
-const char *GetExtensionPart(const char *_fullFilePath)
+const char *TFileSysGetExtensionPart(const char *_fullFilePath)
 {
 	return strrchr(_fullFilePath, '.') + 1;
 }
 
-char *RemoveExtension(const char *_fullFileName)
+char *TFileSysRemoveExtension(const char *_fullFileName)
 {
 	char *dot = 0;
 	strcpy(s_filePathBuffer, _fullFileName);
@@ -271,12 +278,12 @@ char *RemoveExtension(const char *_fullFileName)
 	return s_filePathBuffer;
 }
 
-int splitPath(SList *list,const char *path)
+char **TFileSysSplitPath(const char *path, size_t *size)
 {
-	return string_split(list, path, "/");
+	return TSTringSplit(path, "/", size);
 }
 
-unsigned char FilesIdentical(const char *_name1, const char *_name2)
+unsigned char TFileSysFilesIdentical(const char *_name1, const char *_name2)
 {
 	FILE *in1 = fopen(_name1, "r");
 	FILE *in2 = fopen(_name2, "r");
@@ -307,7 +314,7 @@ unsigned char FilesIdentical(const char *_name1, const char *_name2)
 	return rv;
 }
 
-unsigned char terra_CreateDirectory(const char *_directory)
+unsigned char TFileSysCreateDirectory(const char *_directory)
 {
 #ifdef _WINDOWS
 	int result = _mkdir(_directory);
@@ -321,7 +328,7 @@ unsigned char terra_CreateDirectory(const char *_directory)
 #endif
 }
 
-unsigned char CreateDirectoryRecursively(const char *_directory)
+unsigned char TFileSysCreateDirectoryRecursively(const char *_directory)
 {
 	const char *p;
 	char *buffer;
@@ -330,8 +337,8 @@ unsigned char CreateDirectoryRecursively(const char *_directory)
 	if(strlen(_directory)== 0)
 		return 0;
 
-	buffer = (char *) malloc(strlen(_directory) + 1);
-	AppAssert(buffer);
+	buffer = (char *) TAlloc(strlen(_directory) + 1);
+	if(!buffer) return 1;
 	p = _directory;
 	if(*p == '/')
 		p++;
@@ -340,25 +347,25 @@ unsigned char CreateDirectoryRecursively(const char *_directory)
 	while(p && !error) {
 		memcpy(buffer, _directory, p - _directory);
 		buffer[ p-_directory ] = '\0';
-		error = !terra_CreateDirectory(buffer);
+		error = !TFileSysCreateDirectory(buffer);
 		p = strchr(p+1, '/');
 	}
 	
-	return error ? 1 : terra_CreateDirectory(_directory);
+	return error ? 1 : TFileSysCreateDirectory(_directory);
 }
 
-void DeleteThisFile(const char *_filename)
+void TFileSysDelete(const char *_filename)
 {
-#ifdef WIN32
+#ifdef _WINDOWS
 	DeleteFile(_filename);
 #else
 	unlink(_filename);
 #endif
 }
 
-unsigned char IsDirectory(const char *_fullPath)
+unsigned char TFileSysIsDirectory(const char *_fullPath)
 {
-#ifdef WIN32
+#ifdef _WINDOWS
 	unsigned long dwAttrib = GetFileAttributes(_fullPath);
 	return (dwAttrib != -1 && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 #else
@@ -370,9 +377,9 @@ unsigned char IsDirectory(const char *_fullPath)
 #endif
 }
 
-const char *FindCaseInsensitive(const char *_fullPath)
+const char *TFileSysFindCaseInsensitive(const char *_fullPath)
 {
-#ifndef TARGET_OS_LINUX
+#ifndef _LINUX
 	return _fullPath;
 #else
 	if(!_fullPath)
@@ -384,7 +391,7 @@ const char *FindCaseInsensitive(const char *_fullPath)
 	// Make our own copy of the result, since GetDirectoryPart
 	// and GetFilenamePart use the same variable for temp
 	// storage.
-	if((dir = GetDirectoryPart(_fullPath))!= NULL)		dir = newStr(dir);
+	if((dir = TFileSysGetDirectoryPart(_fullPath))!= NULL)		dir = newStr(dir);
 
 	// No directory provided. Assume working directory.
 	if(!dir)											file = newStr(_fullPath);
@@ -392,12 +399,12 @@ const char *FindCaseInsensitive(const char *_fullPath)
 		dir[strlen(dir) - 1] = '\0';
 		file = newStr(GetFilenamePart(_fullPath));
 	}
-	LList <char *> *files = ListDirectory(dir, file);
+	LList <char *> *files = TFileSysListDirectory(dir, file);
 
 	delete [] dir; delete [] file; dir = file = NULL;
 
 	// We shouldn't have found more than one match.
-	AppAssert(files->Size()<= 1);
+	if(files->Size() > 1) return 0;
 
 	// No results, so maybe the file does not exist.
 	if(files->Size()== 0)

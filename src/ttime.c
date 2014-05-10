@@ -2,86 +2,94 @@
 #include "stdafx.h"
 
 #include "ttime.h"
+#include "talloc.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-static double current_time;
+static double tCurrentTime;
 
 #ifdef _WINDOWS
-static double s_tickInterval = 1.0;
+static double tTickInterval = 1.0;
 
-void ttime_initialise()
+#define _WIN32_WINDOWS 0x0500      // for IsDebuggerPresent
+#define VC_EXTRALEAN
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+void TTimeInitialise()
 {
 	LARGE_INTEGER freq;
 	QueryPerformanceFrequency(&freq);
-	s_tickInterval = 1.0 / (double)freq.QuadPart;
-	current_time = 0.0;
+	tTickInterval = 1.0 / (double)freq.QuadPart;
+	tCurrentTime = 0.0;
 }
 
-void ttime_compute_time()
+void TTimeComputeTime()
 {
 	LARGE_INTEGER count;
 	QueryPerformanceCounter(&count);
-	current_time = (double)count.QuadPart * s_tickInterval;
+	tCurrentTime = (double)count.QuadPart * tTickInterval;
 }
 #endif
 
 #ifdef _MACOSX
 
-uint64_t					s_start;
-mach_timebase_info_data_t 	s_timebase;
+static uint64_t						tStart;
+static mach_timebase_info_data_t 	tTimebase;
 
-void ttime_initialise()
+void TTimeInitialise()
 {
-	mach_timebase_info(&s_timebase);
-	s_start = mach_absolute_time();
-	current_time = 0.0;
+	mach_timebase_info(&tTimebase);
+	tStart = mach_absolute_time();
+	tCurrentTime = 0.0;
 }
 
-void ttime_compute_time()
+void TTimeComputeTime()
 {
-	uint64_t elapsed = mach_absolute_time() - s_start;
-	current_time = double(elapsed) * (s_timebase.numer / s_timebase.denom) / 1000000000.0;
+	uint64_t elapsed = mach_absolute_time() - tStart;
+	tCurrentTime = double(elapsed) * (tTimebase.numer / tTimebase.denom) / 1000000000.0;
 }
 #endif
 
 #ifdef _LINUX
-static timeval s_start;
+static timeval tStart;
 
-void ttime_initialise()
+void TTimeInitialise()
 {
-	gettimeofday(&s_start, NULL);
-	current_time = 0.0;
+	gettimeofday(&tStart, NULL);
+	tCurrentTime = 0.0;
 }
 
-void ttime_compute_time()
+void TTimeComputeTime()
 {
 	timeval now;
 	gettimeofday(&now, NULL);
 
-	current_time = double(now.tv_sec - s_start.tv_sec) + (double(now.tv_usec) - double(s_start.tv_usec)) / 1000000.0;
+	tCurrentTime = double(now.tv_sec - tStart.tv_sec) + (double(now.tv_usec) - double(tStart.tv_usec)) / 1000000.0;
 }
 #endif
 
-double ttime_get_time()
+double TTimeGetTime()
 {
-	ttime_compute_time();
-	return current_time;
+	TTimeComputeTime();
+	return tCurrentTime;
 }
 
-double ttime_fetch_time()
+double TTimeFetchTime()
 {
-	return current_time;
+	return tCurrentTime;
 }
 
 //------------- TTimer ---------------//
 
 TTimer *ttimer_new(void)
 {
-	TTimer *t = (TTimer *) malloc(sizeof(TTimer));
-	ttimer_init(t);
+	TTimer *t = (TTimer *) TAlloc(sizeof(TTimer));
+	if(!t) return 0;
+
+	TTimerInit(t);
 	return t;
 }
 

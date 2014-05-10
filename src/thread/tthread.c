@@ -1,15 +1,17 @@
 
 #include "stdafx.h"
 
-#include "thread.h"
+#include "tthread.h"
 
 #ifndef _WINDOWS
 #include <pthread.h>
+#else
+#include <Windows.h>
 #endif
 
 //------------- Thread --------------//
 
-struct _ParticleThread {
+struct _TThread {
 #ifdef _WINDOWS
 	HANDLE thread;
 #else
@@ -37,44 +39,43 @@ void *run_wrapper(void *param) {
 	return 0;
 }
 
-ParticleThread *particle_thread_create(size_t (*fn)(void *), void *data)
+TThread *TThreadCreate(size_t (*fn)(void *), void *data)
 {
 	ThreadFunction *tf = (ThreadFunction *) malloc(sizeof(ThreadFunction));
-	ParticleThread *pt = (ParticleThread *) malloc(sizeof(ParticleThread));
+	TThread *t = (TThread *) malloc(sizeof(TThread));
 
 	tf->fn = fn;
 	tf->data = data;
 
 #ifdef _WINDOWS
-	pt->thread = CreateThread(0,0,run_wrapper,tf,0,0);
+	t->thread = CreateThread(0,0,run_wrapper,tf,0,0);
 #else
 	pthread_create(&pt->thread, NULL,&run_wrapper,tf);
 #endif
 
-	return pt;
+	return t;
 }
 
-size_t particle_thread_join(ParticleThread *pt)
+size_t TThreadJoin(TThread *t)
 {
 	size_t retval = 0;
 #ifdef _WINDOWS
-	unsigned long windowsisadick;
-	WaitForSingleObject(pt->thread, INFINITE);
-	GetExitCodeThread(pt->thread,&windowsisadick);
-	CloseHandle(pt->thread);
-	retval = windowsisadick;
+	unsigned long wrv;
+	WaitForSingleObject(t->thread, INFINITE);
+	GetExitCodeThread(t->thread,&wrv);
+	CloseHandle(t->thread);
+	retval = wrv;
 #else
-	pthread_join(pt->thread, (void **) &retval);
+	pthread_join(t->thread, (void **) &retval);
 #endif
-	free(pt);
+	free(t);
 
 	return retval;
 }
 
 //------------- Mutex ---------------//
 
-
-struct _ParticleMutex {
+struct _TMutex {
 #ifdef _WINDOWS
 	CRITICAL_SECTION mutex;
 #else
@@ -84,15 +85,15 @@ struct _ParticleMutex {
 	unsigned int type;
 };
 
-ParticleMutex *particle_mutex_new(unsigned int type)
+TMutex *TMutexNew(unsigned int type)
 {
-	ParticleMutex *pm = (ParticleMutex *) malloc(sizeof(ParticleMutex));
-	pm->type = type;
+	TMutex *m = (TMutex *) malloc(sizeof(TMutex));
+	m->type = type;
 
 #ifdef _WINDOWS
-	InitializeCriticalSection(&pm->mutex);
+	InitializeCriticalSection(&m->mutex);
 #else
-	int error = pthread_mutexattr_init(&pm->mutexAttr);
+	int error = pthread_mutexattr_init(&m->mutexAttr);
 	assert(error == 0);
 
 	if(type == PARTICLE_MUTEX_TYPE_NORMAL) {
@@ -105,16 +106,16 @@ ParticleMutex *particle_mutex_new(unsigned int type)
 		type = PTHREAD_PROCESS_PRIVATE;
 	}
 
-	error = pthread_mutexattr_settype(&pm->mutexAttr, type);
+	error = pthread_mutexattr_settype(&m->mutexAttr, type);
 	assert(error == 0);
-	error = pthread_mutex_init(&pm->mutex, &pm->mutexAttr);
+	error = pthread_mutex_init(&m->mutex, &m->mutexAttr);
 	assert(error == 0);
 #endif
 
-	return pm;
+	return m;
 }
 
-void particle_mutex_free(ParticleMutex *m)
+void TMutexFree(TMutex *m)
 {
 #ifdef _WINDOWS
 	DeleteCriticalSection(&m->mutex);
@@ -126,7 +127,7 @@ void particle_mutex_free(ParticleMutex *m)
 	free(m);
 }
 
-void particle_mutex_lock(ParticleMutex *m)
+void TMutexLock(TMutex *m)
 {
 #ifdef _WINDOWS
 	EnterCriticalSection(&m->mutex);
@@ -135,7 +136,7 @@ void particle_mutex_lock(ParticleMutex *m)
 #endif
 }
 
-void particle_mutex_unlock(ParticleMutex *m)
+void TMutexUnlock(TMutex *m)
 {
 #ifdef _WINDOWS
 	LeaveCriticalSection(&m->mutex);
@@ -146,8 +147,8 @@ void particle_mutex_unlock(ParticleMutex *m)
 
 //------- Condition Variable --------//
 
-struct _PCV {
-	ParticleMutex *m;
+struct _TCV {
+	TMutex *m;
 
 #ifdef _WINDOWS
 	CONDITION_VARIABLE var;
@@ -156,9 +157,9 @@ struct _PCV {
 #endif
 };
 
-PCV *particle_condition_var_new(ParticleMutex *m)
+TCV *TCVNew(TMutex *m)
 {
-	PCV *v = (PCV *) malloc(sizeof(PCV));
+	TCV *v = (TCV *) malloc(sizeof(TCV));
 	v->m = m;
 
 #ifdef _WINDOWS
@@ -170,7 +171,7 @@ PCV *particle_condition_var_new(ParticleMutex *m)
 	return v;
 }
 
-void particle_condition_var_free(PCV *v)
+void TCVFree(TCV *v)
 {
 	if(v) {
 #ifndef _WINDOWS
@@ -181,7 +182,7 @@ void particle_condition_var_free(PCV *v)
 	}
 }
 
-void particle_condition_var_sleep(PCV *v)
+void TCVSleep(TCV *v)
 {
 #ifdef _WINDOWS
 	SleepConditionVariableCS(&v->var, &v->m->mutex, INFINITE);
@@ -190,7 +191,7 @@ void particle_condition_var_sleep(PCV *v)
 #endif
 }
 
-void particle_condition_var_wake(PCV *v)
+void TCVWake(TCV *v)
 {
 #ifdef _WINDOWS
 	WakeAllConditionVariable(&v->var);
@@ -199,7 +200,7 @@ void particle_condition_var_wake(PCV *v)
 #endif
 }
 
-void particle_condition_var_wake_single(PCV *v)
+void TCVWakeSingle(TCV *v)
 {
 #ifdef _WINDOWS
 	WakeConditionVariable(&v->var);

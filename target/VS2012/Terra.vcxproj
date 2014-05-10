@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\debugging\debug.c" />
+    <ClCompile Include="..\..\src\debugging\tdebug.c" />
     <ClCompile Include="..\..\src\debugging\tlog.c" />
     <ClCompile Include="..\..\src\debugging\memory_leak.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -19,28 +19,30 @@
     <ClCompile Include="..\..\src\debugging\profiler.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\src\io\file_system.c" />
-    <ClCompile Include="..\..\src\io\io_reader.c" />
-    <ClCompile Include="..\..\src\io\io_writer.c" />
-    <ClCompile Include="..\..\src\trand.c" />
-    <ClCompile Include="..\..\src\stdafx.c" />
-    <ClCompile Include="..\..\src\structure\Array.c" />
-    <ClCompile Include="..\..\src\structure\Heap.c" />
-    <ClCompile Include="..\..\src\structure\List.c" />
-    <ClCompile Include="..\..\src\structure\Octree.c">
+    <ClCompile Include="..\..\src\io\tio.c" />
+    <ClCompile Include="..\..\src\io\treader.c" />
+    <ClCompile Include="..\..\src\io\twriter.c" />
+    <ClCompile Include="..\..\src\structure\trbtree.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\src\structure\Quadtree.c" />
-    <ClCompile Include="..\..\src\structure\SList.c" />
+    <ClCompile Include="..\..\src\trand.c" />
+    <ClCompile Include="..\..\src\stdafx.c" />
+    <ClCompile Include="..\..\src\structure\tarray.c" />
+    <ClCompile Include="..\..\src\structure\theap.c" />
+    <ClCompile Include="..\..\src\structure\tlist.c" />
+    <ClCompile Include="..\..\src\structure\toctree.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\tquadtree.c" />
     <ClCompile Include="..\..\src\terra.c" />
-    <ClCompile Include="..\..\src\thread\thread.c" />
+    <ClCompile Include="..\..\src\thread\tthread.c" />
     <ClCompile Include="..\..\src\ttime.c" />
-    <ClCompile Include="..\..\src\utility\filesys.c" />
-    <ClCompile Include="..\..\src\utility\integer.c" />
-    <ClCompile Include="..\..\src\utility\string.c" />
+    <ClCompile Include="..\..\src\utility\tfilesys.c" />
+    <ClCompile Include="..\..\src\utility\tinteger.c" />
+    <ClCompile Include="..\..\src\utility\tstring.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\debugging\debug.h" />
+    <ClInclude Include="..\..\src\debugging\tdebug.h" />
     <ClInclude Include="..\..\src\debugging\tlog.h" />
     <ClInclude Include="..\..\src\debugging\memory_leak.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -48,30 +50,33 @@
     <ClInclude Include="..\..\src\debugging\profiler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\src\define.h" />
-    <ClInclude Include="..\..\src\geometry\cuboid.h" />
-    <ClInclude Include="..\..\src\geometry\line.h" />
-    <ClInclude Include="..\..\src\geometry\rectangle.h" />
-    <ClInclude Include="..\..\src\io\file_system.h" />
-    <ClInclude Include="..\..\src\io\io_reader.h" />
-    <ClInclude Include="..\..\src\io\io_writer.h" />
+    <ClInclude Include="..\..\src\io\tio.h" />
+    <ClInclude Include="..\..\src\structure\trbtree.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\src\talloc.h" />
+    <ClInclude Include="..\..\src\tdefine.h" />
+    <ClInclude Include="..\..\src\geometry\tcuboid.h" />
+    <ClInclude Include="..\..\src\geometry\tline.h" />
+    <ClInclude Include="..\..\src\geometry\trectangle.h" />
+    <ClInclude Include="..\..\src\io\treader.h" />
+    <ClInclude Include="..\..\src\io\twriter.h" />
     <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\stdafx.h" />
-    <ClInclude Include="..\..\src\structure\Array.h" />
-    <ClInclude Include="..\..\src\structure\Heap.h" />
-    <ClInclude Include="..\..\src\structure\List.h" />
-    <ClInclude Include="..\..\src\structure\Octree.h">
+    <ClInclude Include="..\..\src\structure\tarray.h" />
+    <ClInclude Include="..\..\src\structure\theap.h" />
+    <ClInclude Include="..\..\src\structure\tlist.h" />
+    <ClInclude Include="..\..\src\structure\toctree.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\src\structure\Quadtree.h" />
-    <ClInclude Include="..\..\src\structure\SList.h" />
+    <ClInclude Include="..\..\src\structure\tquadtree.h" />
     <ClInclude Include="..\..\src\terra.h" />
-    <ClInclude Include="..\..\src\thread\thread.h" />
+    <ClInclude Include="..\..\src\thread\tthread.h" />
     <ClInclude Include="..\..\src\ttime.h" />
-    <ClInclude Include="..\..\src\utility\filesys.h" />
-    <ClInclude Include="..\..\src\utility\integer.h" />
-    <ClInclude Include="..\..\src\utility\string.h" />
+    <ClInclude Include="..\..\src\utility\tfilesys.h" />
+    <ClInclude Include="..\..\src\utility\tinteger.h" />
+    <ClInclude Include="..\..\src\utility\tstring.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\contrib\glib\lib\glib-2.0.lib" />
@@ -111,12 +116,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../../src/;../../contrib/glib/include/glib-2.0;../../contrib/glib/lib/glib-2.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>

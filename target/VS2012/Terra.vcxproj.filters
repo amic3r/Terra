@@ -3,127 +3,128 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\stdafx.c" />
     <ClCompile Include="..\..\src\terra.c" />
-    <ClCompile Include="..\..\src\debugging\debug.c">
-      <Filter>debugging</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\debugging\memory_leak.c">
       <Filter>debugging</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\debugging\profiler.c">
       <Filter>debugging</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\io\file_system.c">
-      <Filter>io</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\io\io_reader.c">
-      <Filter>io</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\io\io_writer.c">
-      <Filter>io</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\thread\thread.c">
-      <Filter>thread</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\utility\filesys.c">
-      <Filter>utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\utility\integer.c">
-      <Filter>utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\utility\string.c">
-      <Filter>utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\Array.c">
-      <Filter>structure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\Heap.c">
-      <Filter>structure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\List.c">
-      <Filter>structure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\Octree.c">
-      <Filter>structure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\Quadtree.c">
-      <Filter>structure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\SList.c">
-      <Filter>structure</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\ttime.c" />
     <ClCompile Include="..\..\src\debugging\tlog.c">
       <Filter>debugging</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\utility\tstring.c">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\utility\tinteger.c">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\utility\tfilesys.c">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\thread\tthread.c">
+      <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\tlist.c">
+      <Filter>structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\toctree.c">
+      <Filter>structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\tquadtree.c">
+      <Filter>structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\trbtree.c">
+      <Filter>structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\theap.c">
+      <Filter>structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\tarray.c">
+      <Filter>structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\io\twriter.c">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\io\treader.c">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\debugging\tdebug.c">
+      <Filter>debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\io\tio.c">
+      <Filter>io</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
-    <ClInclude Include="..\..\src\debugging\debug.h">
-      <Filter>debugging</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\debugging\memory_leak.h">
       <Filter>debugging</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\debugging\profiler.h">
       <Filter>debugging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\io\file_system.h">
-      <Filter>io</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\io\io_reader.h">
-      <Filter>io</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\io\io_writer.h">
-      <Filter>io</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\terra.h" />
-    <ClInclude Include="..\..\src\thread\thread.h">
-      <Filter>thread</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utility\filesys.h">
-      <Filter>utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utility\integer.h">
-      <Filter>utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\utility\string.h">
-      <Filter>utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\Array.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\Heap.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\List.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\Octree.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\Quadtree.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\SList.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\geometry\cuboid.h">
-      <Filter>geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\geometry\rectangle.h">
-      <Filter>geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\geometry\line.h">
-      <Filter>geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\define.h" />
     <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\ttime.h" />
     <ClInclude Include="..\..\src\debugging\tlog.h">
       <Filter>debugging</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\tdefine.h" />
+    <ClInclude Include="..\..\src\utility\tstring.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\tinteger.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\tfilesys.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\thread\tthread.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\tlist.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\toctree.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\tquadtree.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\trbtree.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\theap.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\tarray.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\io\twriter.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\io\treader.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\trectangle.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\tline.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\tcuboid.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\debugging\tdebug.h">
+      <Filter>debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\io\tio.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\talloc.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="debugging">

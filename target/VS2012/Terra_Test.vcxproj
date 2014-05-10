@@ -49,6 +49,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalIncludeDirectories>../../src;../../contrib/glib/include/glib-2.0;../../contrib/glib/lib/glib-2.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -72,7 +73,7 @@
     <ClCompile Include="..\..\src\stdafx.c" />
     <ClCompile Include="..\..\src\tests\array_test.c" />
     <ClCompile Include="..\..\src\tests\heap_test.c" />
-    <ClCompile Include="..\..\src\tests\io_reader_test.c" />
+    <ClCompile Include="..\..\src\tests\reader_test.c" />
     <ClCompile Include="..\..\src\tests\test.c" />
     <ClCompile Include="..\..\src\tests\test_utils.c" />
   </ItemGroup>
@@ -80,7 +81,7 @@
     <ClInclude Include="..\..\src\stdafx.h" />
     <ClInclude Include="..\..\src\tests\array_test.h" />
     <ClInclude Include="..\..\src\tests\heap_test.h" />
-    <ClInclude Include="..\..\src\tests\io_reader_test.h" />
+    <ClInclude Include="..\..\src\tests\reader_test.h" />
     <ClInclude Include="..\..\src\tests\test.h" />
     <ClInclude Include="..\..\src\tests\test_utils.h" />
   </ItemGroup>

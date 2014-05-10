@@ -2,14 +2,14 @@
 #ifndef _included_terra_line_h
 #define _included_terra_line_h
 
-#include "stdafx.h"
+#include "tdefine.h"
 
 typedef struct {
 	float x1,y1;
 	float x2,y2;
 } TLine;
 
-static inline void terra_line_set(TLine *l,float x1, float y1, float x2, float y2)
+static inline void TLineSet(TLine *l,float x1, float y1, float x2, float y2)
 {
 	if(l) {
 		l->x1 = x1; l->y1 = y1;
@@ -17,7 +17,7 @@ static inline void terra_line_set(TLine *l,float x1, float y1, float x2, float y
 	}
 }
 
-static inline unsigned char terra_line_intersect(const TLine *l1,const TLine *l2, float *x, float *y)
+static inline unsigned char TLineIntersect(const TLine *l1,const TLine *l2, float *x, float *y)
 {
 	float a1,b1,c1;
 	float a2,b2,c2;

@@ -1,9 +1,10 @@
 
 #include "stdafx.h"
 
-#include "heap.h"
+#include "theap.h"
+#include "tarray.h"
 
-#include "Array.h"
+#include "talloc.h"
 
 #define DCMP(a,b) (a->priority >= b->priority)
 #define CMP(a,b) (a->priority <= b->priority)
@@ -13,7 +14,7 @@ typedef struct {
 	void *data;
 } HeapNode;
 
-HeapNode *heapnode_new(int priority, void *data)
+HeapNode *THeapNodeNew(int priority, void *data)
 {
 	HeapNode *node = (HeapNode *) malloc(sizeof(HeapNode));
 	node->priority = priority;
@@ -21,110 +22,111 @@ HeapNode *heapnode_new(int priority, void *data)
 	return node;
 }
 
-void heapnode_free(HeapNode *node, void (*data_free)(void *))
+void THeapNodeFree(HeapNode *node, TFreeFunc func)
 {
 	if(node) {
-		if(data_free) data_free(node->data);
+		if(func) func(node->data);
 		free(node);
 	}
 }
 
-struct _Heap {
-	Array data;
+struct _THeap {
+	TArray data;
 	size_t count;
 	int type;
 };
 
-Heap *heap_new(int type)
+THeap *THeapNew(int type)
 {
-	Heap *h = (Heap *) malloc(sizeof(Heap));
+	THeap *h = (THeap *) TAlloc(sizeof(THeap));
+	if(!h) return 0;
 
-	array_init(&h->data,0);
+	TArrayInit(&h->data,0);
 	h->count = 0;
 	h->type = type;
 
 	return h;
 }
 
-void heap_free(Heap *h, void (*data_free)(void *))
+void THeapFree(THeap *h, TFreeFunc func)
 {
 	if(h) {
-		heap_empty(h,data_free);
+		THeapEmpty(h,func);
 		free(h);
 	}
 }
 
-void heap_empty(Heap *h, void (*data_free)(void *))
+void THeapEmpty(THeap *h, TFreeFunc func)
 {
-	array_empty(&h->data,data_free);
+	TArrayEmpty(&h->data,func);
 	h->count = 0;
 }
 
-void heap_push(Heap *h, int priority, void *data)
+void THeapPush(THeap *h, int priority, void *data)
 {
-	HeapNode *node = heapnode_new(priority,data), *p;
+	HeapNode *node = THeapNodeNew(priority,data), *p;
 	unsigned int index,parent;
 
 	for(index = h->count++; index; index = parent)
 	{
 		parent = (index - 1) >> 1;
-		p = (HeapNode *) array_get(&h->data,parent);
+		p = (HeapNode *) TArrayGet(&h->data,parent);
 		if (h->type ? CMP(p,node) : DCMP(p,node)) break;
-		array_insert(&h->data,p,index);
+		TArrayInsert(&h->data,p,index);
 	}
-	array_insert(&h->data,node,index);
+	TArrayInsert(&h->data,node,index);
 }
 
-void *heap_pop(Heap *h)
+void *THeapPop(THeap *h)
 {
 	unsigned int index = 0, swap, other;
 	
-	HeapNode *temp = (HeapNode *) array_get(&h->data,0), *s, *o;
+	HeapNode *temp = (HeapNode *) TArrayGet(&h->data,0), *s, *o;
 	void *data = temp->data;
 
-	heapnode_free(temp,0);
+	THeapNodeFree(temp,0);
  
 	// Reorder the elements
 	while(1) {
 		// Find the child to swap with
 		swap = (index << 1) + 1;
 		if (swap >= h->count) break; // If there are no children, the heap is reordered
-		s = (HeapNode *) array_get(&h->data,swap);
+		s = (HeapNode *) TArrayGet(&h->data,swap);
 
 		other = swap + 1;
 		if (other < h->count) {
-			o = (HeapNode *) array_get(&h->data,other);
+			o = (HeapNode *) TArrayGet(&h->data,other);
 			if (h->type ? CMP(o,s) : DCMP(o,s)) {
 				swap = other;
 				s = o;
 			}
 		}
  
-		array_insert(&h->data,s,index);
+		TArrayInsert(&h->data,s,index);
 		index = swap;
 	}
-	array_remove(&h->data,index);
+	TArrayRemove(&h->data,index);
 
 	h->count--;
 
 	return data;
 }
 
-size_t heap_num_elements(Heap *h)
+size_t THeapNumElements(THeap *h)
 {
 	return h->count;
 }
 
-void heap_print(Heap *h, void (*data_print) (void *data))
+void THeapPrint(THeap *h, TIterFunc func)
 {
 	size_t i = 0, limit = h->data.lastindex;
 	HeapNode *data;
 
-	printf("Heap content: ");
+	printf("THeap content: ");
 
 	for(; i < limit; ++i) {
 		data = (HeapNode *) h->data.data[i];
-		data_print(data->data);
+		func(data->data);
 		printf(" ");
 	}
 

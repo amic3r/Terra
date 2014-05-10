@@ -3,29 +3,48 @@
 
 #include "tlog.h"
 
-static FILE *f = 0;
+static FILE *tLogFile = 0;
 
 const char *cattotext[] = {"","Warning: ","Error: "};
 
-void tlog_set_file(FILE *_file)
+void TLogSetFile(FILE *_file)
 {
-	f = _file;
-	if(!f) tlog_report(T_LOG_WARNING,"The file pointer used for logging is null. stdout will be used instead.\n");
+	tLogFile = _file;
+	if(!tLogFile) {
+		TLogReport(T_LOG_WARNING,"TLogSetFile","The file pointer used for logging is null. stdout will be used instead.");
+		tLogFile = stdout;
+	}
 }
 
-void tlog_report(int category, const char *format,...)
+void TLogReport(int category, const char *function, const char *format,...)
+{
+	va_list ap;
+
+	TLogStartReport(category,function);
+
+	va_start(ap, format);
+	vfprintf(tLogFile,format,ap);
+	va_end(ap);
+
+	fprintf(tLogFile,"\n");
+}
+
+void TLogStartReport(int category, const char *function)
+{
+	fprintf(tLogFile,cattotext[category]);
+	if(category > 0) fprintf(tLogFile,"In function %s: ", function);
+}
+
+void TLogWrite(const char *format,...)
 {
 	va_list ap;
 
 	va_start(ap, format);
-
-	if(f) {
-		fprintf(f,cattotext[category]);
-		vfprintf(f,format,ap);
-	} else {
-		printf(cattotext[category]);
-		vprintf(format,ap);
-	}
-
+	vfprintf(tLogFile,format,ap);
 	va_end(ap);
+}
+
+void TLogWriteV(const char *format,va_list ap)
+{
+	vfprintf(tLogFile,format,ap);
 }

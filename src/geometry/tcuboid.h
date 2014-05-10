@@ -2,14 +2,14 @@
 #ifndef _included_terra_cuboid_h
 #define _included_terra_cuboid_h
 
-#include "stdafx.h"
+#include "tdefine.h"
 
 typedef struct {
 	int x,y,z;
 	int w,h,d;
 } TCuboid;
 
-static inline void terra_cuboid_cpy(TCuboid *c1,const TCuboid *c2)
+static inline void TCuboidCopy(TCuboid *c1,const TCuboid *c2)
 {
 	c1->x = c2->x;
 	c1->y = c2->y;

@@ -1,20 +1,29 @@
 
 #include "stdafx.h"
 
-#include "structure/SList.h"
-
-#include "string.h"
+#include "tstring.h"
 
 #include "ttime.h"
 
-static const char * hex_index = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#include "talloc.h"
+
+static const char * tHexIndex = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 "abcdefghijklmnopqrstuvwxyz"
                                 "?!01-[]()*; @$%^&-_+={}:/.";
-#define hex_len 78
+#define tHexLen 78
 
-unsigned int strrcspn(const char *_str,const char *_control)
+int TStringAdjustSize(char **text,size_t oldsize,size_t newsize)
 {
-	unsigned int len = 0;
+	if(TRAlloc((void **) &text, newsize)) return 1;
+
+	if(newsize > oldsize) memset(text+oldsize,'\0',newsize);
+
+	return 0;
+}
+
+size_t TStringRCSpn(const char *_str,const char *_control)
+{
+	size_t len = 0;
 	
 	//sanity check
 	if(!_str) return 0;
@@ -24,7 +33,7 @@ unsigned int strrcspn(const char *_str,const char *_control)
 	if(!_control) return len+1;
 
 	{
-		unsigned i = len;
+		size_t i = len;
 		const char *c = 0;
 
 		for(c = _str+len; c != _str; c--) {
@@ -38,7 +47,7 @@ unsigned int strrcspn(const char *_str,const char *_control)
 	return len+1;
 }
 
-_inline void string_replace_op(char *target,const char *match, const char *replacement,unsigned int repllen)
+inline void TStringReplaceOp(char *target,const char *match, const char *replacement,size_t repllen)
 {
 	char *curptr = target;
 
@@ -51,14 +60,14 @@ _inline void string_replace_op(char *target,const char *match, const char *repla
 	} while(curptr);
 }
 
-_inline void string_copy_replace_op(char *target,const char *source,const char *match, const char *replacement)
+inline void TStringCopyReplaceOp(char *target,const char *source,const char *match, const char *replacement)
 {
 	const char *srcptr = source;
 	char *tarptr = target;
-	unsigned int srclen = strlen(source);
-	unsigned int matchlen = strlen(match);
-	unsigned int repllen = strlen(replacement);
-	unsigned int i = 0;
+	size_t srclen = strlen(source);
+	size_t matchlen = strlen(match);
+	size_t repllen = strlen(replacement);
+	size_t i = 0;
 
 	while(srcptr) {
 		*tarptr = *srcptr;
@@ -75,11 +84,11 @@ _inline void string_copy_replace_op(char *target,const char *source,const char *
 	*tarptr = '\0';
 }
 
-unsigned int string_num_occurences(const char *target,const char *match)
+size_t TStringNumOccurences(const char *target,const char *match)
 {
 	const char *curptr = target;
-	unsigned int matchlen = strlen(match);
-	unsigned int counter = 0;
+	size_t matchlen = strlen(match);
+	size_t counter = 0;
 
 	do {
 		curptr = strstr(curptr,match);
@@ -95,14 +104,14 @@ unsigned int string_num_occurences(const char *target,const char *match)
 /*
  * Replace a substring of a string with another string
  */
-char *string_replace(const char *source, const char *match, const char *replacement, unsigned int hint_numoccurence)
+char *TStringReplace(const char *source, const char *match, const char *replacement, size_t hint_numoccurence)
 {
 	char *result = 0;
 	int bufferPosition = 0;
-	unsigned int srclen = 0;
-	unsigned int matchlen = 0;
-	unsigned int repllen = 0;
-	unsigned int reslen = 0;
+	size_t srclen = 0;
+	size_t matchlen = 0;
+	size_t repllen = 0;
+	size_t reslen = 0;
 
 	if(source == 0 || match == 0 || replacement == 0 || source[0] == '\0' || match[0] == '\0' || replacement[0] == '\0')
 		return 0;
@@ -115,19 +124,18 @@ char *string_replace(const char *source, const char *match, const char *replacem
 	if(matchlen != repllen) {
 		if(hint_numoccurence == 0) {
 			//find number of occurences
-			hint_numoccurence = string_num_occurences(source,match);
+			hint_numoccurence = TStringNumOccurences(source,match);
 		}
 
 		reslen -= (int)(matchlen - repllen)*(int)hint_numoccurence;
 	}
-	result = (char *) malloc(reslen);
-
-	string_copy_replace_op(result,source,match,replacement);
+	result = (char *) TAlloc(reslen);
+	if(result) TStringCopyReplaceOp(result,source,match,replacement);
 	return result;
 }
 
-unsigned char string_replace_inplace(char *source, const char *match, const char *replacement) {
-	unsigned int repllen = 0;
+unsigned char TStringReplaceInplace(char *source, const char *match, const char *replacement) {
+	size_t repllen = 0;
 
 	if(source == 0 || match == 0 || replacement == 0 || source[0] == '\0' || match[0] == '\0' || replacement[0] == '\0')
 		return 1;
@@ -137,81 +145,68 @@ unsigned char string_replace_inplace(char *source, const char *match, const char
 	if(strlen(match) != repllen)
 		return 2;
 
-	string_replace_op(source,match,replacement,repllen);
+	TStringReplaceOp(source,match,replacement,repllen);
 
 	return 0;
 }
 
-void SafetyString(char *string)
+void TSTringSafetyString(char *string)
 {
 	int strlength = strlen(string);
-	string_replace_op(string,"%"," ",strlength);
+	TStringReplaceOp(string,"%"," ",strlength);
 }
 
-/*char *string_split(const char *source, const char *substr, unsigned int amount, unsigned int end, unsigned int *size)
+char **TSTringSplit(const char *string, const char *substr, size_t *size)
 {
-	//TODO fix this
-	char *result = 0, *ptr = 0;
-	if(!source || !substr || !*substr) return 0;
-
-	if(end) {
-		result = (char *) malloc(sizeof(char)*(end+1));
-		strncpy(result,source,end);
-		result[end] = '\0';
-	} else {
-		result = strdup(source);
-	}
-	*size = 1;
-	ptr = strstr(result,substr);
-
-	while (ptr && amount) {
-		*ptr = 0;
-		*size +=1;
-		ptr = strstr(ptr+1,substr);
-		amount--;
-	}
-
-	return result;
-}*/
-
-int string_split(SList *sto, const char *string, const char *substr)
-{
+	char **sto;
 	char *str;
 	size_t len;
-	if(!sto || !string || !substr || !*substr) return 1;
+	if(!size || !string || !substr || !*substr) return 0;
 
 	str = strdup(string);
 	len = strlen(substr);
-	slist_append(sto,str);
+	*size = 1;
 
 	while (str = strstr(str,substr)) {
 		*str = 0;
 
 		str+=len;
-		slist_append(sto,str);
+		*size += 1;
 	}
 
-	return 0;
+	sto = (char **)TAlloc(sizeof(char *) * (*size));
+	if(sto) {
+		size_t i = 1, tlen;
+		char *ptr;
+		sto[0] = str;
+
+		while (i < *size) {
+			ptr = strchr(sto[i-1],0)+tlen;
+			sto[i++] = ptr;
+		}
+	} else free(str);
+	return sto;
 }
 
-char *add_character_to_string(const char *string, char character, unsigned int start, unsigned int end)
+char *TSTringAddCharacter(const char *string, char character, size_t start, size_t end)
 {
-	unsigned int len = strlen(string) + (character ? 1 : 0) + 1;
+	size_t len = strlen(string) + (character ? 1 : 0) + 1;
 	int nextindex = character ? start+1 : start;
 	char *newstring = 0;
 
 	if(start != end) len -= end-start;
 
-	newstring = (char *) malloc(sizeof(char) * len);
-
-	if(start != 0) _snprintf(newstring,start,string);
-	newstring[start] = character;
-	_snprintf(newstring+nextindex,len-start,string+end);
+	newstring = (char *) TAlloc(sizeof(char) * len);
+	if(newstring) {
+		if(start != 0) _snprintf(newstring,start,string);
+		newstring[start] = character;
+		_snprintf(newstring+nextindex,len-start,string+end);
+	}
 	
 	return newstring;
 }
 
-void StripTrailingWhitespace(char *string)
+void TSTringStripTrailingWhitespace(char *string)
 {
 	int i = strlen(string)-1;
 	for(; i >= 0; --i)
@@ -221,29 +216,32 @@ void StripTrailingWhitespace(char *string)
 			break;
 }
 
-char *LowerCaseString(const char *thestring)
+char *TSTringLowerCase(const char *thestring)
 {
 	const char *srcptr = thestring;
 	char *thecopy = 0, *ptr = 0;
 
 	if(!thestring) return 0;
 
-	thecopy = (char *) malloc(strlen(thestring)+ 1);
-	ptr = thecopy;
+	thecopy = (char *) TAlloc(strlen(thestring)+ 1);
 
-	while(srcptr != '\0') {
-		*ptr = tolower(*srcptr);
-		srcptr += 1;
-		ptr +=1;
+	if(thecopy) {
+		ptr = thecopy;
+
+		while(srcptr != '\0') {
+			*ptr = tolower(*srcptr);
+			srcptr += 1;
+			ptr +=1;
+		}
+		*ptr = '\0';
 	}
-	*ptr = '\0';
 
 	return thecopy;
 }
 
-char *string_ase_encrypt(const char *src, unsigned char key)
+char *TSTringAseEncrypt(const char *src, unsigned char key)
 {
-	unsigned int len = 0;
+	size_t len = 0;
 	char *result = 0, *resptr = 0;
 	const char *ptr = src;
 	unsigned char last_char = 0, tmp = 0;
@@ -253,27 +251,26 @@ char *string_ase_encrypt(const char *src, unsigned char key)
 	len = strlen(src);
 	if(!len) return 0;
 
-	result = (char *) malloc(sizeof(char)*(len+1));
-	if(!result)
-		AppAbort("Memory Allocation Failed");
+	result = (char *) TAlloc(sizeof(char)*(len+1));
+	if(!result) return 0;
 
-	last_char = key ^ ((int)(ttime_fetch_time()/125)*8 % 255);
+	last_char = key ^ ((int)(TTimeFetchTime()/125)*8 % 255);
 	resptr = result;
 
 	for (; *ptr != 0; ptr++, resptr++) {
 		tmp = *ptr ^ last_char;
 		last_char = *ptr ^ tmp;
 
-		*resptr = hex_index[tmp % hex_len];
+		*resptr = tHexIndex[tmp % tHexLen];
 	}
 	*resptr = 0;
 
 	return result;
 }
 
-char *string_password_encrypt(const char *src)
+char *TSTringPasswordEncrypt(const char *src)
 {
-	unsigned int len = 0;
+	size_t len = 0;
 	char *result = 0;
 
 	if(!src) return 0;
@@ -281,28 +278,30 @@ char *string_password_encrypt(const char *src)
 	len = strlen(src);
 	if(!len) return 0;
 
-	result = (char *) malloc(sizeof(char) *(len+1));
-	memset(result, '*', len);
-	result[len] = 0;
+	result = (char *) TAlloc(sizeof(char) *(len+1));
+	if(result) {
+		memset(result, '*', len);
+		result[len] = 0;
+	}
 
 	return result;
 }
 
-char *double_char_in_string(const char *string, const char escchar)
+char *TSTringDoubleChars(const char *string, const char escchar)
 {
 	char *escstring = 0;
 
 	if(string) {
 		const char *esc = 0;
-		unsigned int size = strlen(string)*2;
-		char *newstring = (char *) malloc(sizeof(char)*size), *cur = 0;
+		size_t size = strlen(string)*2;
+		char *newstring = (char *) TAlloc(sizeof(char)*size), *cur = 0;
 		if(!newstring) return 0;
 		cur = newstring;
 
 		do {
 			esc = strchr(string, escchar);
 			if(esc) {
-				unsigned int escsize = esc-string +1;
+				size_t escsize = esc-string +1;
 				_snprintf(cur,escsize,string); cur += escsize;
 				_snprintf(cur,1,"%c",escchar); cur += 1;
 
@@ -319,22 +318,22 @@ char *double_char_in_string(const char *string, const char escchar)
 	return escstring;
 }
 
-char *remove_character_duplication(const char *string, const char escchar)
+char *TSTringRemoveDuplication(const char *string, const char escchar)
 {
 	char *escstring = 0;
 
 	if(string) {
 		const char *esc = 0;
-		unsigned int size = strlen(string)+1;
-		char *newstring = (char *) malloc(sizeof(char)*size), *cur = 0;
+		size_t size = strlen(string)+1;
 		char doubled[] = {escchar,escchar, 0};
+		char *newstring = (char *) TAlloc(sizeof(char)*size), *cur = 0;
 		if(!newstring) return 0;
 		cur = newstring;
 
 		do {
 			esc = strstr(string, doubled);
 			if(esc) {
-				unsigned int escsize = esc-string +1;
+				size_t escsize = esc-string +1;
 				_snprintf(cur,escsize,string); cur += escsize;
 
 				string = esc+2;
@@ -350,7 +349,7 @@ char *remove_character_duplication(const char *string, const char escchar)
 	return escstring;
 }
 
-gint string_compare_glib_full(gconstpointer a,gconstpointer b,gpointer c)
+gint TStringCompareGlibFull(gconstpointer a,gconstpointer b,gpointer c)
 {
 	//TODO: consider c
 	return strcmp((const char *) a,(const char *) b);

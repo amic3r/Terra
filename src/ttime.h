@@ -2,29 +2,29 @@
 #ifndef __included_terra_time_h
 #define __included_terra_time_h
 
-void ttime_initialise();
-double ttime_get_time();
+void TTimeInitialise();
+double TTimeGetTime();
 
-void ttime_compute_time();
-double ttime_fetch_time();
+void TTimeComputeTime();
+double TTimeFetchTime();
 
 //------------- TTimer ---------------//
 
 typedef struct TTimer {
 	double start, stop;
 	double accumulation;
-	bool running;
+	unsigned char running;
 } TTimer;
 
-TTimer *ttimer_new(void);
-static inline void ttimer_init(TTimer *t) {memset(t,0,sizeof(TTimer));}
-static inline void ttimer_free(TTimer *t) {free(t);}
+TTimer *TTimerNew(void);
+static inline void TTimerInit(TTimer *t) {memset(t,0,sizeof(TTimer));}
+static inline void TTimerFree(TTimer *t) {free(t);}
 
-static inline void ttimer_start(TTimer *t) {t->start = ttime_get_time(); t->running = true;}
-static inline void ttimer_stop(TTimer *t) {t->stop = ttime_get_time(); t->running = false; t->accumulation += t->stop-t->start;}
-static inline void ttimer_reset(TTimer *t) {ttimer_init(t);}
+static inline void TTimerStart(TTimer *t) {t->start = TTimeGetTime(); t->running = 1;}
+static inline void TTimerStop(TTimer *t) {t->stop = TTimeGetTime(); t->running = 0; t->accumulation += t->stop-t->start;}
+static inline void TTimerReset(TTimer *t) {TTimerInit(t);}
 
-static inline double ttimer_elapsed(TTimer *t) {if(t->running) ttimer_stop(t); return t->stop-t->start;}
-static inline double ttimer_get_accumulated_time(TTimer *t) {if(t->running) ttimer_stop(t); return t->accumulation; }
+static inline double TTimerElapsed(TTimer *t) {if(t->running) TTimerStop(t); return t->stop-t->start;}
+static inline double TTimerGetAccumulatedTime(TTimer *t) {if(t->running) TTimerStop(t); return t->accumulation; }
 
 #endif

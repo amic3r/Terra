@@ -1,6 +1,6 @@
 
-#ifndef __eclipse_test_test_utils
-#define __eclipse_test_test_utils
+#ifndef __terra_test_test_utils_h
+#define __terra_test_test_utils_h
 
 void test_create_file(const char *filename, const char *data);
 

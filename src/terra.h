@@ -8,11 +8,15 @@
 
 void print_credits(void);
 
+#define TERRA_LINE
+#define TERRA_RECTANGLE
+#define TERRA_CUBOID
+
 #include <glib.h>
 
-#include "define.h"
+#include "tdefine.h"
 
-#include "debugging/debug.h"
+#include "debugging/tdebug.h"
 #include "debugging/tlog.h"
 //#include "debugging/memory_leak.h"
 //#include "debugging/profiler.h"
@@ -21,24 +25,23 @@ void print_credits(void);
 #include "trand.h"
 #include "ttime.h"
 
-#include "thread/thread.h"
+#include "thread/tthread.h"
 
-#include "structure/slist.h"
+#include "structure/tlist.h"
 
-#include "utility/filesys.h"
-#include "utility/integer.h"
+#include "utility/tfilesys.h"
+#include "utility/tinteger.h"
 
-#include "utility/string.h"
+#include "utility/tstring.h"
 
-#include "structure/array.h"
-#include "structure/list.h"
+#include "structure/tarray.h"
 //#include "structure/RBtree.h"
-#include "structure/heap.h"
-#include "structure/quadtree.h"
+#include "structure/theap.h"
+#include "structure/tquadtree.h"
 //#include "structure/octree.h"
 
-#include "io/io_reader.h"
-#include "io/io_writer.h"
-#include "io/file_system.h"
+#include "io/treader.h"
+#include "io/twriter.h"
+#include "io/tio.h"
 
 #endif

@@ -2,14 +2,14 @@
 #ifndef _included_terra_rectangle_h
 #define _included_terra_rectangle_h
 
-#include "stdafx.h"
+#include "tdefine.h"
 
 typedef struct {
 	int x,y;
 	int w,h;
 } TRectangle;
 
-static inline void terra_rectangle_set(TRectangle *r,int x, int y, unsigned int w, unsigned int h)
+static inline void TRectangleSet(TRectangle *r,int x, int y, unsigned int w, unsigned int h)
 {
 	r->x = x;
 	r->y = y;
@@ -17,7 +17,7 @@ static inline void terra_rectangle_set(TRectangle *r,int x, int y, unsigned int 
 	r->h = h;
 }
 
-static inline void terra_rectangle_cpy(TRectangle *r1,const TRectangle *r2)
+static inline void TRectangleCopy(TRectangle *r1,const TRectangle *r2)
 {
 	r1->x = r2->x;
 	r1->y = r2->y;
@@ -25,42 +25,50 @@ static inline void terra_rectangle_cpy(TRectangle *r1,const TRectangle *r2)
 	r1->h = r2->h;
 }
 
-static inline unsigned char terra_rectangle_intersect(const TRectangle *r1, const TRectangle *r2)
+static inline unsigned char TRectangleIntersect(const TRectangle *r1, const TRectangle *r2)
 {
 	return (r1->x+r1->w >= r2->x || r1->x <= r2->x+r2->w) &&
 		   (r1->y+r1->h >= r2->y || r1->y <= r2->y+r2->h);
 }
 
-static inline unsigned char terra_rectangle_contains(const TRectangle *r1, const TRectangle *r2)
+static inline unsigned char TRectangleContains(const TRectangle *r1, const TRectangle *r2)
 {
 	return (r1->x+r1->w >= r2->x+r2->w && r1->x <= r2->x) &&
 		   (r1->y+r1->h >= r2->y+r2->h && r1->y <= r2->y);
 }
 
-static inline unsigned char terra_rectangle_contains_point(const TRectangle *r, int x, int y)
+static inline unsigned char TRectangleContainsPoint(const TRectangle *r, int x, int y)
 {
 	return (r->x+r->w >= x && r->x <= x) &&
 		   (r->y+r->h >= y && r->y <= y);
 }
 
-static inline unsigned char terra_rectangle_equal(const TRectangle *r1, const TRectangle *r2)
+static inline unsigned char TRectangleContainsPointF(const TRectangle *r, const Point *pt)
+{
+	float x1 = (float) r->x, y1 = (float) r->y;
+	float x2 = (float) (r->x+r->w), y2 = (float)(r->y+r->h);
+	return (x2 >= pt->x && x1 <= pt->x) &&
+		   (y2 >= pt->y && y1 <= pt->y);
+}
+
+static inline unsigned char TRectangleEqual(const TRectangle *r1, const TRectangle *r2)
 {
 	return r2->x == r1->x && r2->y == r1->y && r2->w == r1->w && r2->h == r1->h;
 }
 
-static inline void terra_rectangle_move(TRectangle *r, int x, int y)
+static inline void TRectangleMove(TRectangle *r, int x, int y)
 {
 	r->x = x;
 	r->y = y;
 }
 
-static inline void terra_rectangle_resize(TRectangle *r, unsigned int w, unsigned int h)
+static inline void TRectangleResize(TRectangle *r, unsigned int w, unsigned int h)
 {
 	r->w = w;
 	r->h = h;
 }
 
-static inline void terra_rectangle_merge(TRectangle *r1, const TRectangle *r2)
+static inline void TRectangleMerge(TRectangle *r1, const TRectangle *r2)
 {
 	if(r2->x == -1) return;
 

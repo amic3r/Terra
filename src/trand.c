@@ -1,50 +1,52 @@
 
 #include "stdafx.h"
 
-static GRand *pseudorandomgen;
-static unsigned int randseed = INT_MAX;
+#include "trand.h"
 
-void rand_initialize(unsigned int seed)
+static GRand *tPseudoTandomGen;
+static size_t tRandSeed = INT_MAX;
+
+void TRandInitialize(size_t seed)
 {
-	randseed = seed;
-	pseudorandomgen = g_rand_new_with_seed(seed);
+	tRandSeed = seed;
+	tPseudoTandomGen = g_rand_new_with_seed(seed);
 }
 
-void rand_destroy()
+void TRandDestroy()
 {
-	g_rand_free(pseudorandomgen);
+	g_rand_free(tPseudoTandomGen);
 }
 
-void rand_set_seed(unsigned int seed)
+void TRandSetSeed(size_t seed)
 {
-	randseed = seed;
-	g_rand_set_seed(pseudorandomgen,seed);
+	tRandSeed = seed;
+	g_rand_set_seed(tPseudoTandomGen,seed);
 }
 
-unsigned char rand_bool(void)
+unsigned char TRandBool(void)
 {
 	return g_random_boolean();
 }
 
 int rand_integer(int begin,int end)
 {
-	return g_rand_int_range(pseudorandomgen,begin,end);
+	return g_rand_int_range(tPseudoTandomGen,begin,end);
 }
 
-void unique_integers_array(int offset,unsigned int range,int *intarray,unsigned int size)
+void TRandUniqueIntegersArray(int offset,size_t range,int *intarray,size_t size)
 {
 	if(!intarray) return;
 
 	if(range >= size)
 	{
-		unsigned int *integers = (unsigned int *) malloc(sizeof(unsigned int)*range);
-		unsigned int i = 0;
+		size_t *integers = (size_t *) malloc(sizeof(size_t)*range);
+		size_t i = 0;
 		for(; i < range; ++i)
 			integers[i] = i;
 
 		for (i = 0; i < size; ++i) {
-			unsigned int r = rand_integer(0,range);
-			unsigned int value = integers[r];
+			size_t r = rand_integer(0,range);
+			size_t value = integers[r];
 			integers[r] = integers[--range];
 
 			intarray[i] = value + offset;
@@ -54,26 +56,22 @@ void unique_integers_array(int offset,unsigned int range,int *intarray,unsigned 
 	}
 }
 
-unsigned int pick_one(unsigned int size, int reject)
+size_t TRandPickOne(size_t start, size_t end, size_t reject)
 {
-	if(reject < 0)
-		return rand_integer(0,size);
-	else if (reject == 0)
-		return rand_integer(0,size-1)+1;
-	else if (reject == size-1)
-		return rand_integer(0,size-1);
-	else if (rand_integer(0,2))
-		return rand_integer(reject+1,size);
+	if (reject == start)		start++;
+	else if (reject == end-1)	end--;
+	else if (rand_integer(0,2)) start = reject+1;
+	else end = reject;
 	
-	return rand_integer(0,reject);
+	return rand_integer(start,end);
 }
 
-double rand_double(double begin,double end)
+double TRandDouble(double begin,double end)
 {
-	return g_rand_double_range(pseudorandomgen,begin,end);
+	return g_rand_double_range(tPseudoTandomGen,begin,end);
 }
 
-int rand_normal(unsigned int mean, unsigned int range, unsigned int clip)
+int TRandNormal(size_t mean, size_t range, size_t clip)
 {
 	//TODO : fix this
 	// Central limit theorm - Maybe upgrade to Box-Muller later

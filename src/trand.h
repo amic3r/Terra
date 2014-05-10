@@ -1,24 +1,24 @@
 
-#ifndef __included_terra_rand
-#define __included_terra_rand
+#ifndef __included_terra_rand_h
+#define __included_terra_rand_h
 
-void rand_initialize(unsigned int seed);
-void rand_destroy();
+void TRandInitialize(size_t seed);
+void TRandDestroy();
 
-void rand_set_seed(unsigned int seed);
+void TRandSetSeed(size_t seed);
 
-unsigned char rand_bool(void);
+unsigned char TRandBool(void);
 
-int rand_integer(int begin,int end);
+int TRandInteger(int begin,int end);
 
-#define umbra_rand_range_integer(r) rand_integer(0,r)
+#define TRandRangeInteger(r) TRandInteger(0,r)
 
-void unique_integers_array(int offset,unsigned int range,int *intarray,unsigned int size);
+void TRandUniqueIntegersArray(int offset,size_t range,int *intarray,size_t size);
 
-unsigned int pick_one(unsigned int size, int reject);
+size_t TRandPickOne(size_t start, size_t end, size_t reject);
 
-double rand_double(double begin,double end);
+double TRandDouble(double begin,double end);
 
-int rand_normal(unsigned int mean, unsigned int range, unsigned int clip);
+int TRandNormal(size_t mean, size_t range, size_t clip);
 
 #endif

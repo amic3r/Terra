@@ -66,18 +66,19 @@ typedef union _Matrix4f {
 
 inline static void PointAdd(Point *to, const Point *from)
 {
-	AppAssert(to && from);
-
 	to->x += from->x;
 	to->y += from->y;
 }
 
 inline static void PointSub(Point *to, const Point *from)
 {
-	AppAssert(to && from);
-
 	to->x -= from->x;
 	to->y -= from->y;
+}
+
+inline static unsigned char PointEqual(const Point *p1, const Point *p2)
+{
+	return p1->x == p2->x && p1->y == p2->y;
 }
 
 inline float euclidian_distance(const Point *to, const Point *from)
@@ -164,8 +165,6 @@ inline static Vector VectorCross(const Vector *v1, const Vector *v2)
 {
 	Vector result;
 
-	AppAssert(v1 && v2);
-
 	result.x = (v1->y * v2->z) - (v1->z * v2->y);
 	result.y = (v1->z * v2->x) - (v1->x * v2->z);
 	result.z = (v1->x * v2->y) - (v1->y * v2->x);
@@ -175,22 +174,16 @@ inline static Vector VectorCross(const Vector *v1, const Vector *v2)
 
 inline static float VectorDot(const Vector *v1, const Vector *v2)
 {
-	AppAssert(v1 && v2);
-
 	return (v1->x * v2->x) + (v1->y * v2->y) + (v1->z * v2->z);
 }
 
 inline static float VectorLengthSquared(const Vector *v)
 {
-	AppAssert(v);
-
 	return (v->x * v->x) + (v->y * v->y) + (v->z * v->z);
 }
 
 inline static float VectorLength(const Vector *v)
 {
-	AppAssert(v);
-
 	return sqrtf(VectorLengthSquared(v));
 }
 
@@ -236,8 +229,6 @@ inline static void Matrix3fSetRotationFromQuat(Matrix3f *mat, const Quat * q1)
 	float xx, xy, xz;
 	float yy, yz, zz;
 
-	AppAssert(mat && q1);
-
 	n = (q1->x * q1->x) + (q1->y * q1->y) + (q1->z * q1->z) + (q1->w * q1->w);
 	s = (n > 0.0f) ? (2.0f / n) : 0.0f;
 
@@ -253,8 +244,6 @@ inline static void Matrix3fSetRotationFromQuat(Matrix3f *mat, const Quat * q1)
 
 inline static void Matrix3fMulMatrix3f(Matrix3f *m1, const Matrix3f * m2)
 {
-	AppAssert(m1 && m2);
-
 	m1->s.m00 = (m1->s.m00 * m2->s.m00) + (m1->s.m01 * m2->s.m10) + (m1->s.m02 * m2->s.m20);
 	m1->s.m01 = (m1->s.m00 * m2->s.m01) + (m1->s.m01 * m2->s.m11) + (m1->s.m02 * m2->s.m21);
 	m1->s.m02 = (m1->s.m00 * m2->s.m02) + (m1->s.m01 * m2->s.m12) + (m1->s.m02 * m2->s.m22);
@@ -285,8 +274,6 @@ inline static void Matrix4fSetIdentity(Matrix4f * mat)
 
 inline static void Matrix4fSetRotationScaleFromMatrix4f(Matrix4f * m1, const Matrix4f * m2)
 {
-	AppAssert(m1 && m2);
-
 	m1->s.xx = m2->s.xx; m1->s.yx = m2->s.yx; m1->s.zx = m2->s.zx;
 	m1->s.xy = m2->s.xy; m1->s.yy = m2->s.yy; m1->s.zy = m2->s.zy;
 	m1->s.xz = m2->s.xz; m1->s.yz = m2->s.yz; m1->s.zz = m2->s.zz;
@@ -295,8 +282,6 @@ inline static void Matrix4fSetRotationScaleFromMatrix4f(Matrix4f * m1, const Mat
 inline static float Matrix4fSVD(const Matrix4f *m, Matrix3f *rot3, Matrix4f *rot4)
 {
 	float s, n;
-
-	AppAssert(m);
 
 	// this is a simple svd.
 	// Not complete but fast and reasonable.
@@ -357,8 +342,6 @@ inline static float Matrix4fSVD(const Matrix4f *m, Matrix3f *rot3, Matrix4f *rot
 
 inline static void Matrix4fSetRotationScaleFromMatrix3f(Matrix4f *m1, const Matrix3f *m2)
 {
-	AppAssert(m1 && m2);
-
 	m1->s.xx = m2->s.xx; m1->s.yx = m2->s.yx; m1->s.zx = m2->s.zx;
 	m1->s.xy = m2->s.xy; m1->s.yy = m2->s.yy; m1->s.zy = m2->s.zy;
 	m1->s.xz = m2->s.xz; m1->s.yz = m2->s.yz; m1->s.zz = m2->s.zz;
@@ -366,8 +349,6 @@ inline static void Matrix4fSetRotationScaleFromMatrix3f(Matrix4f *m1, const Matr
 
 inline static void Matrix4fMulRotationScale(Matrix4f *m, float scale)
 {
-	AppAssert(m);
-
 	m->s.xx *= scale; m->s.yx *= scale; m->s.zx *= scale;
 	m->s.xy *= scale; m->s.yy *= scale; m->s.zy *= scale;
 	m->s.xz *= scale; m->s.yz *= scale; m->s.zz *= scale;
@@ -377,16 +358,21 @@ inline static void Matrix4fSetRotationFromMatrix3f(Matrix4f *m1, const Matrix3f 
 {
 	float scale;
 
-	AppAssert(m1 && m2);
-
 	scale = Matrix4fSVD(m1, 0, 0);
 
 	Matrix4fSetRotationScaleFromMatrix3f(m1, m2);
 	Matrix4fMulRotationScale(m1,scale);
 }
 
-#include "geometry/line.h"
-#include "geometry/rectangle.h"
-#include "geometry/cuboid.h"
+#ifdef TERRA_LINE
+#include "geometry/tline.h"
+#endif
 
+#ifdef TERRA_RECTANGLE
+#include "geometry/trectangle.h"
+#endif
+
+#ifdef TERRA_CUBOID
+#include "geometry/tcuboid.h"
+#endif
 #endif

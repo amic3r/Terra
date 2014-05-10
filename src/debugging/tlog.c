@@ -11,8 +11,8 @@ void TLogSetFile(FILE *_file)
 {
 	tLogFile = _file;
 	if(!tLogFile) {
-		TLogReport(T_LOG_WARNING,"TLogSetFile","The file pointer used for logging is null. stdout will be used instead.");
 		tLogFile = stdout;
+		TLogReport(T_LOG_WARNING,"TLogSetFile","The file pointer used for logging is null. stdout will be used instead.");
 	}
 }
 

@@ -7,6 +7,8 @@
 
 int main(int argc, char **argv)
 {
+	TLogSetFile(0);
+
 	TLogReport(T_LOG_PROGRESS,0,"Running tests...\n");
 
 	array_test();

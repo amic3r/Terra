@@ -23,7 +23,7 @@ void TIOInitialize(void)
 
 void TIODestroy(void)
 {
-	slist_free(searchpaths,free);
+	TSListFree(searchpaths,free);
 	searchpaths = 0;
 }
 
@@ -40,8 +40,8 @@ TSList *TIOListArchive(const char *_dir, const char *_filter, unsigned char full
 
 void *testpath(void *searchpath, void *filename)
 {
-	char *fullFilename = ConcatPaths((const char *) searchpath, filename,NULL);
-	if(FileExists(fullFilename)) return fullFilename;
+	char *fullFilename = TFileSysConcatPaths((const char *) searchpath, filename,NULL);
+	if(TFileSysFileExists(fullFilename)) return fullFilename;
 
 	free(fullFilename);
 
@@ -55,7 +55,7 @@ FILE *TIOGetFile(const char *filename,const char *mode)
 
 	if(!mode) mode = "r";
 
-	found = (char *) slist_foreach(searchpaths,testpath,(void *) filename);
+	found = (char *) TSListForeachData(searchpaths,testpath,(void *) filename);
 	if(found) {
 		FILE *f = fopen(found,mode);
 		free(found);
@@ -96,13 +96,13 @@ unsigned char *TIOGetBufferedFile(const char *filename,unsigned char binarymode,
 
 void TReaderAddSearchPath(const char *path)
 {
-	if(!searchpaths) searchpaths = slist_new();
+	if(!searchpaths) searchpaths = TSListNew();
 
-	slist_append(searchpaths,strdup(path));
+	TSListAppend(searchpaths,strdup(path));
 }
 
 void terra_file_system_clear_search_path(void)
 {
-	slist_free(searchpaths,free);
+	TSListFree(searchpaths,free);
 	TReaderAddSearchPath(TIOGetApplicationPath());
 }

@@ -176,12 +176,12 @@ char **TSTringSplit(const char *string, const char *substr, size_t *size)
 
 	sto = (char **)TAlloc(sizeof(char *) * (*size));
 	if(sto) {
-		size_t i = 1, tlen;
+		size_t i = 1;
 		char *ptr;
 		sto[0] = str;
 
 		while (i < *size) {
-			ptr = strchr(sto[i-1],0)+tlen;
+			ptr = strchr(sto[i-1],0)+len;
 			sto[i++] = ptr;
 		}
 	} else free(str);

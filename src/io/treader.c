@@ -91,7 +91,7 @@ TReader *TReaderFilePointerNew(FILE *file)
 	TReaderSetCommentFormats(r,formats,NUM_DEFAULT_FORMAT);
 
 #ifndef __GNUC__
-	r->iomut = TMutexNew(PARTICLE_MUTEX_TYPE_RECURSIVE);
+	r->iomut = TMutexNew(T_MUTEX_RECURSIVE);
 #endif
 
 	return r;

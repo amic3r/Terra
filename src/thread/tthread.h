@@ -6,19 +6,21 @@
 
 typedef struct _TThread TThread;
 
-TThread *TThreadCreate(size_t (*fn)(void *), void *data);
-size_t TThreadJoin(TThread *t);
+TThread *TThreadCreate(int (*fn)(void *), void *data);
+int TThreadJoin(TThread *t);
 
 //------------- Mutex ---------------//
 
-#define PARTICLE_MUTEX_TYPE_NORMAL     0
-#define PARTICLE_MUTEX_TYPE_RECURSIVE  1
-#define PARTICLE_MUTEX_TYPE_ERRORCHECK 2
-#define PARTICLE_MUTEX_TYPE_READWRITE  3
+enum T_MUTEX_TYPET {
+	T_MUTEX_NORMAL = 0,
+	T_MUTEX_RECURSIVE,
+	T_MUTEX_ERRORCHECK,
+	T_MUTEX_READWRITE,
+};
 
 typedef struct _TMutex TMutex;
 
-TMutex *TMutexNew(unsigned int type);
+TMutex *TMutexNew(int type);
 void TMutexFree(TMutex *m);
 
 void TMutexLock(TMutex *m);

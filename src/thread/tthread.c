@@ -9,6 +9,8 @@
 #include <Windows.h>
 #endif
 
+#include "talloc.h"
+
 //------------- Thread --------------//
 
 struct _TThread {
@@ -20,7 +22,7 @@ struct _TThread {
 };
 
 typedef struct _ThreadFunction {
-	size_t (*fn)(void *);
+	int (*fn)(void *);
 	void *data;
 } ThreadFunction;
 
@@ -30,7 +32,7 @@ DWORD WINAPI run_wrapper(LPVOID param) {
 void *run_wrapper(void *param) {
 #endif
 	ThreadFunction *tf = (ThreadFunction *) param;
-	size_t (*fn)(void *) = tf->fn;
+	int (*fn)(void *) = tf->fn;
 	void *data = tf->data;
 
 	free(tf);
@@ -39,10 +41,10 @@ void *run_wrapper(void *param) {
 	return 0;
 }
 
-TThread *TThreadCreate(size_t (*fn)(void *), void *data)
+TThread *TThreadCreate(int (*fn)(void *), void *data)
 {
-	ThreadFunction *tf = (ThreadFunction *) malloc(sizeof(ThreadFunction));
-	TThread *t = (TThread *) malloc(sizeof(TThread));
+	ThreadFunction *tf = (ThreadFunction *) TAlloc(sizeof(ThreadFunction));
+	TThread *t = (TThread *) TAlloc(sizeof(TThread));
 
 	tf->fn = fn;
 	tf->data = data;
@@ -56,9 +58,9 @@ TThread *TThreadCreate(size_t (*fn)(void *), void *data)
 	return t;
 }
 
-size_t TThreadJoin(TThread *t)
+int TThreadJoin(TThread *t)
 {
-	size_t retval = 0;
+	int retval = 0;
 #ifdef _WINDOWS
 	unsigned long wrv;
 	WaitForSingleObject(t->thread, INFINITE);
@@ -82,12 +84,12 @@ struct _TMutex {
 	pthread_mutexattr_t mutexAttr;
 	pthread_mutex_t mutex;
 #endif
-	unsigned int type;
+	int type;
 };
 
-TMutex *TMutexNew(unsigned int type)
+TMutex *TMutexNew(int type)
 {
-	TMutex *m = (TMutex *) malloc(sizeof(TMutex));
+	TMutex *m = (TMutex *) TAlloc(sizeof(TMutex));
 	m->type = type;
 
 #ifdef _WINDOWS
@@ -159,7 +161,7 @@ struct _TCV {
 
 TCV *TCVNew(TMutex *m)
 {
-	TCV *v = (TCV *) malloc(sizeof(TCV));
+	TCV *v = (TCV *) TAlloc(sizeof(TCV));
 	v->m = m;
 
 #ifdef _WINDOWS

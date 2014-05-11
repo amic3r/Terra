@@ -51,7 +51,7 @@ TWriter *TWriterFilePointerNew(FILE *file)
 	TWriterSetCommentFormats(w,formats,NUM_DEFAULT_FORMAT);
 
 #ifndef __GNUC__
-	w->iomut = TMutexNew(PARTICLE_MUTEX_TYPE_RECURSIVE);
+	w->iomut = TMutexNew(T_MUTEX_RECURSIVE);
 #endif
 
 	return w;

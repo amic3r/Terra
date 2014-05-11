@@ -101,7 +101,7 @@ void TIOAddSearchPath(const char *path)
 	TSListAppend(searchpaths,strdup(path));
 }
 
-void terra_file_system_clear_search_path(void)
+void TIOClearSearchPath(void)
 {
 	TSListFree(searchpaths,free);
 	TIOAddSearchPath(TIOGetApplicationPath());

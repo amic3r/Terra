@@ -9,7 +9,7 @@
 typedef struct _TArray {
 	void **data;
 	size_t size,used;
-	size_t lastindex;
+	size_t len;
 } TArray;
 
 TArray *TArrayNew(size_t size);
@@ -34,7 +34,7 @@ void *TArrayForeachData(TArray *arr, TDataIterFunc func,void *user_data);
 
 static inline unsigned char TArrayValid(TArray *arr,size_t index)
 {
-	return index < arr->lastindex;
+	return index < arr->len;
 }
 
 static inline void *TArrayGet(TArray *arr,size_t index)
@@ -52,14 +52,14 @@ void TArrayRemoveFast(TArray *arr,size_t index); // grab end element and put it 
 void TArrayRemoveClear(TArray *arr,size_t index); // replace with 0
 
 #define TArrayPush TArrayAppend
-#define TArrayPop(a) TArrayPopIndex(a,a->lastindex);
+#define TArrayPop(a) TArrayPopIndex(a,a->len-1);
 
 //------------- Integer Array ---------------//
 
 typedef struct _TIArray {
 	int *data;
 	size_t size;
-	size_t lastindex;
+	size_t len;
 } TIArray;
 
 TIArray *TIArrayNew(size_t size);
@@ -84,7 +84,7 @@ void *TIArrayForeachData(TArray *arr, TDataIterFunc func,void *user_data);
 
 static inline unsigned char TIArrayValid(TIArray *arr,size_t index)
 {
-	return index < arr->lastindex;
+	return index < arr->len;
 }
 
 static inline int TIntArrayGet(TIArray *arr,size_t index)
@@ -100,6 +100,6 @@ void TIArrayRemove(TIArray *arr,size_t index);
 void TIArrayRemoveFast(TIArray *arr,size_t index); // grab end element and put it in place
 
 #define TIArrayPush TIArrayAppend
-#define TIArrayPop(a) TIArrayPopIndex(a,a->lastindex);
+#define TIArrayPop(a) TIArrayPopIndex(a,a->len-1);
 
 #endif

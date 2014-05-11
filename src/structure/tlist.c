@@ -391,7 +391,7 @@ void TSListSort(TSList *list,TCompareFunc func)
 	TSListMerge(list,&left,&right,func);
 }
 
-void *TSlistPopIndex(TSList *list, size_t index) {
+void *TSListPopIndex(TSList *list, size_t index) {
 	TSListNode *n = TSListFetch(list,index-1);
 	void *data = 0;
 	

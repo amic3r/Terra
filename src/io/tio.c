@@ -94,7 +94,7 @@ unsigned char *TIOGetBufferedFile(const char *filename,unsigned char binarymode,
 	return buffer;
 }
 
-void TReaderAddSearchPath(const char *path)
+void TIOAddSearchPath(const char *path)
 {
 	if(!searchpaths) searchpaths = TSListNew();
 
@@ -104,5 +104,5 @@ void TReaderAddSearchPath(const char *path)
 void terra_file_system_clear_search_path(void)
 {
 	TSListFree(searchpaths,free);
-	TReaderAddSearchPath(TIOGetApplicationPath());
+	TIOAddSearchPath(TIOGetApplicationPath());
 }

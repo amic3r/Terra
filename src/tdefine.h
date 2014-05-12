@@ -32,12 +32,18 @@
 #define clamp(x,l,h) ((x > h) ? h : ((x < l) ? l : x))
 
 #undef swap
-#define swap(x,y)	do { \
+#define swap(x,y)	{ \
 					unsigned char st[sizeof(x) == sizeof(y) ? sizeof(x) : -1]; \
 					memcpy(st,&y,sizeof(x)); \
 					memcpy(&y,&x,sizeof(x)); \
 					memcpy(&x,st,sizeof(x)); \
-					} while(0)
+					}
+
+#define swapt(x,y,T)	{ \
+					T p = x; \
+					x = y; \
+					y = p; \
+					}
 
 
 typedef void (*TFreeFunc) (void *);

@@ -52,7 +52,7 @@ void TArrayRemoveFast(TArray *arr,size_t index); // grab end element and put it 
 void TArrayRemoveClear(TArray *arr,size_t index); // replace with 0
 
 #define TArrayPush TArrayAppend
-#define TArrayPop(a) TArrayPopIndex(a,a->len-1);
+static inline void *TArrayPop(TArray *a) { return TArrayPopIndex(a,a->len-1); }
 
 //------------- Integer Array ---------------//
 
@@ -100,6 +100,6 @@ void TIArrayRemove(TIArray *arr,size_t index);
 void TIArrayRemoveFast(TIArray *arr,size_t index); // grab end element and put it in place
 
 #define TIArrayPush TIArrayAppend
-#define TIArrayPop(a) TIArrayPopIndex(a,a->len-1);
+static inline int TIArrayPop(TIArray *a) { return TIArrayPopIndex(a,a->len-1); }
 
 #endif

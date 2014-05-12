@@ -43,7 +43,7 @@ void TListRemovePtr(TList *list, TListNode *ptr);
 void TListRemoveIndex(TList *list, size_t index);
 
 #define TListPush(l,d) TListPrepend(l,d)
-#define TListPop(l,d) TListPopIndex(l,l->len-1)
+static inline void *TListPop(TList *l) { return TListPopIndex(l,l->len-1);}
 
 //------------- Single-Linked List ---------------//
 
@@ -93,6 +93,6 @@ void TSListRemoveIndex(TSList *list, size_t index);
 void TSListRemovePtrFrom(TSList *list, TSListNode *origin);
 
 #define TSListPush(l,d) TSListPrepend(l,d)
-#define TSListPop(l) TSListPopIndex(l,l->len-1)
+static inline void *TSListPop(TSList *l) { return TSListPopIndex(l,l->len-1);}
 
 #endif

@@ -119,7 +119,7 @@ size_t THeapNumElements(THeap *h)
 
 void THeapPrint(THeap *h, TIterFunc func)
 {
-	size_t i = 0, limit = h->data.lastindex;
+	size_t i = 0, limit = h->data.len;
 	HeapNode *data;
 
 	printf("THeap content: ");

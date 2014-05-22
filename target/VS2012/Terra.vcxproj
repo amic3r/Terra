@@ -22,9 +22,7 @@
     <ClCompile Include="..\..\src\io\tio.c" />
     <ClCompile Include="..\..\src\io\treader.c" />
     <ClCompile Include="..\..\src\io\twriter.c" />
-    <ClCompile Include="..\..\src\structure\trbtree.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\src\structure\trbtree.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\stdafx.c" />
     <ClCompile Include="..\..\src\structure\tarray.c" />
@@ -51,9 +49,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\src\io\tio.h" />
-    <ClInclude Include="..\..\src\structure\trbtree.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\..\src\structure\trbtree.h" />
     <ClInclude Include="..\..\src\talloc.h" />
     <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\geometry\tcuboid.h" />

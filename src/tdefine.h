@@ -53,6 +53,9 @@ typedef void *(*TCopyFunc) (void *);
 typedef void (*TIterFunc) (void *);
 typedef void *(*TDataIterFunc) (void *,void *);
 
-typedef int (*TCompareFunc) (void *,void *);
+typedef void (*TPairIterFunc) (void *,void *);
+typedef void *(*TDataPairIterFunc) (void *,void *,void *);
+
+typedef int (*TCompareFunc) (const void *,const void *);
 
 #endif

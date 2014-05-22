@@ -14,8 +14,3 @@ void test_create_file(const char *filename, const char *data)
 
 	fclose(f);
 }
-
-void testassert(unsigned char value, const char *testmsg)
-{
-	if(!value) printf(testmsg);
-}

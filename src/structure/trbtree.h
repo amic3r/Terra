@@ -6,33 +6,33 @@
 
 typedef struct TRBTree TRBTree;
 
-TRBTree *tRBTreeNew(TCompareFunc key_compare, TFreeFunc free_key, TFreeFunc free_data);
-void tRBTreeFree(TRBTree *t);
+TRBTree *TRBTreeNew(TCompareFunc key_compare, TFreeFunc free_key, TFreeFunc free_data);
+void TRBTreeFree(TRBTree *t);
 
-void tRBTreeEmpty(TRBTree *t);
+void TRBTreeEmpty(TRBTree *t);
 
-size_t tRBTreeSize(const TRBTree *t);
+size_t TRBTreeSize(const TRBTree *t);
 
-unsigned char tRBTreeInsert(TRBTree *t, void *key, void *data);
-unsigned char tRBTreeReplace(TRBTree *t, void *key, void *data);
-void tRBTreeErase(TRBTree *t, void *key);
+unsigned char TRBTreeInsert(TRBTree *t, void *key, void *data);
+unsigned char TRBTreeReplace(TRBTree *t, void *key, void *data);
+void TRBTreeErase(TRBTree *t, void *key);
 
-void *tRBTreeFind(const TRBTree *t, void *key);
-unsigned char tRBTreeExists(const TRBTree *t, void *key);
+void *TRBTreeFind(const TRBTree *t, void *key);
+unsigned char TRBTreeExists(const TRBTree *t, void *key);
 
-size_t tRBTreeMemUsage(const TRBTree *t);
+size_t TRBTreeMemUsage(const TRBTree *t);
 
-void *tRBTreeDataTraverse(const TRBTree *t, TDataPairIterFunc f, void *udata);
-void tRBTreeTraverse(const TRBTree *t, TPairIterFunc f);
+void *TRBTreeDataTraverse(const TRBTree *t, TDataPairIterFunc f, void *udata);
+void TRBTreeTraverse(const TRBTree *t, TPairIterFunc f);
 
 // Red-Black Tree Iterator
 
 typedef struct TRBTreeIterator TRBTreeIterator;
 
-TRBTreeIterator *tRBTreeIteratorNew(const TRBTree *t);
-void tRBTreeIteratorFree(TRBTreeIterator *iter);
+TRBTreeIterator *TRBTreeIteratorNew(const TRBTree *t);
+void TRBTreeIteratorFree(TRBTreeIterator *iter);
 
-int tRBTreeIteratorNext(TRBTreeIterator *iter, void **key, void **data);
-int tRBTreeIteratorPrevious(TRBTreeIterator *iter, void **key, void **data);
+int TRBTreeIteratorNext(TRBTreeIterator *iter, void **key, void **data);
+int TRBTreeIteratorPrevious(TRBTreeIterator *iter, void **key, void **data);
 
 #endif

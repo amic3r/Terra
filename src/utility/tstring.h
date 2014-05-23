@@ -55,19 +55,19 @@ char *TStringReplace(const char *source, const char *match, const char *replacem
  */
 unsigned char TStringReplaceInplace(char *source, const char *match, const char *replacement);
 
-void TSTringSafetyString(char *string);
+void TStringSafetyString(char *string);
 
-char **TSTringSplit(const char *string, const char *substr, size_t *size);
-char *TSTringAddCharacter(const char *string, char character, size_t start, size_t end);
+char **TStringSplit(const char *string, const char *substr, size_t *size);
+char *TStringAddCharacter(const char *string, char character, size_t start, size_t end);
 
-void TSTringStripTrailingWhitespace(char *string);	// Removes trailing /n, /r, space
-char *TSTringLowerCase(const char *thestring);
+void TStringStripTrailingWhitespace(char *string);	// Removes trailing /n, /r, space
+char *TStringLowerCase(const char *thestring);
 
-char *TSTringAseEncrypt(const char * src, unsigned char key);
-char *TSTringPasswordEncrypt(const char *src);
+char *TStringAseEncrypt(const char * src, unsigned char key);
+char *TStringPasswordEncrypt(const char *src);
 
-char *TSTringDoubleChars(const char *string, const char escchar);
-char *TSTringRemoveDuplication(const char *string, const char escchar);
+char *TStringDoubleChars(const char *string, const char escchar);
+char *TStringRemoveDuplication(const char *string, const char escchar);
 
 gint TStringCompareGlibFull(gconstpointer a,gconstpointer b,gpointer c);
 inline gint TStringCompareGlib(gconstpointer a,gconstpointer b)

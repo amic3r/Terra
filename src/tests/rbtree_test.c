@@ -14,24 +14,24 @@ void rbtree_test_iteration(const TRBTree *tree)
 	int i = 0;
 
 	// init
-	iter = tRBTreeIteratorNew(tree);
+	iter = TRBTreeIteratorNew(tree);
 	if(!testNotNull(iter,"Initializing iterator\t\t")) return;
 
 	// next
-	while(tRBTreeIteratorNext(iter,(void **) &key,(void **) &data))
+	while(TRBTreeIteratorNext(iter,(void **) &key,(void **) &data))
 	{
 		TAssert(*key == *data && *key == i++);
 	}
 
 	// previous
 	--i;
-	while(tRBTreeIteratorPrevious(iter,(void **) &key,(void **) &data))
+	while(TRBTreeIteratorPrevious(iter,(void **) &key,(void **) &data))
 	{
 		TAssert(*key == *data && *key == --i);
 	}
 
 	// free
-	tRBTreeIteratorFree(iter);
+	TRBTreeIteratorFree(iter);
 }
 
 void rbtree_test_all(void)
@@ -42,22 +42,22 @@ void rbtree_test_all(void)
 	int testv = 50;
 
 	// init
-	tree = tRBTreeNew((TCompareFunc) TIntegerCompare,free,free);
+	tree = TRBTreeNew((TCompareFunc) TIntegerCompare,free,free);
 	if(!testNotNull(tree,"Initializing tree\t\t")) return;
 
 	// insert
-	for(i = 0;!f && i < 100; ++i) f = tRBTreeInsert(tree,TIntegerToPtr(i),TIntegerToPtr(i));
+	for(i = 0;!f && i < 100; ++i) f = TRBTreeInsert(tree,TIntegerToPtr(i),TIntegerToPtr(i));
 	testReport(!f,"Testing Insertion\t\t");
 
 	// size
-	testReport(tRBTreeSize(tree) == 100,"Testing Size\t\t");
+	testReport(TRBTreeSize(tree) == 100,"Testing Size\t\t");
 
 	// find
-	testReport(*(int *)tRBTreeFind(tree,&testv) == 50,"Testing Find function\t\t");
+	testReport(*(int *)TRBTreeFind(tree,&testv) == 50,"Testing Find function\t\t");
 
 	// exists
 	testv = 34;
-	testReport(tRBTreeExists(tree,&testv),"Testing Exists function\t\t");
+	testReport(TRBTreeExists(tree,&testv),"Testing Exists function\t\t");
 
 	// mem
 	// TODO
@@ -75,15 +75,15 @@ void rbtree_test_all(void)
 	// TODO
 
 	// removal
-	for(i = 0; i < 94; ++i) tRBTreeErase(tree,&i);
-	testReport(tRBTreeSize(tree) == 6,"Testing Erase Function\t\t");;
+	for(i = 0; i < 94; ++i) TRBTreeErase(tree,&i);
+	testReport(TRBTreeSize(tree) == 6,"Testing Erase Function\t\t");;
 
 	// empty
-	tRBTreeEmpty(tree);
-	testReport(tRBTreeSize(tree) == 0,"Ensuring that the tree is empty\t\t");;
+	TRBTreeEmpty(tree);
+	testReport(TRBTreeSize(tree) == 0,"Ensuring that the tree is empty\t\t");;
 
 	// free
-	tRBTreeFree(tree);
+	TRBTreeFree(tree);
 }
 
 void rbtree_test(void)

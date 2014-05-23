@@ -150,13 +150,13 @@ unsigned char TStringReplaceInplace(char *source, const char *match, const char 
 	return 0;
 }
 
-void TSTringSafetyString(char *string)
+void TStringSafetyString(char *string)
 {
 	int strlength = strlen(string);
 	TStringReplaceOp(string,"%"," ",strlength);
 }
 
-char **TSTringSplit(const char *string, const char *substr, size_t *size)
+char **TStringSplit(const char *string, const char *substr, size_t *size)
 {
 	char **sto;
 	char *str;
@@ -188,7 +188,7 @@ char **TSTringSplit(const char *string, const char *substr, size_t *size)
 	return sto;
 }
 
-char *TSTringAddCharacter(const char *string, char character, size_t start, size_t end)
+char *TStringAddCharacter(const char *string, char character, size_t start, size_t end)
 {
 	size_t len = strlen(string) + (character ? 1 : 0) + 1;
 	int nextindex = character ? start+1 : start;
@@ -206,7 +206,7 @@ char *TSTringAddCharacter(const char *string, char character, size_t start, size
 	return newstring;
 }
 
-void TSTringStripTrailingWhitespace(char *string)
+void TStringStripTrailingWhitespace(char *string)
 {
 	int i = strlen(string)-1;
 	for(; i >= 0; --i)
@@ -216,7 +216,7 @@ void TSTringStripTrailingWhitespace(char *string)
 			break;
 }
 
-char *TSTringLowerCase(const char *thestring)
+char *TStringLowerCase(const char *thestring)
 {
 	const char *srcptr = thestring;
 	char *thecopy = 0, *ptr = 0;
@@ -239,7 +239,7 @@ char *TSTringLowerCase(const char *thestring)
 	return thecopy;
 }
 
-char *TSTringAseEncrypt(const char *src, unsigned char key)
+char *TStringAseEncrypt(const char *src, unsigned char key)
 {
 	size_t len = 0;
 	char *result = 0, *resptr = 0;
@@ -268,7 +268,7 @@ char *TSTringAseEncrypt(const char *src, unsigned char key)
 	return result;
 }
 
-char *TSTringPasswordEncrypt(const char *src)
+char *TStringPasswordEncrypt(const char *src)
 {
 	size_t len = 0;
 	char *result = 0;
@@ -287,7 +287,7 @@ char *TSTringPasswordEncrypt(const char *src)
 	return result;
 }
 
-char *TSTringDoubleChars(const char *string, const char escchar)
+char *TStringDoubleChars(const char *string, const char escchar)
 {
 	char *escstring = 0;
 
@@ -318,7 +318,7 @@ char *TSTringDoubleChars(const char *string, const char escchar)
 	return escstring;
 }
 
-char *TSTringRemoveDuplication(const char *string, const char escchar)
+char *TStringRemoveDuplication(const char *string, const char escchar)
 {
 	char *escstring = 0;
 

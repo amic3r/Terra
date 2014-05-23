@@ -35,7 +35,7 @@ void print_credits(void);
 #include "utility/tstring.h"
 
 #include "structure/tarray.h"
-//#include "structure/RBtree.h"
+#include "structure/trbtree.h"
 #include "structure/theap.h"
 #include "structure/tquadtree.h"
 //#include "structure/octree.h"

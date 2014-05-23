@@ -280,7 +280,7 @@ char *TFileSysRemoveExtension(const char *_fullFileName)
 
 char **TFileSysSplitPath(const char *path, size_t *size)
 {
-	return TSTringSplit(path, "/", size);
+	return TStringSplit(path, "/", size);
 }
 
 unsigned char TFileSysFilesIdentical(const char *_name1, const char *_name2)

@@ -11,7 +11,8 @@
 
 #include "talloc.h"
 
-#if defined(_WINDOWS) && defined(_DEBUG)
+#ifdef _DEBUG
+#ifdef _WINDOWS
 
 #include <Windows.h>
 
@@ -179,4 +180,9 @@ void TMemLeakPrint(char *_filename)
 	// Delete the temporary file
 	TFileSysDelete(tmpFilename);
 }
+#else
+void TMemLeakPrint(char *_filename)
+{
+}
+#endif
 #endif

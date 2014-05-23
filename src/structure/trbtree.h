@@ -14,7 +14,7 @@ void TRBTreeEmpty(TRBTree *t);
 size_t TRBTreeSize(const TRBTree *t);
 
 unsigned char TRBTreeInsert(TRBTree *t, void *key, void *data);
-unsigned char TRBTreeReplace(TRBTree *t, void *key, void *data);
+void *TRBTreeReplace(TRBTree *t, void *key, void *data);
 void TRBTreeErase(TRBTree *t, void *key);
 
 void *TRBTreeFind(const TRBTree *t, void *key);

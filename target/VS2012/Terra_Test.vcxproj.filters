@@ -8,6 +8,7 @@
     <ClCompile Include="..\..\src\stdafx.c" />
     <ClCompile Include="..\..\src\tests\reader_test.c" />
     <ClCompile Include="..\..\src\tests\rbtree_test.c" />
+    <ClCompile Include="..\..\src\tests\memleak_test.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\tests\test.h" />
@@ -17,6 +18,7 @@
     <ClInclude Include="..\..\src\stdafx.h" />
     <ClInclude Include="..\..\src\tests\reader_test.h" />
     <ClInclude Include="..\..\src\tests\rbtree_test.h" />
+    <ClInclude Include="..\..\src\tests\memleak_test.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\contrib\glib\lib\glib-2.0.lib" />

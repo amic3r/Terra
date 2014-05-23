@@ -228,7 +228,7 @@ char *TStringLowerCase(const char *thestring)
 	if(thecopy) {
 		ptr = thecopy;
 
-		while(srcptr != '\0') {
+		while(*srcptr) {
 			*ptr = tolower(*srcptr);
 			srcptr += 1;
 			ptr +=1;

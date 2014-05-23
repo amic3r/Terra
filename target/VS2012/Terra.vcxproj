@@ -13,10 +13,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\debugging\tdebug.c" />
     <ClCompile Include="..\..\src\debugging\tlog.c" />
-    <ClCompile Include="..\..\src\debugging\memory_leak.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\debugging\profiler.c">
+    <ClCompile Include="..\..\src\debugging\tmemleak.c" />
+    <ClCompile Include="..\..\src\debugging\tprofiler.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\io\tio.c" />
@@ -42,10 +40,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\debugging\tdebug.h" />
     <ClInclude Include="..\..\src\debugging\tlog.h" />
-    <ClInclude Include="..\..\src\debugging\memory_leak.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\src\debugging\profiler.h">
+    <ClInclude Include="..\..\src\debugging\tmemleak.h" />
+    <ClInclude Include="..\..\src\debugging\tprofiler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\src\io\tio.h" />

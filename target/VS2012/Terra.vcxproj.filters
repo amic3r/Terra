@@ -3,12 +3,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\stdafx.c" />
     <ClCompile Include="..\..\src\terra.c" />
-    <ClCompile Include="..\..\src\debugging\memory_leak.c">
-      <Filter>debugging</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\debugging\profiler.c">
-      <Filter>debugging</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\ttime.c" />
     <ClCompile Include="..\..\src\debugging\tlog.c">
@@ -56,15 +50,15 @@
     <ClCompile Include="..\..\src\io\tio.c">
       <Filter>io</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\debugging\tmemleak.c">
+      <Filter>debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\debugging\tprofiler.c">
+      <Filter>debugging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
-    <ClInclude Include="..\..\src\debugging\memory_leak.h">
-      <Filter>debugging</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\debugging\profiler.h">
-      <Filter>debugging</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\terra.h" />
     <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
@@ -125,6 +119,12 @@
       <Filter>io</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\talloc.h" />
+    <ClInclude Include="..\..\src\debugging\tmemleak.h">
+      <Filter>debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\debugging\tprofiler.h">
+      <Filter>debugging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="debugging">

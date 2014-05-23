@@ -244,13 +244,13 @@ inline TRBTreeNode *TRBTreeFindNode(const TRBTree *t, void *key)
 	return 0;
 }
 
-unsigned char TRBTreeReplace(TRBTree *t, void *key, void *data)
+void *TRBTreeReplace(TRBTree *t, void *key, void *data)
 {
 	TRBTreeNode *current = TRBTreeFindNode(t, key);
-	if (!current) return 1;
+	if (!current) return 0;
 
-	current->data = data;
-	return 0;
+	swap(current->data,data);
+	return data;
 }
 
 unsigned char TRBTreeInsert(TRBTree *t, void *key, void *data)
@@ -498,6 +498,8 @@ int TRBTreeIteratorNext(TRBTreeIterator *iter, void **key, void **data)
 	if(iter->end) return 0;
 
 	if(!iter->c) {
+		if(!iter->t->root) return 0;
+
 		iter->c = TRBTreeLeftMost(iter->t, 0);
 		iter->beginning = 1;
 	} else if(iter->c->right) {
@@ -522,7 +524,6 @@ int TRBTreeIteratorNext(TRBTreeIterator *iter, void **key, void **data)
 			return 0;
 		}
 	}
-
 	if(key) *key = iter->c->key;
 	if(data) *data = iter->c->data;
 
@@ -537,6 +538,8 @@ int TRBTreeIteratorPrevious(TRBTreeIterator *iter, void **key, void **data)
 	}
 
 	if(!iter->c) {
+		if(!iter->t->root) return 0;
+
 		iter->c = TRBTreeRightMost(iter->t, 0);
 		iter->end = 1;
 	} else if(iter->c->left) {

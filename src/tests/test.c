@@ -7,6 +7,8 @@
 #include "rbtree_test.h"
 #include "memleak_test.h"
 
+#include "stack_test.h"
+
 int main(int argc, char **argv)
 {
 	TLogSetFile(0);
@@ -17,7 +19,9 @@ int main(int argc, char **argv)
 
 	//rbtree_test();
 
-	memleak_test();
+	//memleak_test();
+
+	stack_test();
 
 	TLogReport(T_LOG_PROGRESS,0,"All Tests have been executed.\n");
 

@@ -76,6 +76,7 @@
     <ClCompile Include="..\..\src\tests\memleak_test.c" />
     <ClCompile Include="..\..\src\tests\rbtree_test.c" />
     <ClCompile Include="..\..\src\tests\reader_test.c" />
+    <ClCompile Include="..\..\src\tests\stack_test.c" />
     <ClCompile Include="..\..\src\tests\test.c" />
     <ClCompile Include="..\..\src\tests\test_utils.c" />
   </ItemGroup>
@@ -86,6 +87,7 @@
     <ClInclude Include="..\..\src\tests\memleak_test.h" />
     <ClInclude Include="..\..\src\tests\rbtree_test.h" />
     <ClInclude Include="..\..\src\tests\reader_test.h" />
+    <ClInclude Include="..\..\src\tests\stack_test.h" />
     <ClInclude Include="..\..\src\tests\test.h" />
     <ClInclude Include="..\..\src\tests\test_utils.h" />
   </ItemGroup>

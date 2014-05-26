@@ -56,6 +56,9 @@
     <ClCompile Include="..\..\src\debugging\tprofiler.c">
       <Filter>debugging</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\structure\tstack.c">
+      <Filter>structure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\debugging\tprofiler.h">
       <Filter>debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\tstack.h">
+      <Filter>structure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

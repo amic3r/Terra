@@ -23,6 +23,8 @@ typedef struct _TMutex TMutex;
 TMutex *TMutexNew(int type);
 void TMutexFree(TMutex *m);
 
+void TMutexSleep(TMutex *m, int msec);
+
 void TMutexLock(TMutex *m);
 void TMutexUnlock(TMutex *m);
 
@@ -33,7 +35,7 @@ typedef struct _TCV TCV;
 TCV *TCVNew(TMutex *m);
 void TCVFree(TCV *v);
 
-void TCVSleep(TCV *v);
+int  TCVSleep(TCV *v, size_t msec);
 void TCVWake(TCV *v);
 void TCVWakeSingle(TCV *v);
 

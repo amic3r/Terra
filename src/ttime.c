@@ -82,6 +82,14 @@ double TTimeFetchTime()
 	return tCurrentTime;
 }
 
+void TTimeSleep(size_t msec) {
+#ifdef _WINDOWS
+	Sleep(msec);
+#else
+	usleep(msec);
+#endif
+}
+
 //------------- TTimer ---------------//
 
 TTimer *ttimer_new(void)

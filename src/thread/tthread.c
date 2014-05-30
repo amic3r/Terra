@@ -184,12 +184,24 @@ void TCVFree(TCV *v)
 	}
 }
 
-void TCVSleep(TCV *v)
+int TCVSleep(TCV *v, size_t msec)
 {
 #ifdef _WINDOWS
-	SleepConditionVariableCS(&v->var, &v->m->mutex, INFINITE);
+	SleepConditionVariableCS(&v->var, &v->m->mutex, msec);
+	return GetLastError();
 #else
-	pthread_cond_wait(&v->var,&v->m->mutex);
+	int               rc;
+	struct timespec   ts;
+	struct timeval    tp;
+
+	gettimeofday(&tp,0);
+
+	ts.tv_sec = now.tv_sec+5;
+	ts.tv_nsec = (now.tv_usec+1000UL*msec)*1000UL;
+
+	pthread_cond_timedwait(&v->var,&v->m->mutex,&ts);
+
+	return rc;
 #endif
 }
 

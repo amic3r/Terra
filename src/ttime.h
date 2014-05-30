@@ -8,6 +8,8 @@ double TTimeGetTime();
 void TTimeComputeTime();
 double TTimeFetchTime();
 
+void TTimeSleep(size_t msec);
+
 //------------- TTimer ---------------//
 
 typedef struct TTimer {

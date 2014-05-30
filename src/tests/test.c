@@ -3,11 +3,13 @@
 
 #include "terra.h"
 
-#include "array_test.h"
-#include "rbtree_test.h"
 #include "memleak_test.h"
 
+#include "array_test.h"
 #include "stack_test.h"
+#include "rbtree_test.h"
+
+#include "string_test.h"
 
 int main(int argc, char **argv)
 {
@@ -21,7 +23,9 @@ int main(int argc, char **argv)
 
 	//memleak_test();
 
-	stack_test();
+	//stack_test();
+
+	string_test();
 
 	TLogReport(T_LOG_PROGRESS,0,"All Tests have been executed.\n");
 

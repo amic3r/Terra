@@ -160,24 +160,25 @@ char **TStringSplit(const char *string, const char *substr, size_t *size)
 {
 	char **sto;
 	char *str;
+	char *ptr;
 	size_t len;
 	if(!size || !string || !substr || !*substr) return 0;
 
 	str = strdup(string);
 	len = strlen(substr);
+	ptr = str;
 	*size = 1;
 
-	while (str = strstr(str,substr)) {
-		*str = 0;
+	while (ptr = strstr(ptr,substr)) {
+		*ptr = 0;
 
-		str+=len;
+		ptr+=len;
 		*size += 1;
 	}
 
 	sto = (char **)TAlloc(sizeof(char *) * (*size));
 	if(sto) {
 		size_t i = 1;
-		char *ptr;
 		sto[0] = str;
 
 		while (i < *size) {

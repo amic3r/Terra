@@ -10,6 +10,7 @@
     <ClCompile Include="..\..\src\tests\rbtree_test.c" />
     <ClCompile Include="..\..\src\tests\memleak_test.c" />
     <ClCompile Include="..\..\src\tests\stack_test.c" />
+    <ClCompile Include="..\..\src\tests\string_test.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\tests\test.h" />
@@ -21,6 +22,7 @@
     <ClInclude Include="..\..\src\tests\rbtree_test.h" />
     <ClInclude Include="..\..\src\tests\memleak_test.h" />
     <ClInclude Include="..\..\src\tests\stack_test.h" />
+    <ClInclude Include="..\..\src\tests\string_test.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\contrib\glib\lib\glib-2.0.lib" />

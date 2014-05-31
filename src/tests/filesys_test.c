@@ -7,8 +7,8 @@
 
 void filesys_concat_path(void)
 {
-	const char *test[] = {"/test/","bleh","..","blah",".","blih"};
-	size_t size = 6;
+	const char *test[] = {"/test/","..","..","bleh","..","blah",".","blih"};
+	size_t size = 8;
 
 	char *result = TFileSysConcatPathsArr(test,size);
 

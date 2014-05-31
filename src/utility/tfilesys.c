@@ -188,7 +188,25 @@ char *TFileSysConcatPathsArr(const char **paths, size_t size)
 
 	buffer = strdup(paths[0]);
 	bufferlen = strlen(buffer) + 1;
-	
+
+	if (i < size && !strcmp(paths[i],"..")) {
+		char *end = buffer + bufferlen - 1;
+		if(bufferlen > 2 && *(end-1) == '/') *(end-1) = 0;
+
+		do {
+			if(bufferlen > 2) {
+				char *prev = strrchr(buffer,'/');
+				bufferlen -= (end - prev) - 1;
+				end = buffer + bufferlen - 1;
+				if(prev != buffer) *prev = 0;
+				else *(prev+1) = 0;
+			}
+			i++;
+		} while(i < size && !strcmp(paths[i],".."));
+	}
+
+	buffer = (char *)realloc(buffer, bufferlen);
+
 	for(; i < size;)
 	{
 		component = paths[i++];

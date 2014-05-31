@@ -178,6 +178,41 @@ unsigned char TFileSysFileExists(const char *_fullPath)
 	return 0;
 }
 
+char *TFileSysConcatPathsArr(const char **paths, size_t size)
+{
+	const char *component;
+	char *buffer;
+	size_t bufferlen, i = 1;
+
+	if(!paths || !size) return 0;
+
+	buffer = strdup(paths[0]);
+	bufferlen = strlen(buffer) + 1;
+	
+	for(; i < size;)
+	{
+		component = paths[i++];
+		if(i < size) {
+			if(!strcmp(paths[i],"..")) {
+				i++;
+				continue;
+			}
+		}
+
+		if(strcmp(component,".")) {
+			unsigned char needsep = bufferlen > 1 && buffer[bufferlen-2] != '/';
+			size_t oldlen = bufferlen - 1;
+			bufferlen += strlen(component);
+			if(needsep) bufferlen += 1;
+
+			buffer =(char *)realloc(buffer, bufferlen);
+			snprintf(buffer + oldlen,bufferlen-oldlen,needsep ? "/%s" : "%s",component);
+		}
+	}
+	
+	return buffer;
+}
+
 char *TFileSysConcatPathsList(TSList *list)
 {
 	const char *component = (const char *) TSListFirst(list);

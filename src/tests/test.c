@@ -11,6 +11,8 @@
 
 #include "string_test.h"
 
+#include "filesys_test.h"
+
 int main(int argc, char **argv)
 {
 	TLogSetFile(0);
@@ -25,7 +27,9 @@ int main(int argc, char **argv)
 
 	//stack_test();
 
-	string_test();
+	//string_test();
+
+	filesys_test();
 
 	TLogReport(T_LOG_PROGRESS,0,"All Tests have been executed.\n");
 

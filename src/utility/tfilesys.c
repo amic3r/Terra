@@ -315,9 +315,17 @@ char *TFileSysRemoveExtension(const char *_fullFileName)
 	return s_filePathBuffer;
 }
 
-char **TFileSysSplitPath(const char *path, size_t *size)
+char **TFileSysSplitPath(const char *path)
 {
-	return TStringSplit(path, "/", size,0);
+	size_t len = strlen(path), split = 1, size;
+	if (path[len] == '/') split = 2;
+
+	return TStringRSplit(path, "/",&size,split);
+}
+
+char **TFileSysSplitPathFull(const char *path,size_t *size)
+{
+	return TStringSplit(path, "/",size,0);
 }
 
 unsigned char TFileSysFilesIdentical(const char *_name1, const char *_name2)

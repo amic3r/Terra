@@ -20,7 +20,8 @@ const char *TFileSysGetFilenamePart(const char *_fullFilePath);
 const char *TFileSysGetExtensionPart(const char *_fileFilePath);
 char *TFileSysRemoveExtension(const char *_fullFileName);
 
-char **TFileSysSplitPath(const char *path, size_t *size);
+char **TFileSysSplitPath(const char *path);
+char **TFileSysSplitPathFull(const char *path,size_t *size);
 
 unsigned char TFileSysCreateDirectory(const char *_directory);
 unsigned char TFileSysCreateDirectoryRecursively (const char *_directory);

@@ -178,6 +178,23 @@ unsigned char TFileSysFileExists(const char *_fullPath)
 	return 0;
 }
 
+static inline void getParent(char *buf)
+{
+	char *finalSlash = strrchr(buf,'/');
+	if(finalSlash) {
+		if(finalSlash[1] == '\x0') {
+			char *tmp = finalSlash;
+			*finalSlash = '\x0';
+			finalSlash = strrchr(buf,'/');
+			if(!finalSlash) {
+				*tmp = '/';
+				return;
+			}
+		}
+		*(finalSlash+1)= '\x0';
+	}
+}
+
 char *TFileSysConcatPathsArr(const char **paths, size_t size)
 {
 	const char *component;
@@ -187,25 +204,18 @@ char *TFileSysConcatPathsArr(const char **paths, size_t size)
 	if(!paths || !size) return 0;
 
 	buffer = strdup(paths[0]);
-	bufferlen = strlen(buffer) + 1;
 
 	if (i < size && !strcmp(paths[i],"..")) {
-		char *end = buffer + bufferlen - 1;
-		if(bufferlen > 2 && *(end-1) == '/') *(end-1) = 0;
-
 		do {
-			if(bufferlen > 2) {
-				char *prev = strrchr(buffer,'/');
-				bufferlen -= (end - prev) - 1;
-				end = buffer + bufferlen - 1;
-				if(prev != buffer) *prev = 0;
-				else *(prev+1) = 0;
-			}
+			getParent(buffer);
 			i++;
 		} while(i < size && !strcmp(paths[i],".."));
-	}
 
-	buffer = (char *)realloc(buffer, bufferlen);
+		bufferlen = strlen(buffer) + 1;
+		buffer = (char *)realloc(buffer, bufferlen);
+	} else {
+		bufferlen = strlen(buffer) + 1;
+	}
 
 	for(; i < size;)
 	{
@@ -231,39 +241,6 @@ char *TFileSysConcatPathsArr(const char **paths, size_t size)
 	return buffer;
 }
 
-char *TFileSysConcatPathsList(TSList *list)
-{
-	const char *component = (const char *) TSListFirst(list);
-	char *buffer, *returnBuffer;
-	unsigned int bufferlen = 0;
-	
-	buffer = strdup(component);
-	bufferlen = strlen(buffer) + 1;
-	
-	while(component = (const char *) TSListNext(list))
-	{
-		if(!strcmp(component,"..")) {
-			char *lastpath = strrchr(buffer,'/');
-			if(!lastpath) lastpath = buffer;
-			if(!lastpath+1) {
-				*lastpath = 0;
-				lastpath = strrchr(buffer,'/');
-			}
-			*lastpath = 0;
-			bufferlen = lastpath-buffer + 1;
-		} else if(strcmp(component,".")) {
-			bufferlen += strlen(component) + 1;
-			buffer =(char *)realloc(buffer, bufferlen);
-			if(buffer[0]) strcat(buffer, "/");
-			strcat(buffer, component);
-		}
-	}
-	
-	returnBuffer = strdup(buffer);
-	free(buffer);
-	return returnBuffer;
-}
-
 char *TFileSysConcatPaths(const char *_firstComponent, ...)
 {
 	va_list components;
@@ -278,10 +255,8 @@ char *TFileSysConcatPaths(const char *_firstComponent, ...)
 	while(component = va_arg(components, const char *))
 	{
 		if(!strcmp(component,"..")) {
-			char *lastpath = strrchr(buffer,'/');
-			if(!lastpath) lastpath = buffer;
-			*lastpath = 0;
-			bufferlen = lastpath-buffer + 1;
+			getParent(buffer);
+			bufferlen = strlen(buffer) + 1;
 
 		} else if(strcmp(component,".")) {
 			bufferlen += strlen(component) + 1;
@@ -295,6 +270,15 @@ char *TFileSysConcatPaths(const char *_firstComponent, ...)
 	returnBuffer = strdup(buffer);
 	free(buffer);
 	return returnBuffer;
+}
+
+char *TFileSysGetParent(const char *_fullFilePath)
+{
+	strncpy(s_filePathBuffer, _fullFilePath, FILE_PATH_BUFFER_SIZE);
+
+	getParent(s_filePathBuffer);
+
+	return s_filePathBuffer;
 }
 
 char *TFileSysGetDirectoryPart(const char *_fullFilePath)

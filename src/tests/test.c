@@ -27,9 +27,9 @@ int main(int argc, char **argv)
 
 	//stack_test();
 
-	//string_test();
+	string_test();
 
-	filesys_test();
+	//filesys_test();
 
 	TLogReport(T_LOG_PROGRESS,0,"All Tests have been executed.\n");
 

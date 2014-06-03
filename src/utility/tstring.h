@@ -31,6 +31,7 @@ size_t TStringNumOccurences(const char *target,const char *match);
  * @param source              The string to modify.
  * @param match               The substring to be matched.
  * @param replacement         The string replacing the match.
+ * @param limit               The maximum of replacement allowed, 0 for none
  * @param hint_numoccurence   The number of occurence of the match in the string.
  *                            This value can be 0 and is useless if the match length
  *                            equals the replacement length.
@@ -38,7 +39,7 @@ size_t TStringNumOccurences(const char *target,const char *match);
  *
  * @sa TStringReplaceInplace
  */
-char *TStringReplace(const char *source, const char *match, const char *replacement, size_t hint_numoccurence);
+char *TStringReplace(const char *source, const char *match, const char *replacement, size_t limit, size_t hint_numoccurence);
 
 /**
  * Replace a substring of a string with another string in place.
@@ -47,17 +48,19 @@ char *TStringReplace(const char *source, const char *match, const char *replacem
  * @param source              The string to modify.
  * @param match               The substring to be matched.
  * @param replacement         The string replacing the matches.
+ * @param limit               The maximum of replacement allowed, 0 for none
  * @return                    0 on success,
  *                            1 if a parameter is invalid,
  *                            2 for a length mismatch.
  *
  * @sa TStringReplace
  */
-unsigned char TStringReplaceInplace(char *source, const char *match, const char *replacement);
+unsigned char TStringReplaceInplace(char *source, const char *match, const char *replacement, size_t limit);
 
 void TStringSafetyString(char *string);
 
-char **TStringSplit(const char *string, const char *substr, size_t *size);
+char **TStringSplit(const char *string, const char *substr, size_t *size, size_t limit);
+char **TStringRSplit(const char *string, const char *substr, size_t *size, size_t limit);
 char *TStringAddCharacter(const char *string, char character, size_t start, size_t end);
 
 void TStringStripTrailingWhitespace(char *string);	// Removes trailing /n, /r, space

@@ -28,7 +28,7 @@ unsigned char TRandBool(void)
 	return g_random_boolean();
 }
 
-int rand_integer(int begin,int end)
+int TRandInteger(int begin,int end)
 {
 	return g_rand_int_range(tPseudoTandomGen,begin,end);
 }
@@ -45,7 +45,7 @@ void TRandUniqueIntegersArray(int offset,size_t range,int *intarray,size_t size)
 			integers[i] = i;
 
 		for (i = 0; i < size; ++i) {
-			size_t r = rand_integer(0,range);
+			size_t r = TRandInteger(0,range);
 			size_t value = integers[r];
 			integers[r] = integers[--range];
 
@@ -60,10 +60,10 @@ size_t TRandPickOne(size_t start, size_t end, size_t reject)
 {
 	if (reject == start)		start++;
 	else if (reject == end-1)	end--;
-	else if (rand_integer(0,2)) start = reject+1;
+	else if (TRandInteger(0,2)) start = reject+1;
 	else end = reject;
 	
-	return rand_integer(start,end);
+	return TRandInteger(start,end);
 }
 
 double TRandDouble(double begin,double end)

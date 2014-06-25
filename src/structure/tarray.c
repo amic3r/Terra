@@ -40,9 +40,7 @@ void TArrayInit(TArray *arr,size_t size)
 void TArrayFree(TArray *arr,TFreeFunc func)
 {
 	if(arr) {
-		if(func) {
-			TArrayEmpty(arr,func);
-		}
+		TArrayEmpty(arr,func);
 
 		free(arr->data);
 		free(arr);
@@ -101,12 +99,14 @@ void TArrayCopyInplace(TArray *to, const TArray *arr, TCopyFunc data_cpy)
 
 void TArrayEmpty(TArray *arr,TFreeFunc func)
 {
-	size_t i = 0;
-	for(; i < arr->len && arr->used; ++i) {
-		if(arr->data[i]) {
-			arr->used--;
-			func(arr->data[i]);
-			arr->data[i] = 0;
+	if(func) {
+		size_t i = 0;
+		for(; i < arr->len && arr->used; ++i) {
+			if(arr->data[i]) {
+				arr->used--;
+				func(arr->data[i]);
+				arr->data[i] = 0;
+			}
 		}
 	}
 	arr->len = 0;

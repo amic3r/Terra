@@ -41,8 +41,7 @@ void TRandUniqueIntegersArray(int offset,size_t range,int *intarray,size_t size)
 	{
 		size_t *integers = (size_t *) malloc(sizeof(size_t)*range);
 		size_t i = 0;
-		for(; i < range; ++i)
-			integers[i] = i;
+		for(; i < range; ++i) integers[i] = i;
 
 		for (i = 0; i < size; ++i) {
 			size_t r = TRandInteger(0,range);

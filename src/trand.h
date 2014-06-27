@@ -10,7 +10,7 @@ void TRandSetSeed(size_t seed);
 unsigned char TRandBool(void);
 
 int TRandInteger(int begin,int end);
-
+size_t TRandUInteger(size_t begin,size_t end);
 #define TRandRangeInteger(r) TRandInteger(0,r)
 
 void TRandUniqueIntegersArray(int offset,size_t range,int *intarray,size_t size);

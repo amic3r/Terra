@@ -3,34 +3,36 @@
 
 #include "trand.h"
 
-static GRand *tPseudoTandomGen;
 static size_t tRandSeed = INT_MAX;
 
 void TRandInitialize(size_t seed)
 {
-	tRandSeed = seed;
-	tPseudoTandomGen = g_rand_new_with_seed(seed);
+	TRandSetSeed(seed);
 }
 
 void TRandDestroy()
 {
-	g_rand_free(tPseudoTandomGen);
 }
 
 void TRandSetSeed(size_t seed)
 {
+	srand(seed);
 	tRandSeed = seed;
-	g_rand_set_seed(tPseudoTandomGen,seed);
 }
 
 unsigned char TRandBool(void)
 {
-	return g_random_boolean();
+	return (TRandUInteger(0,UINT_MAX) & (1 << 15)) != 0;
 }
 
 int TRandInteger(int begin,int end)
 {
-	return g_rand_int_range(tPseudoTandomGen,begin,end);
+	return (int)(((double)rand() / RAND_MAX) * (end - begin) + begin);
+}
+
+size_t TRandUInteger(size_t begin,size_t end)
+{
+	return (size_t)(((double)rand() / RAND_MAX) * (end - begin) + begin);
 }
 
 void TRandUniqueIntegersArray(int offset,size_t range,int *intarray,size_t size)
@@ -67,7 +69,7 @@ size_t TRandPickOne(size_t start, size_t end, size_t reject)
 
 double TRandDouble(double begin,double end)
 {
-	return g_rand_double_range(tPseudoTandomGen,begin,end);
+	return (((double)rand() / RAND_MAX) * (end - begin) + begin);
 }
 
 int TRandNormal(size_t mean, size_t range, size_t clip)

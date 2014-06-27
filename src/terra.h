@@ -12,8 +12,6 @@ void print_credits(void);
 #define TERRA_RECTANGLE
 #define TERRA_CUBOID
 
-#include <glib.h>
-
 #include "tdefine.h"
 
 #include "debugging/tdebug.h"

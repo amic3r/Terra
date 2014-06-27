@@ -72,9 +72,6 @@
     <ClInclude Include="..\..\src\utility\tinteger.h" />
     <ClInclude Include="..\..\src\utility\tstring.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\contrib\glib\lib\glib-2.0.lib" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -115,7 +112,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../src/;../../contrib/glib/include/glib-2.0;../../contrib/glib/lib/glib-2.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>

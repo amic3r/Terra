@@ -152,7 +152,4 @@
       <UniqueIdentifier>{9c63dc19-f10b-4fca-b310-b42db6ac1704}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\contrib\glib\lib\glib-2.0.lib" />
-  </ItemGroup>
 </Project>

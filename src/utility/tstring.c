@@ -403,9 +403,3 @@ char *TStringRemoveDuplication(const char *string, const char escchar)
 
 	return escstring;
 }
-
-gint TStringCompareGlibFull(gconstpointer a,gconstpointer b,gpointer c)
-{
-	//TODO: consider c
-	return strcmp((const char *) a,(const char *) b);
-}

@@ -3,6 +3,8 @@
 
 #include "trand.h"
 
+#include <float.h>
+
 static size_t tRandSeed = INT_MAX;
 
 void TRandInitialize(size_t seed)
@@ -90,7 +92,7 @@ int TRandNormal(size_t mean, size_t range, size_t clip)
 
 		seed = (seed - 6.0f) * (range / 3.0f) + mean;
 
-		seed = CLAMP(seed,(float)(mean - range),(float)(mean + range));
+		seed = clamp(seed,(float)(mean - range),(float)(mean + range));
 	}
 
 	return (int)seed;

@@ -32,6 +32,4 @@ inline int TIntegerCompare(const int *a,const int *b)
 int *TIntegerToPtr(int data);
 size_t *TIntegerToPtrU(size_t data);
 
-gint TIntegerCompareGlibU (gconstpointer a,gconstpointer b, gpointer c);
-
 #endif

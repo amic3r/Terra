@@ -7,6 +7,8 @@
 #include <Windows.h>
 #endif
 
+#include <time.h>
+
 void TDebugOutData(void *_data, size_t _dataLen)
 {
 	size_t i = 0;

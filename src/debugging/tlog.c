@@ -3,6 +3,8 @@
 
 #include "tlog.h"
 
+#include <stdarg.h>
+
 static FILE *tLogFile = 0;
 
 const char *cattotext[] = {"","Warning: ","Error: "};

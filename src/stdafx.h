@@ -13,6 +13,4 @@
 
 #include "tdefine.h"
 
-#include <glib.h>
-
 #endif // __included_stdafx_h

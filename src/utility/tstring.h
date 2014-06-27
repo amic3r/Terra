@@ -72,10 +72,4 @@ char *TStringPasswordEncrypt(const char *src);
 char *TStringDoubleChars(const char *string, const char escchar);
 char *TStringRemoveDuplication(const char *string, const char escchar);
 
-gint TStringCompareGlibFull(gconstpointer a,gconstpointer b,gpointer c);
-inline gint TStringCompareGlib(gconstpointer a,gconstpointer b)
-{
-	return TStringCompareGlibFull(a,b,0);
-}
-
 #endif

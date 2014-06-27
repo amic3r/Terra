@@ -49,12 +49,13 @@ void TTimeInitialise()
 void TTimeComputeTime()
 {
 	uint64_t elapsed = mach_absolute_time() - tStart;
-	tCurrentTime = double(elapsed) * (tTimebase.numer / tTimebase.denom) / 1000000000.0;
+	tCurrentTime = (double)elapsed * (tTimebase.numer / tTimebase.denom) / 1000000000.0;
 }
 #endif
 
 #ifdef _LINUX
-static timeval tStart;
+#include <sys/time.h>
+static struct timeval tStart;
 
 void TTimeInitialise()
 {
@@ -64,10 +65,10 @@ void TTimeInitialise()
 
 void TTimeComputeTime()
 {
-	timeval now;
+	struct timeval now;
 	gettimeofday(&now, NULL);
 
-	tCurrentTime = double(now.tv_sec - tStart.tv_sec) + (double(now.tv_usec) - double(tStart.tv_usec)) / 1000000.0;
+	tCurrentTime = (double)(now.tv_sec - tStart.tv_sec) + ((double)now.tv_usec - (double)tStart.tv_usec) / 1000000.0;
 }
 #endif
 

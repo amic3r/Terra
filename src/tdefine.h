@@ -9,6 +9,8 @@
 #define _WINDOWS 1
 #define inline _inline
 #define snprintf _snprintf
+#elif defined(__linux) || defined(__linux__)
+#define _LINUX 1
 #endif
 
 #if _MSC_VER >= 1400

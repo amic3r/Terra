@@ -2,7 +2,7 @@
 #ifndef __included_terra_profiler_h
 #define __included_terra_profiler_h
 
-class ProfiledElement;
+/*class ProfiledElement;
 
 class Profiler
 {
@@ -78,6 +78,6 @@ class ProfiledElement
 		void ResetTotalTime();
 
 		double GetMaxChildTime();
-};
+};*/
 
 #endif

@@ -360,13 +360,12 @@ void TSListMerge(TSList *mlist, TSList *left, TSList *right,TCompareFunc func)
 void TSListSort(TSList *list,TCompareFunc func)
 {
 	TSList left,right;
-	size_t i,middle;
+	size_t middle;
 
 	if(!list || list->len <= 1) return;
 
 	TSListInit(&left);
 	TSListInit(&right);
-	i = 0;
 	middle = list->len/2;
 
 	TSListFetch(list,middle-1);

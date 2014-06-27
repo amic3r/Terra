@@ -112,7 +112,6 @@ size_t TStringNumOccurences(const char *target,const char *match)
 char *TStringReplace(const char *source, const char *match, const char *replacement, size_t limit, size_t hint_numoccurence)
 {
 	char *result = 0;
-	int bufferPosition = 0;
 	size_t srclen = 0;
 	size_t matchlen = 0;
 	size_t repllen = 0;
@@ -253,9 +252,9 @@ char *TStringAddCharacter(const char *string, char character, size_t start, size
 
 	newstring = (char *) TAlloc(sizeof(char) * len);
 	if(newstring) {
-		if(start != 0) _snprintf(newstring,start,string);
+		if(start != 0) strncpy(newstring,string,start);
 		newstring[start] = character;
-		_snprintf(newstring+nextindex,len-start,string+end);
+		strncpy(newstring+nextindex,string+end,len-start);
 	}
 	
 	return newstring;
@@ -357,12 +356,12 @@ char *TStringDoubleChars(const char *string, const char escchar)
 			esc = strchr(string, escchar);
 			if(esc) {
 				size_t escsize = esc-string +1;
-				_snprintf(cur,escsize,string); cur += escsize;
-				_snprintf(cur,1,"%c",escchar); cur += 1;
+				strncpy(cur,string,escsize); cur += escsize;
+				snprintf(cur,1,"%c",escchar); cur += 1;
 
 				string = esc+1;
 			} else {
-				_snprintf(cur,size,string);
+				strncpy(cur,string,size);
 			}
 		} while(esc);
 
@@ -389,11 +388,11 @@ char *TStringRemoveDuplication(const char *string, const char escchar)
 			esc = strstr(string, doubled);
 			if(esc) {
 				size_t escsize = esc-string +1;
-				_snprintf(cur,escsize,string); cur += escsize;
+				strncpy(cur,string,escsize); cur += escsize;
 
 				string = esc+2;
 			} else {
-				_snprintf(cur,size,string);
+				strncpy(cur,string,size);
 			}
 		} while(esc);
 

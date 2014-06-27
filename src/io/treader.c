@@ -289,7 +289,6 @@ unsigned int TReaderReadBlock(TReader *r,unsigned int _count, unsigned char *_bu
 
 static inline unsigned char TReaderNextLine(TReader *r)
 {
-	unsigned char found = 0;
 	unsigned int result = 0;
 	char *ptr = r->line;
 
@@ -362,7 +361,6 @@ static inline unsigned char TReaderSkipSeparators(TReader *r)
 static inline unsigned int TReaderFindTokenEnd(TReader *r)
 {
 	unsigned int tokenEnd = 0;
-	char lastchar = 0;
 	
 	//maybe the buffer is all used up
 	if(r->offset == r->linelen)

@@ -33,21 +33,21 @@ void string_test_replace(void)
 	const char *fstring = "This is such a useless string\n";
 
 	char *result = TStringReplace(fstring,"i","01",2,3);
-	printf(result);
+	printf("%s", result);
 	free(result);
 
 	result = TStringReplace(fstring,"i","01",0,3);
-	printf(result);
+	printf("%s", result);
 	free(result);
 
 	result = strdup(fstring);
 	TStringReplaceInplace(result,"i","1",2);
-	printf(result);
+	printf("%s", result);
 	free(result);
 
 	result = strdup(fstring);
 	TStringReplaceInplace(result,"i","1",0);
-	printf(result);
+	printf("%s", result);
 	free(result);
 }
 

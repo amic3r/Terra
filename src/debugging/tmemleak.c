@@ -185,4 +185,8 @@ void TMemLeakPrint(char *_filename)
 {
 }
 #endif
+#else
+void TMemLeakPrint(char *_filename)
+{
+}
 #endif

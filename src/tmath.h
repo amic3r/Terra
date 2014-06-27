@@ -81,56 +81,56 @@ inline static unsigned char PointEqual(const Point *p1, const Point *p2)
 	return p1->x == p2->x && p1->y == p2->y;
 }
 
-inline float euclidian_distance(const Point *to, const Point *from)
+inline static float euclidian_distance(const Point *to, const Point *from)
 {
 	float y = to->y-from->y, x = to->x-from->x;
 	return sqrtf(y*y + x*x);
 }
 
-inline void Tuple3fSet(Tuple3f *t, float x, float y, float z)
+inline static void Tuple3fSet(Tuple3f *t, float x, float y, float z)
 {
 	t->x = x; t->y = y; t->z = z;
 }
 
-inline void Tuple3fCopy(Tuple3f *t1, const Tuple3f *t2)
+inline static void Tuple3fCopy(Tuple3f *t1, const Tuple3f *t2)
 {
 	t1->x = t2->x; t1->y = t2->y; t1->z = t2->z;
 }
 
-inline unsigned char Tuple3fEqual(const Tuple3f *t1,const Tuple3f *t2)
+inline static unsigned char Tuple3fEqual(const Tuple3f *t1,const Tuple3f *t2)
 {
 	return t1->x == t2->x && t1->y == t2->y &&t1->z == t2->z;
 }
 
-inline void Tuple3fMin(Tuple3f *t1,const Tuple3f *t2)
+inline static void Tuple3fMin(Tuple3f *t1,const Tuple3f *t2)
 {
 	t1->x = min(t1->x,t2->x);
 	t1->y = min(t1->y,t2->y);
 	t1->z = min(t1->z,t2->z);
 }
 
-inline void Tuple3fMax(Tuple3f *t1,const Tuple3f *t2)
+inline static void Tuple3fMax(Tuple3f *t1,const Tuple3f *t2)
 {
 	t1->x = max(t1->x,t2->x);
 	t1->y = max(t1->y,t2->y);
 	t1->z = max(t1->z,t2->z);
 }
 
-inline void Tuple3fAdd(Tuple3f *t1,const Tuple3f *t2)
+inline static void Tuple3fAdd(Tuple3f *t1,const Tuple3f *t2)
 {
 	t1->x += t2->x;
 	t1->y += t2->y;
 	t1->z += t2->z;
 }
 
-inline void Tuple3fSub(Tuple3f *t1,const Tuple3f *t2)
+inline static void Tuple3fSub(Tuple3f *t1,const Tuple3f *t2)
 {
 	t1->x -= t2->x;
 	t1->y -= t2->y;
 	t1->z -= t2->z;
 }
 
-inline void Tuple3fRotate(Vector *vector, const Tuple3f *cosangles, const Tuple3f *sinangles)
+inline static void Tuple3fRotate(Vector *vector, const Tuple3f *cosangles, const Tuple3f *sinangles)
 {
 	float cx = cosangles->x, sx = sinangles->x;
 	float cy = cosangles->y, sy = sinangles->y;
@@ -196,7 +196,7 @@ inline static void VectorNormalize(Vector *v)
 	v->z /= length;
 }
 
-inline Vector NormalfromTuples(const Tuple3f *v1,const Tuple3f *v2,const Tuple3f *v3)
+inline static Vector NormalfromTuples(const Tuple3f *v1,const Tuple3f *v2,const Tuple3f *v3)
 {
 	Vector vec1 = *v1,vec2 = *v2,out;
 

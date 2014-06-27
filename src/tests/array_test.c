@@ -7,7 +7,7 @@
 #include "array_test.h"
 
 static TArray testarray;
-static TIArray iarr;
+//static TIArray iarr;
 static char *yay = "yay";
 
 void array_test_init(void)
@@ -88,12 +88,12 @@ void array_test_free(void)
 	TArrayEmptyFull(&testarray,free);
 }
 
-static void *intarr_print(int *v, void *udata)
+/*static void *intarr_print(int *v, void *udata)
 {
 	printf("%d",*v);
 
 	return 0;
-}
+}*/
 
 void array_test(void)
 {

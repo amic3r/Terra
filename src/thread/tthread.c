@@ -5,11 +5,13 @@
 
 #ifndef _WINDOWS
 #include <pthread.h>
+#include <sys/time.h>
 #else
 #include <Windows.h>
 #endif
 
 #include "talloc.h"
+#include "debugging/tdebug.h"
 
 //------------- Thread --------------//
 
@@ -52,7 +54,7 @@ TThread *TThreadCreate(int (*fn)(void *), void *data)
 #ifdef _WINDOWS
 	t->thread = CreateThread(0,0,run_wrapper,tf,0,0);
 #else
-	pthread_create(&pt->thread, NULL,&run_wrapper,tf);
+	pthread_create(&t->thread, NULL,&run_wrapper,tf);
 #endif
 
 	return t;
@@ -96,22 +98,22 @@ TMutex *TMutexNew(int type)
 	InitializeCriticalSection(&m->mutex);
 #else
 	int error = pthread_mutexattr_init(&m->mutexAttr);
-	assert(error == 0);
+	TAssert(error == 0);
 
-	if(type == PARTICLE_MUTEX_TYPE_NORMAL) {
+	if(type == T_MUTEX_NORMAL) {
 		type = PTHREAD_MUTEX_NORMAL;
-	} else if (type == PARTICLE_MUTEX_TYPE_RECURSIVE) {
+	} else if (type == T_MUTEX_RECURSIVE) {
 		type = PTHREAD_MUTEX_RECURSIVE;
-	} else if (type == PARTICLE_MUTEX_TYPE_ERRORCHECK) {
+	} else if (type == T_MUTEX_ERRORCHECK) {
 		type = PTHREAD_MUTEX_ERRORCHECK;
-	} else if (type == PARTICLE_MUTEX_TYPE_READWRITE) {
+	} else if (type == T_MUTEX_READWRITE) {
 		type = PTHREAD_PROCESS_PRIVATE;
 	}
 
 	error = pthread_mutexattr_settype(&m->mutexAttr, type);
-	assert(error == 0);
+	TAssert(error == 0);
 	error = pthread_mutex_init(&m->mutex, &m->mutexAttr);
-	assert(error == 0);
+	TAssert(error == 0);
 #endif
 
 	return m;
@@ -134,7 +136,7 @@ void TMutexLock(TMutex *m)
 #ifdef _WINDOWS
 	EnterCriticalSection(&m->mutex);
 #else
-	assert(pthread_mutex_lock(&m->mutex) == 0);
+	TAssert(pthread_mutex_lock(&m->mutex) == 0);
 #endif
 }
 
@@ -143,7 +145,7 @@ void TMutexUnlock(TMutex *m)
 #ifdef _WINDOWS
 	LeaveCriticalSection(&m->mutex);
 #else
-	assert(pthread_mutex_unlock(&m->mutex) == 0);
+	TAssert(pthread_mutex_unlock(&m->mutex) == 0);
 #endif
 }
 
@@ -190,18 +192,15 @@ int TCVSleep(TCV *v, size_t msec)
 	SleepConditionVariableCS(&v->var, &v->m->mutex, msec);
 	return GetLastError();
 #else
-	int               rc;
 	struct timespec   ts;
 	struct timeval    tp;
 
 	gettimeofday(&tp,0);
 
-	ts.tv_sec = now.tv_sec+5;
-	ts.tv_nsec = (now.tv_usec+1000UL*msec)*1000UL;
+	ts.tv_sec = tp.tv_sec+5;
+	ts.tv_nsec = (tp.tv_usec+1000UL*msec)*1000UL;
 
-	pthread_cond_timedwait(&v->var,&v->m->mutex,&ts);
-
-	return rc;
+	return pthread_cond_timedwait(&v->var,&v->m->mutex,&ts);
 #endif
 }
 

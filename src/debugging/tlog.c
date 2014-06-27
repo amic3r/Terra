@@ -3,8 +3,6 @@
 
 #include "tlog.h"
 
-#include <stdarg.h>
-
 static FILE *tLogFile = 0;
 
 const char *cattotext[] = {"","Warning: ","Error: "};
@@ -33,7 +31,7 @@ void TLogReport(int category, const char *function, const char *format,...)
 
 void TLogStartReport(int category, const char *function)
 {
-	fprintf(tLogFile,cattotext[category]);
+	fputs(cattotext[category],tLogFile);
 	if(category > 0) fprintf(tLogFile,"In function %s: ", function);
 }
 

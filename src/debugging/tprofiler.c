@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-#define PROFILE_HISTORY_LENGTH 10
+/*#define PROFILE_HISTORY_LENGTH 10
 Profiler *g_profiler = NULL;
 
 ProfiledElement::ProfiledElement(const char *_name, ProfiledElement *_parent)
@@ -208,4 +208,4 @@ void Profiler::EndProfile(const char *_name)
 		AppDebugAssert(strcmp(m_currentElement->m_name, m_currentElement->m_parent->m_name)!= 0);
 		m_currentElement = m_currentElement->m_parent;
 	}
-}
+}*/

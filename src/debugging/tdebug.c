@@ -5,6 +5,8 @@
 
 #ifdef _WINDOWS
 #include <Windows.h>
+#else
+#include <assert.h>
 #endif
 
 #include <time.h>

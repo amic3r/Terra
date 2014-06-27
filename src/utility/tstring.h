@@ -5,14 +5,14 @@
 #include "tdefine.h"
 #include <ctype.h>
 
-inline char *TStringLwr(char *s) {
+static inline char *TStringLwr(char *s) {
 	char *p = s;
 	for (; *p; p++)
 		*p = tolower(*p);
 	return s;
 }
 
-inline char *TStringUpr(char *s) {
+static inline char *TStringUpr(char *s) {
 	char *p = s;
 	for (; *p; p++)
 		*p = toupper(*p);

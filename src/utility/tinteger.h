@@ -16,12 +16,12 @@ static inline size_t TIntegerUpperPowerOfTwo(size_t v)
 }
 
 
-inline unsigned char TIntegerIsPowerOfTwo(unsigned int v)
+static inline unsigned char TIntegerIsPowerOfTwo(unsigned int v)
 {
 	return v && !(v & (v - 1));
 }
 
-inline int TIntegerCompare(const int *a,const int *b)
+static inline int TIntegerCompare(const int *a,const int *b)
 {
 	if(*a > *b) return 1;
 	else if (*a < *b) return -1;

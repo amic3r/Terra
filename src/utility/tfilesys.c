@@ -7,12 +7,18 @@
 #include <io.h>
 #include <direct.h>
 #include <windows.h>
+#else
+#include <limits.h>
+#include <dirent.h>
+#include <sys/stat.h>
 #endif
 
 #include <ctype.h>
 #include "tstring.h"
 
 #include "talloc.h"
+
+#include "debugging/tdebug.h"
 
 #define FILE_PATH_BUFFER_SIZE 256
 static char s_filePathBuffer[FILE_PATH_BUFFER_SIZE + 1];
@@ -76,7 +82,10 @@ int TFileSysListDirectory(TSList *list, const char *_dir, const char *_filter, u
 	long fileindex = -1;
 	char *searchstring = 0;
 	struct _finddata_t thisfile;
-	char *dir = 0;
+	char *dir;
+#else
+	DIR *dir;
+	struct dirent *entry;
 #endif
 
 	if(!list) return 1;
@@ -110,10 +119,9 @@ int TFileSysListDirectory(TSList *list, const char *_dir, const char *_filter, u
 		} while(!_findnext(fileindex, &thisfile));
 	}
 #else
-	DIR *dir = opendir(_dir);
-	if(dir == NULL)
-		return 1;
-	for(struct dirent *entry;(entry = readdir(dir))!= NULL;) {
+	dir = opendir(_dir);
+	if(!dir) return 1;
+	for(;(entry = readdir(dir))!= NULL;) {
 		if(FilterMatch(entry->d_name, _filter)) {
 			char fullname[strlen(_dir) + strlen(entry->d_name) + 2];
 			sprintf(fullname, "%s%s%s", _dir, _dir[0] ? "/" : "", entry->d_name);
@@ -148,11 +156,10 @@ int TFileSysListSubDirectoryNames(TSList *list, const char *_dir)
 	free(dir);
 #else
 	DIR *dir = opendir(_dir);
+	struct dirent *entry;
 
-	if(!list) return 1;
-	if(dir == NULL)
-		return 1;
-	for(struct dirent *entry;(entry = readdir(dir))!= NULL;) {
+	if(!list || !dir) return 1;
+	for(;(entry = readdir(dir))!= NULL;) {
 		if(entry->d_name[0] == '.')
 			continue;
 
@@ -160,7 +167,7 @@ int TFileSysListSubDirectoryNames(TSList *list, const char *_dir)
 		sprintf(fullname, "%s%s%s", _dir, _dir[0] ? "/" : "", entry->d_name);
 
 		if(TFileSysIsDirectory(fullname))
-			slist_append(list,strdup(entry->d_name));
+			TSListAppend(list,strdup(entry->d_name));
 	}
 	closedir(dir);
 #endif
@@ -252,7 +259,7 @@ char *TFileSysConcatPaths(const char *_firstComponent, ...)
 	bufferlen = strlen(buffer) + 1;
 	
 	va_start(components, _firstComponent);
-	while(component = va_arg(components, const char *))
+	while((component = va_arg(components, const char *)))
 	{
 		if(!strcmp(component,"..")) {
 			getParent(buffer);
@@ -427,51 +434,48 @@ const char *TFileSysFindCaseInsensitive(const char *_fullPath)
 #ifndef _LINUX
 	return _fullPath;
 #else
-	if(!_fullPath)
-		return NULL;
-
 	static char retval[PATH_MAX];
-	char *dir = NULL, *file = NULL;
+	char *dir = 0, *file = 0;
+	const char *res;
+	TSList *files;
+
+	if(!_fullPath) return 0;
 
 	// Make our own copy of the result, since GetDirectoryPart
 	// and GetFilenamePart use the same variable for temp
 	// storage.
-	if((dir = TFileSysGetDirectoryPart(_fullPath))!= NULL)		dir = newStr(dir);
+	if((dir = TFileSysGetDirectoryPart(_fullPath))!= NULL) dir = strdup(dir);
 
 	// No directory provided. Assume working directory.
-	if(!dir)											file = newStr(_fullPath);
+	if(!dir) file = strdup(_fullPath);
 	else {
 		dir[strlen(dir) - 1] = '\0';
-		file = newStr(GetFilenamePart(_fullPath));
+		file = strdup(TFileSysGetFilenamePart(_fullPath));
 	}
-	LList <char *> *files = TFileSysListDirectory(dir, file);
+	files = TSListNew();
+	TFileSysListDirectory(files, dir, file, 0);
 
-	delete [] dir; delete [] file; dir = file = NULL;
+	free(dir); free(file);
+	dir = file = 0;
 
 	// We shouldn't have found more than one match.
-	if(files->Size() > 1) return 0;
+	if(files->len > 1) {TSListFree(files,free); return 0;}
 
 	// No results, so maybe the file does not exist.
-	if(files->Size()== 0)
-		return _fullPath;
+	if(files->len == 0) {TSListFree(files,free); return _fullPath;}
 
 	// Copy the corrected path back, and prepare to return it.
+	res = (const char *) TSListGet(files,0);
 	memset(retval, 0, sizeof(retval));
-	AppAssert(strlen(files->GetData(0))< PATH_MAX);
-	strcpy(retval, files->GetData(0));
+	TAssert(strlen(res)< PATH_MAX);
+	strcpy(retval, res);
 
 	// Negate the possibility of a memory access violation.
 	// This way, we can simply strcpy the result inline without
 	// worrying about a buffer overflow.
-	AppAssert(strlen(retval)== strlen(_fullPath));
+	TAssert(strlen(retval)== strlen(_fullPath));
 
-	while(files->Size()) {
-		char *data = files->GetData(0);
-		files->RemoveData(0);
-		delete [] data;
-	}
-
-	delete files;
+	TSListFree(files,free);
 
 	return retval;
 #endif

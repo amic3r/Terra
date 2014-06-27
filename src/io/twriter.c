@@ -188,7 +188,6 @@ int TWriterWriteBlock(TWriter *w,unsigned int _count, const void *_buffer)
 void TWriterWrite(TWriter *w,const char *format,...)
 {
 	if(w && format) {
-		
 		va_list args;
 		va_start(args, format);
 

@@ -1,12 +1,9 @@
 
 --PRIORITY
 
-	- Implement BTree
-	- Implement randomizer
-
 --REQUIRED
 
-	- Get rid of glib
+	- Implement better randomizer
 	- Implement Octree
 
 --OPTIONAL

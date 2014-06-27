@@ -4,8 +4,9 @@
 #include "trand.h"
 
 #include <float.h>
+#include <limits.h>
 
-static size_t tRandSeed = INT_MAX;
+static size_t tRandSeed = UINT_MAX;
 
 void TRandInitialize(size_t seed)
 {

@@ -37,6 +37,7 @@ test: $(TOBJS) all
 
 #compiling the precompiled header
 $(OBJSDIR)%.h.gch:%.h $(CMF)
+	@dirname $@ | xargs mkdir -p 2>/dev/null || echo "$@ already exists" >/dev/null
 	@echo "Precompiling header $@..."
 	@$(CC) -o $@ -c $< || echo "error. Disabling precompiled header"
 	@echo "...Done"
@@ -45,4 +46,3 @@ $(OBJSDIR)%.h.gch:%.h $(CMF)
 $(OBJSDIR)%.o: %.c $(CMF)
 	@dirname $@ | xargs mkdir -p 2>/dev/null || echo "$@ already exists" >/dev/null
 	$(CC) $(CFLAGS) -I$(WORKDIR) $(PCH_FILE:%.h=-include %.h) -c $< -o $@
-

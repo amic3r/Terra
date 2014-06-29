@@ -10,13 +10,13 @@ WORKDIR  := $(shell pwd)
 OBJSDIR  := .objs/
 
 OUT      := terra
-SOURCES  := $(shell find -type f -name '*.c' -not -iwholename '*tests*')
+SOURCES  := $(shell find -type f -name '*.c' -not -iwholename '*tests*' | cut -c 3-)
 OBJECTS  := $(SOURCES:%.c=$(OBJSDIR)%.o)
 PCH_FILE := stdafx.h
 OBJSPCH  := $(PCH_FILE:%.h=$(OBJSDIR)%.h.gch)
 CMF      := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
-TSRC     := $(shell find -type f -name '*.c' -iwholename '*tests*')
+TSRC     := $(shell find -type f -name '*.c' -iwholename '*tests*' | cut -c 3-)
 TOBJS    := $(TSRC:%.c=$(OBJSDIR)%.o)
 TLIBS    := $(OUT) pthread m
 TOUT     := terra_test
@@ -39,7 +39,7 @@ test: $(TOBJS) all
 $(OBJSDIR)%.h.gch:%.h $(CMF)
 	@dirname $@ | xargs mkdir -p 2>/dev/null || echo "$@ already exists" >/dev/null
 	@echo "Precompiling header $@..."
-	@$(CC) -o $@ -c $< || echo "error. Disabling precompiled header"
+	@$(CC) $(CFLAGS) -o $@ -c $< || echo "error. Disabling precompiled header"
 	@echo "...Done"
 
 #compiling source files

@@ -4,9 +4,7 @@
 
 #define TERRA_NAME        "Terra"
 #define TERRA_DESCRIPTION "Utility library"
-#define TERRA_VERSION     "0.1.0"
-
-void print_credits(void);
+#define TERRA_VERSION     "0.7.0"
 
 #define TERRA_LINE
 #define TERRA_RECTANGLE

@@ -2,6 +2,8 @@
 #ifndef __included_terra_time_h
 #define __included_terra_time_h
 
+//------------- TTime ----------------//
+
 void TTimeInitialise();
 double TTimeGetTime();
 

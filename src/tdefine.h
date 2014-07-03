@@ -47,6 +47,8 @@
 					y = p; \
 					}
 
+typedef void * TPtr;
+typedef const void * TCPtr;
 
 typedef void (*TFreeFunc) (void *);
 

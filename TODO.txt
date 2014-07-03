@@ -14,6 +14,7 @@ for v 1.0.0:
 	- Implement better tests
 	- Set up the License
 	- Comments in header
+	- Implement cpu info
 
 --OPTIONAL
 

@@ -33,10 +33,12 @@ void heap_test_push(void)
 	TAssert(THeapNumElements(test) == 5);
 }
 
+#ifdef _DEBUG
 void heap_test_print(void)
 {
 	THeapPrint(test,(TIterFunc) printf);
 }
+#endif
 
 void heap_test_pop(void)
 {
@@ -67,7 +69,9 @@ void heap_test(void)
 
 	heap_test_push();
 
+#ifdef _DEBUG
 	heap_test_print();
+#endif
 
 	heap_test_pop();
 
@@ -77,7 +81,9 @@ void heap_test(void)
 
 	heap_test_push();
 
+#ifdef _DEBUG
 	heap_test_print();
+#endif
 
 	heap_test_pop2();
 

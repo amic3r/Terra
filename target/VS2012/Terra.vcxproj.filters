@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\stdafx.c" />
-    <ClCompile Include="..\..\src\terra.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\ttime.c" />
     <ClCompile Include="..\..\src\debugging\tlog.c">

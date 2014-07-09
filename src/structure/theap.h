@@ -6,8 +6,8 @@
 
 typedef struct _THeap THeap;
 
-#define MAX_PRIORITY 0
-#define MIN_PRIORITY 1
+#define THEAP_MAX_PRIORITY 0
+#define THEAP_MIN_PRIORITY 1
 
 THeap *THeapNew(int type);
 void THeapFree(THeap *h, TFreeFunc func);

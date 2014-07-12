@@ -27,8 +27,8 @@
 #undef  min
 #define min(a,b)     ((a < b) ? a : b)
 
-#undef	abs
-#define abs(a)	     ((a < 0) ? -a : a)
+//#undef	abs
+//#define abs(a)	     ((a < 0) ? -a : a)
 
 #undef	clamp
 #define clamp(x,l,h) ((x > h) ? h : ((x < l) ? l : x))

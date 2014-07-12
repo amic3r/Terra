@@ -131,6 +131,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <CompileAs>CompileAsC</CompileAs>
       <OpenMPSupport>true</OpenMPSupport>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>

@@ -1,23 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="debugging">
+      <UniqueIdentifier>{aef9f6e0-fe8a-422e-a743-280bae0c8928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="geometry">
+      <UniqueIdentifier>{484f8881-3c52-4f43-be3d-ad5bb2a00f24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="io">
+      <UniqueIdentifier>{867614ad-0e10-454d-9642-6dde9e8ef04e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="structure">
+      <UniqueIdentifier>{a2259e2b-d0b9-4bb4-88e6-559e399ca65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thread">
+      <UniqueIdentifier>{f70a0a5f-0aa5-4b52-9a6f-9adff80ca4fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility">
+      <UniqueIdentifier>{4d62b46e-b736-4fed-aa74-fdf2ea2bd8ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="..\..\src\stdafx.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\ttime.c" />
+    <ClCompile Include="..\..\src\debugging\tdebug.c">
+      <Filter>debugging</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\debugging\tlog.c">
       <Filter>debugging</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utility\tstring.c">
+    <ClCompile Include="..\..\src\debugging\tmemleak.c">
+      <Filter>debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\debugging\tprofiler.c">
+      <Filter>debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\io\tio.c">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\io\treader.c">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\io\twriter.c">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\utility\tfilesys.c">
       <Filter>utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\utility\tinteger.c">
       <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\utility\tfilesys.c">
+    <ClCompile Include="..\..\src\utility\tstring.c">
       <Filter>utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\thread\tthread.c">
       <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\tarray.c">
+      <Filter>structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\theap.c">
+      <Filter>structure</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\structure\tlist.c">
       <Filter>structure</Filter>
@@ -31,55 +75,65 @@
     <ClCompile Include="..\..\src\structure\trbtree.c">
       <Filter>structure</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\structure\theap.c">
-      <Filter>structure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\tarray.c">
-      <Filter>structure</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\io\twriter.c">
-      <Filter>io</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\io\treader.c">
-      <Filter>io</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\debugging\tdebug.c">
-      <Filter>debugging</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\io\tio.c">
-      <Filter>io</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\debugging\tmemleak.c">
-      <Filter>debugging</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\debugging\tprofiler.c">
-      <Filter>debugging</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\structure\tstack.c">
       <Filter>structure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
+    <ClInclude Include="..\..\src\talloc.h" />
+    <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\terra.h" />
     <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\ttime.h" />
+    <ClInclude Include="..\..\src\debugging\tdebug.h">
+      <Filter>debugging</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\debugging\tlog.h">
       <Filter>debugging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\tdefine.h" />
-    <ClInclude Include="..\..\src\utility\tstring.h">
+    <ClInclude Include="..\..\src\debugging\tmemleak.h">
+      <Filter>debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\debugging\tprofiler.h">
+      <Filter>debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\tcuboid.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\tline.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\geometry\trectangle.h">
+      <Filter>geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\io\tio.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\io\treader.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\io\twriter.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\tfilesys.h">
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\utility\tinteger.h">
       <Filter>utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\utility\tfilesys.h">
+    <ClInclude Include="..\..\src\utility\tstring.h">
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\thread\tthread.h">
       <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\tarray.h">
+      <Filter>structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\structure\theap.h">
+      <Filter>structure</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\structure\tlist.h">
       <Filter>structure</Filter>
@@ -93,62 +147,8 @@
     <ClInclude Include="..\..\src\structure\trbtree.h">
       <Filter>structure</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\structure\theap.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\tarray.h">
-      <Filter>structure</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\io\twriter.h">
-      <Filter>io</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\io\treader.h">
-      <Filter>io</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\geometry\trectangle.h">
-      <Filter>geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\geometry\tline.h">
-      <Filter>geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\geometry\tcuboid.h">
-      <Filter>geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\debugging\tdebug.h">
-      <Filter>debugging</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\io\tio.h">
-      <Filter>io</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\talloc.h" />
-    <ClInclude Include="..\..\src\debugging\tmemleak.h">
-      <Filter>debugging</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\debugging\tprofiler.h">
-      <Filter>debugging</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\structure\tstack.h">
       <Filter>structure</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="debugging">
-      <UniqueIdentifier>{5c9d09a6-cc99-4969-baff-c1f473c2a84d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="io">
-      <UniqueIdentifier>{2a4ab9f1-20f5-485e-9e1f-1ac7b34cbdfe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="thread">
-      <UniqueIdentifier>{1c3aeaad-bdb7-4cd3-a0f8-23ed1f4347dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="utility">
-      <UniqueIdentifier>{c9439028-2f4b-4ad2-a7b1-6ef84239dd0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="structure">
-      <UniqueIdentifier>{c72c8ac1-2d04-4bbe-910d-a5ff122580e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="geometry">
-      <UniqueIdentifier>{9c63dc19-f10b-4fca-b310-b42db6ac1704}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

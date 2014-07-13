@@ -5,7 +5,6 @@
     <ClCompile Include="..\..\src\tests\array_test.c" />
     <ClCompile Include="..\..\src\tests\heap_test.c" />
     <ClCompile Include="..\..\src\tests\test_utils.c" />
-    <ClCompile Include="..\..\src\stdafx.c" />
     <ClCompile Include="..\..\src\tests\reader_test.c" />
     <ClCompile Include="..\..\src\tests\rbtree_test.c" />
     <ClCompile Include="..\..\src\tests\memleak_test.c" />
@@ -18,7 +17,6 @@
     <ClInclude Include="..\..\src\tests\array_test.h" />
     <ClInclude Include="..\..\src\tests\heap_test.h" />
     <ClInclude Include="..\..\src\tests\test_utils.h" />
-    <ClInclude Include="..\..\src\stdafx.h" />
     <ClInclude Include="..\..\src\tests\reader_test.h" />
     <ClInclude Include="..\..\src\tests\rbtree_test.h" />
     <ClInclude Include="..\..\src\tests\memleak_test.h" />

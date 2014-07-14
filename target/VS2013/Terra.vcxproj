@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0C484D23-DD85-4B3C-AA5D-41E0527E1938}</ProjectGuid>
+    <ProjectGuid>{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}</ProjectGuid>
     <RootNamespace>Terra</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

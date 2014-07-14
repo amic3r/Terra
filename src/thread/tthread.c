@@ -64,11 +64,9 @@ int TThreadJoin(TThread *t)
 {
 	int retval = 0;
 #ifdef _WINDOWS
-	unsigned long wrv;
 	WaitForSingleObject(t->thread, INFINITE);
-	GetExitCodeThread(t->thread,&wrv);
+	GetExitCodeThread(t->thread,(unsigned long *) &retval);
 	CloseHandle(t->thread);
-	retval = wrv;
 #else
 	pthread_join(t->thread, (void **) &retval);
 #endif

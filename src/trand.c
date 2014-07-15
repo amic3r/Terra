@@ -93,7 +93,7 @@ int TRandNormal(size_t mean, size_t range, size_t clip)
 
 		seed = (seed - 6.0f) * (range / 3.0f) + mean;
 
-		seed = clamp(seed,(float)(mean - range),(float)(mean + range));
+		seed = TCLAMP(seed,(float)(mean - range),(float)(mean + range));
 	}
 
 	return (int)seed;

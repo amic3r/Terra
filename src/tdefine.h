@@ -13,7 +13,7 @@
 #define _LINUX 1
 #endif
 
-#if _MSC_VER >= 1400
+#ifdef _MSC_VER
 #define __STDC__ 1  // Enforces ANSI C compliance.
 
 // __STDC__ disables the following definitions in the C headers
@@ -21,27 +21,22 @@
 #define stricmp _stricmp
 #endif
 
-#undef  max
-#define max(a,b)     ((a > b) ? a : b)
+#define UNREFERENCED_PARAMETER(P) (P)
 
-#undef  min
-#define min(a,b)     ((a < b) ? a : b)
+#define TMAX(a,b)     ((a > b) ?  a : b)
+#define TMIN(a,b)     ((a < b) ?  a : b)
+#define TABS(a)	      ((a < 0) ? -a : a)
 
-//#undef	abs
-//#define abs(a)	     ((a < 0) ? -a : a)
+#define TCLAMP(x,l,h) ((x > h) ? h : ((x < l) ? l : x))
 
-#undef	clamp
-#define clamp(x,l,h) ((x > h) ? h : ((x < l) ? l : x))
-
-#undef swap
-#define swap(x,y)	{ \
+#define TSWAP(x,y)	{ \
 					unsigned char st[sizeof(x) == sizeof(y) ? sizeof(x) : -1]; \
 					memcpy(st,&y,sizeof(x)); \
 					memcpy(&y,&x,sizeof(x)); \
 					memcpy(&x,st,sizeof(x)); \
 					}
 
-#define swapt(x,y,T)	{ \
+#define TSWAPT(x,y,T)	{ \
 					T p = x; \
 					x = y; \
 					y = p; \

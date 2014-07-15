@@ -104,16 +104,16 @@ inline static unsigned char Tuple3fEqual(const Tuple3f *t1,const Tuple3f *t2)
 
 inline static void Tuple3fMin(Tuple3f *t1,const Tuple3f *t2)
 {
-	t1->x = min(t1->x,t2->x);
-	t1->y = min(t1->y,t2->y);
-	t1->z = min(t1->z,t2->z);
+	t1->x = TMIN(t1->x,t2->x);
+	t1->y = TMIN(t1->y,t2->y);
+	t1->z = TMIN(t1->z,t2->z);
 }
 
 inline static void Tuple3fMax(Tuple3f *t1,const Tuple3f *t2)
 {
-	t1->x = max(t1->x,t2->x);
-	t1->y = max(t1->y,t2->y);
-	t1->z = max(t1->z,t2->z);
+	t1->x = TMIN(t1->x,t2->x);
+	t1->y = TMIN(t1->y,t2->y);
+	t1->z = TMIN(t1->z,t2->z);
 }
 
 inline static void Tuple3fAdd(Tuple3f *t1,const Tuple3f *t2)

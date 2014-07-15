@@ -13,9 +13,6 @@ static double tCurrentTime;
 #ifdef _WINDOWS
 static double tTickInterval = 1.0;
 
-#define _WIN32_WINDOWS 0x0500      // for IsDebuggerPresent
-#define VC_EXTRALEAN
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 void TTimeInitialise()

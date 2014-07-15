@@ -58,7 +58,7 @@ int TArrayResize(TArray *arr, size_t _size)
 			if(!TRAlloc((void **) &arr->data,sizeof(void *) * _size)) return 1;
 
 			if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(void *) *(_size-arr->size));
-			else arr->len = min(arr->len,_size);
+			else arr->len = TMIN(arr->len,_size);
 
 			arr->size = _size;
 		}
@@ -131,7 +131,7 @@ void TArrayInsert(TArray *arr,void *data, size_t index)
 	if(index >= arr->size) TArrayGrow(arr,index+1);
 	if(!arr->data[index]) arr->used += 1;
 	arr->data[index] = data;
-	arr->len = max(index+1,arr->len);
+	arr->len = TMAX(index+1,arr->len);
 }
 
 void TArrayMove(TArray *arr, size_t start, size_t end, int space)
@@ -164,7 +164,7 @@ void TArrayMove(TArray *arr, size_t start, size_t end, int space)
 
 		if(arr->len <= (arr->size >> 2)) TArrayShrink(arr);
 
-		arr->len = max(end,arr->len);
+		arr->len = TMAX(end,arr->len);
 	}
 
 }
@@ -291,7 +291,7 @@ int TIArrayResize(TIArray *arr, size_t _size)
 			if(!TRAlloc((void **) &arr->data,sizeof(int) * _size)) return 1;
 
 			if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(int) *(_size-arr->size));
-			else arr->len = min(arr->len,_size);
+			else arr->len = TMIN(arr->len,_size);
 
 			arr->size = _size;
 		}
@@ -351,7 +351,7 @@ void TIArrayInsert(TIArray *arr, int data, size_t index)
 {
 	if(index >= arr->size) TIArrayGrow(arr,index+1);
 	arr->data[index] = data;
-	arr->len = max(index+1,arr->len);
+	arr->len = TMAX(index+1,arr->len);
 }
 
 void TIArrayMove(TIArray *arr, size_t start, size_t end, int space)
@@ -384,7 +384,7 @@ void TIArrayMove(TIArray *arr, size_t start, size_t end, int space)
 
 		if(arr->len <= (arr->size >> 2)) TIArrayShrink(arr);
 
-		arr->len = max(end,arr->len);
+		arr->len = TMAX(end,arr->len);
 	}
 
 }

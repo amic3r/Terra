@@ -249,7 +249,7 @@ void *TRBTreeReplace(TRBTree *t, void *key, void *data)
 	TRBTreeNode *current = TRBTreeFindNode(t, key);
 	if (!current) return 0;
 
-	swap(current->data,data);
+	TSWAP(current->data,data);
 	return data;
 }
 

@@ -77,8 +77,8 @@ static inline void TRectangleMerge(TRectangle *r1, const TRectangle *r2)
 		r1->w = r2->w;
 	} else {
 		int x2 = r1->x + r1->w;
-		r1->x = min(r1->x,r2->x);
-		r1->w = max(x2,r2->x + r2->w) - r1->x;
+		r1->x = TMIN(r1->x,r2->x);
+		r1->w = TMAX(x2,r2->x + r2->w) - r1->x;
 	}
 
 	if (r1->y == -1) {
@@ -86,8 +86,8 @@ static inline void TRectangleMerge(TRectangle *r1, const TRectangle *r2)
 		r1->h = r2->h;
 	} else {
 		int y2 = r1->y + r1->h;
-		r1->y = min(r1->y,r2->y);
-		r1->h = max(y2,r2->y + r2->h) - r1->y;
+		r1->y = TMIN(r1->y,r2->y);
+		r1->h = TMAX(y2,r2->y + r2->h) - r1->y;
 	}
 }
 

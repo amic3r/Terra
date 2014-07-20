@@ -11,6 +11,7 @@ unsigned char TFileSysIsDirectory(const char *_fullPath);
 unsigned char TFileSysFileExists(const char *_fullPath);
 unsigned char TFileSysFilesIdentical(const char *_name1, const char *_name2);
 
+char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data);
 char *TFileSysConcatPathsArr(const char **paths, size_t size);
 char *TFileSysConcatPaths(const char *_firstComponent, ...);
 

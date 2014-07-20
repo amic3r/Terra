@@ -202,6 +202,47 @@ static inline void getParent(char *buf)
 	}
 }
 
+char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data)
+{
+	const char *component;
+	char *buffer;
+	size_t size, i = 1;
+
+	if (!func) return 0;
+
+	buffer = strdup(func(data));
+	if (!buffer) return 0;
+
+	size = strlen(buffer) + 1;
+	component = func(data);
+
+	while (component) {
+		if (!strcmp(component, "..")) {
+			size_t osize = size;
+
+			getParent(buffer);
+			size = strlen(buffer) + 1;
+			if (osize != size) buffer = (char *)realloc(buffer, size);
+		}
+		else if (strcmp(component, ".")) {
+			size_t clen = strlen(component);
+			if (clen != 0) {
+				size_t olen = size - 1;
+				unsigned char needsep = buffer[olen - 1] != '/';
+				size += clen;
+				if (needsep) size += 1;
+
+				buffer = (char *)realloc(buffer, size);
+				_snprintf(buffer + olen, size - olen, needsep ? "/%s" : "%s", component);
+			}
+		}
+
+		component = func(data);
+	}
+
+	return buffer;
+}
+
 char *TFileSysConcatPathsArr(const char **paths, size_t size)
 {
 	const char *component;

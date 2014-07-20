@@ -206,7 +206,7 @@ struct _TQuadTree {
 	TStack *freespace;
 };
 
-TQuadTree *quadtree_new(const TRectangle *bounds)
+TQuadTree *TQuadTreeNew(const TRectangle *bounds)
 {
 	TQuadTree *qt = (TQuadTree *) TAlloc(sizeof(TQuadTree));
 	if(!qt) return 0;

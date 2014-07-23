@@ -3,7 +3,7 @@
 
 #include "tio.h"
 
-#include "thread/tthread.h"
+#include "tthread.h"
 
 #ifdef _WINDOWS
 #include <shlobj.h>

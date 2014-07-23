@@ -1,211 +1,106 @@
 
 #include "stdafx.h"
 
-/*#define PROFILE_HISTORY_LENGTH 10
-Profiler *g_profiler = NULL;
+#include "tprofiler.h"
 
-ProfiledElement::ProfiledElement(const char *_name, ProfiledElement *_parent)
+#include "talloc.h"
+#include "ttime.h"
+#include "structure\tarray.h"
+
+#include <float.h>
+
+void TProfileInit(TProfile *p)
 {
-	m_currentTotalTime = 0.0;
-	m_currentNumCalls = 0;
-	m_lastTotalTime = 0.0;
-	m_lastNumCalls = 0;
-	m_longest = DBL_MIN;
-	m_shortest = DBL_MAX;
-	m_callStartTime = 0.0;
-	m_historyTotalTime = 0.0;
-	m_historyNumSeconds = 0.0;
-	m_historyNumCalls = 0;
-	m_parent = _parent;
-	m_isExpanded = false;
-	m_name = strdup(_name);
+	p->currentTotalTime = p->lastTotalTime = p->historyTotalTime = 0.0;
+	p->shortest = DBL_MAX;
+	p->longest = DBL_MIN;
+	p->timerStart = 0.0;
+	p->currentNumCalls = p->lastNumCalls = p->historyNumCalls = 0;
+	p->numAdvances = 0;
+	p->name = 0;
 }
 
-ProfiledElement::~ProfiledElement()
+TProfile *TProfileNew(void)
 {
+	TProfile *p = (TProfile *) TAlloc(sizeof(p));
+	if(p) TProfileInit(p);
+	return p;
 }
 
-void ProfiledElement::Start()
+void TProfileDestroy(TProfile *p)
 {
-	m_callStartTime = GetHighResTime();
+	free(p->name);
+	free(p);
 }
 
-void ProfiledElement::End()
+void TProfileStart(TProfile *p)
 {
-	double const timeNow = GetHighResTime();
+	p->timerStart = TTimeGetTime();
+}
 
-	m_currentNumCalls++;
-	double const duration = timeNow - m_callStartTime;
-	m_currentTotalTime += duration;
+void TProfileStop(TProfile *p)
+{
+	const double duration = TTimeGetTime() - p->timerStart;
+
+	p->currentNumCalls++;
 	
-	if(duration > m_longest)		m_longest = duration;
-	if(duration < m_shortest)		m_shortest = duration;
+	p->currentTotalTime += duration;
+	
+	if(duration > p->longest)  p->longest = duration;
+	if(duration < p->shortest) p->shortest = duration;
 }
 
-void ProfiledElement::Advance()
+void TProfileAdvance(TProfile *p)
 {
-	m_lastTotalTime = m_currentTotalTime;
-	m_lastNumCalls = m_currentNumCalls;
-	m_currentTotalTime = 0.0;
-	m_currentNumCalls = 0;
-	m_historyTotalTime += m_lastTotalTime;
-	m_historyNumSeconds += 1.0;
-	m_historyNumCalls += m_lastNumCalls;
-
-	float thisMax = m_lastTotalTime;
-	if(thisMax > g_profiler->m_maxFound)g_profiler->m_maxFound = thisMax;
-
-	for(int i = 0; i < m_children.Size(); ++i)
-		if(m_children.valid(i))			m_children[i]->Advance();
+	p->lastTotalTime = p->currentTotalTime;
+	p->lastNumCalls = p->currentNumCalls;
+	p->currentTotalTime = 0.0;
+	p->currentNumCalls = 0;
+	p->historyTotalTime += p->lastTotalTime;
+	p->numAdvances++;
+	p->historyNumCalls += p->lastNumCalls;
 }
 
-void ProfiledElement::ResetHistory()
+void TProfileResetHistory(TProfile *p)
 {
-	m_historyTotalTime = 0.0;
-	m_historyNumSeconds = 0.0;
-	m_historyNumCalls = 0;
-	m_longest = DBL_MIN;
-	m_shortest = DBL_MAX;
-
-	for(unsigned int i = 0; i < m_children.Size(); ++i)
-		if(m_children.valid(i))			m_children[i]->ResetHistory();
+	p->historyTotalTime = 0.0;
+	p->numAdvances = 0;
+	p->historyNumCalls = 0;
+	p->longest = DBL_MIN;
+	p->shortest = DBL_MAX;
 }
 
-double ProfiledElement::GetMaxChildTime()
+//--- Profiler ---------------------------//
+
+static struct Profiler {
+	TArray *elements;
+} profiler;
+
+void TProfilerInitialise(void)
 {
-	double rv = 0.0;
-
-	short first = m_children.StartOrderedWalk();
-	if(first == -1)		return 0.0;
-
-	short i = first;
-	while(i != -1)
-	{
-		float val = m_children[i]->m_historyTotalTime;
-		ProfiledElement *child = m_children[i];
-		if(val > rv)		rv = val;
-
-		i = m_children.GetNextOrderedIndex();
-	}
-	return rv / m_children[first]->m_historyNumSeconds;
+	profiler.elements = TArrayNew(0);
 }
 
-#ifdef SINGLE_THREADED_PROFILER
-static Uint32 s_profileThread;
-#define MAIN_THREAD_ONLY { if(SDL_ThreadID()!= s_profileThread)return; }
-#else
-#define MAIN_THREAD_ONLY {}
-#endif 
-
-Profiler::Profiler()
+void TProfilerDestroy(void)
 {
-	m_doGlFinish = false;
-	m_currentElement = NULL;
-	m_insideRenderSection = false;
-	m_maxFound = 0.0f;
-	m_lastFrameStart = -1.0;
-	m_rootElement = new ProfiledElement("Root", NULL);
-	m_rootElement->m_isExpanded = true;
-	m_currentElement = m_rootElement;
-	m_endOfSecond = GetHighResTime() + 1.0f;
-#ifdef SINGLE_THREADED_PROFILER
-	s_profileThread = SDL_ThreadID();
-#endif
+	TArrayFree(profiler.elements, (TFreeFunc) TProfileDestroy);
+	profiler.elements = 0;
 }
 
-Profiler::~Profiler()
+TProfile *TProfilerProfile(const char *name)
 {
+	TProfile *p = TProfileNew();
+	p->name = strdup(name);
+	TArrayPush(profiler.elements,p);
+	return p;
 }
 
-void Profiler::Start()
+void TProfilerAdvance(void)
 {
-	if(!g_profiler)			g_profiler = new Profiler();
+	TArrayForeach(profiler.elements,(TIterFunc) TProfileAdvance);
 }
 
-
-void Profiler::Stop()
+void TProfilerResetHistory(void)
 {
-	if(g_profiler) {
-		delete g_profiler;
-		g_profiler = NULL;
-	}
+	TArrayForeach(profiler.elements,(TIterFunc) TProfileResetHistory);
 }
-
-void Profiler::Advance()
-{
-#ifdef PROFILER_ENABLED
-	double timeNow = GetHighResTime();
-	if(timeNow > m_endOfSecond) {
-		m_lengthOfLastSecond = timeNow - (m_endOfSecond - 1.0);
-		m_endOfSecond = timeNow + 1.0;
-
-		m_maxFound = 0.0f;
-		m_rootElement->Advance();
-	}
-
-	if(m_lastFrameStart >= 0) {
-		double lastFrameTime = timeNow - m_lastFrameStart;
-		m_frameTimes.insertAtStart(int(lastFrameTime * 1000));
-	}
-	while(m_frameTimes.ValidIndex(200))
-		m_frameTimes.RemoveData(200);
-	m_lastFrameStart = timeNow;
-#endif
-}
-
-void Profiler::RenderStarted()
-{
-	m_insideRenderSection = true;
-}
-
-void Profiler::RenderEnded()
-{
-	m_insideRenderSection = false;
-}
-
-void Profiler::ResetHistory()
-{
-	m_rootElement->ResetHistory();
-}
-
-static bool s_expanded = false;
-
-void Profiler::StartProfile(const char *_name)
-{
-	MAIN_THREAD_ONLY;
-
-	ProfiledElement *pe = m_currentElement->m_children.GetData(_name);
-	if(!pe) {
-		pe = new ProfiledElement(_name, m_currentElement);
-		m_currentElement->m_children.insert(_name, pe);
-	}
-
-	AppReleaseAssert(m_rootElement->m_isExpanded, "Profiler root element has been un-expanded");
-	bool wasExpanded = m_currentElement->m_isExpanded;
-
-	if(m_currentElement->m_isExpanded) {
-		if(m_doGlFinish && m_insideRenderSection)
-			glFinish();
- 		pe->Start();
-	}
-	m_currentElement = pe;
-	m_currentElement->m_wasExpanded = wasExpanded;
-}
-
-void Profiler::EndProfile(const char *_name)
-{
-	MAIN_THREAD_ONLY;
-
-	if(m_currentElement && m_currentElement->m_parent) {
-		if(m_currentElement->m_parent->m_isExpanded) {
-			if(m_doGlFinish && m_insideRenderSection)
-				glFinish();
-
-			AppDebugAssert(m_currentElement != m_rootElement);
-			AppDebugAssert(stricmp(_name, m_currentElement->m_name)== 0);
-			m_currentElement->End();
-		}
-		AppDebugAssert(strcmp(m_currentElement->m_name, m_currentElement->m_parent->m_name)!= 0);
-		m_currentElement = m_currentElement->m_parent;
-	}
-}*/

@@ -3,7 +3,7 @@
 
 #include "twriter.h"
 
-#include "thread/tthread.h"
+#include "tthread.h"
 
 #define LINE_ENDING_LENGTH 4
 #define DEFAULT_COMMENT_FORMAT "#","\n"

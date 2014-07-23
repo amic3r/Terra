@@ -10,6 +10,7 @@
 #include "rbtree_test.h"
 
 #include "string_test.h"
+#include "hardware_test.h"
 
 #include "filesys_test.h"
 
@@ -27,7 +28,9 @@ int main(int argc, char **argv)
 
 	//stack_test();
 
-	string_test();
+	hardware_test();
+
+	//string_test();
 
 	//filesys_test();
 

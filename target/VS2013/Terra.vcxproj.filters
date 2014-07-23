@@ -13,11 +13,11 @@
     <Filter Include="structure">
       <UniqueIdentifier>{a2259e2b-d0b9-4bb4-88e6-559e399ca65a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="thread">
-      <UniqueIdentifier>{f70a0a5f-0aa5-4b52-9a6f-9adff80ca4fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="utility">
       <UniqueIdentifier>{4d62b46e-b736-4fed-aa74-fdf2ea2bd8ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hardware">
+      <UniqueIdentifier>{9c7706e4-115c-4a0b-bd6f-0b5af69134b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,9 +54,6 @@
     <ClCompile Include="..\..\src\utility\tstring.c">
       <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\thread\tthread.c">
-      <Filter>thread</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\structure\tarray.c">
       <Filter>structure</Filter>
     </ClCompile>
@@ -78,6 +75,10 @@
     <ClCompile Include="..\..\src\structure\tstack.c">
       <Filter>structure</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\hardware\thardware.c">
+      <Filter>hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\tthread.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
@@ -126,9 +127,6 @@
     <ClInclude Include="..\..\src\utility\tstring.h">
       <Filter>utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\thread\tthread.h">
-      <Filter>thread</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\structure\tarray.h">
       <Filter>structure</Filter>
     </ClInclude>
@@ -150,5 +148,9 @@
     <ClInclude Include="..\..\src\structure\tstack.h">
       <Filter>structure</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\hardware\thardware.h">
+      <Filter>hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\tthread.h" />
   </ItemGroup>
 </Project>

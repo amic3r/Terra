@@ -3,7 +3,7 @@
 
 #include "treader.h"
 
-#include "thread/tthread.h"
+#include "tthread.h"
 
 #include "debugging/tdebug.h"
 

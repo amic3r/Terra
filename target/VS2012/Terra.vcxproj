@@ -10,69 +10,6 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\debugging\tdebug.c" />
-    <ClCompile Include="..\..\src\debugging\tlog.c" />
-    <ClCompile Include="..\..\src\debugging\tmemleak.c" />
-    <ClCompile Include="..\..\src\debugging\tprofiler.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\io\tio.c" />
-    <ClCompile Include="..\..\src\io\treader.c" />
-    <ClCompile Include="..\..\src\io\twriter.c" />
-    <ClCompile Include="..\..\src\structure\trbtree.c" />
-    <ClCompile Include="..\..\src\structure\tstack.c" />
-    <ClCompile Include="..\..\src\trand.c" />
-    <ClCompile Include="..\..\src\stdafx.c">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\tarray.c" />
-    <ClCompile Include="..\..\src\structure\theap.c" />
-    <ClCompile Include="..\..\src\structure\tlist.c" />
-    <ClCompile Include="..\..\src\structure\toctree.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\structure\tquadtree.c" />
-    <ClCompile Include="..\..\src\thread\tthread.c" />
-    <ClCompile Include="..\..\src\ttime.c" />
-    <ClCompile Include="..\..\src\utility\tfilesys.c" />
-    <ClCompile Include="..\..\src\utility\tinteger.c" />
-    <ClCompile Include="..\..\src\utility\tstring.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\src\debugging\tdebug.h" />
-    <ClInclude Include="..\..\src\debugging\tlog.h" />
-    <ClInclude Include="..\..\src\debugging\tmemleak.h" />
-    <ClInclude Include="..\..\src\debugging\tprofiler.h">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\src\io\tio.h" />
-    <ClInclude Include="..\..\src\structure\trbtree.h" />
-    <ClInclude Include="..\..\src\structure\tstack.h" />
-    <ClInclude Include="..\..\src\talloc.h" />
-    <ClInclude Include="..\..\src\tdefine.h" />
-    <ClInclude Include="..\..\src\geometry\tcuboid.h" />
-    <ClInclude Include="..\..\src\geometry\tline.h" />
-    <ClInclude Include="..\..\src\geometry\trectangle.h" />
-    <ClInclude Include="..\..\src\io\treader.h" />
-    <ClInclude Include="..\..\src\io\twriter.h" />
-    <ClInclude Include="..\..\src\tmath.h" />
-    <ClInclude Include="..\..\src\trand.h" />
-    <ClInclude Include="..\..\src\stdafx.h" />
-    <ClInclude Include="..\..\src\structure\tarray.h" />
-    <ClInclude Include="..\..\src\structure\theap.h" />
-    <ClInclude Include="..\..\src\structure\tlist.h" />
-    <ClInclude Include="..\..\src\structure\toctree.h">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\src\structure\tquadtree.h" />
-    <ClInclude Include="..\..\src\terra.h" />
-    <ClInclude Include="..\..\src\thread\tthread.h" />
-    <ClInclude Include="..\..\src\ttime.h" />
-    <ClInclude Include="..\..\src\utility\tfilesys.h" />
-    <ClInclude Include="..\..\src\utility\tinteger.h" />
-    <ClInclude Include="..\..\src\utility\tstring.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{58A31A79-8ED4-460B-9E9D-AB840B8E91D5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -108,7 +45,7 @@
       <CompileAs>CompileAsC</CompileAs>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <TreatWarningAsError>true</TreatWarningAsError>
-	  <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;VC_EXTRALEAN;WIN32_LEAN_AND_MEAN</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;VC_EXTRALEAN;WIN32_LEAN_AND_MEAN</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -129,6 +66,63 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\debugging\tdebug.c" />
+    <ClCompile Include="..\..\src\debugging\tlog.c" />
+    <ClCompile Include="..\..\src\debugging\tmemleak.c" />
+    <ClCompile Include="..\..\src\debugging\tprofiler.c" />
+    <ClCompile Include="..\..\src\hardware\thardware.c" />
+    <ClCompile Include="..\..\src\io\tio.c" />
+    <ClCompile Include="..\..\src\io\treader.c" />
+    <ClCompile Include="..\..\src\io\twriter.c" />
+    <ClCompile Include="..\..\src\stdafx.c">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\src\structure\tarray.c" />
+    <ClCompile Include="..\..\src\structure\theap.c" />
+    <ClCompile Include="..\..\src\structure\tlist.c" />
+    <ClCompile Include="..\..\src\structure\toctree.c" />
+    <ClCompile Include="..\..\src\structure\tquadtree.c" />
+    <ClCompile Include="..\..\src\structure\trbtree.c" />
+    <ClCompile Include="..\..\src\structure\tstack.c" />
+    <ClCompile Include="..\..\src\trand.c" />
+    <ClCompile Include="..\..\src\tthread.c" />
+    <ClCompile Include="..\..\src\ttime.c" />
+    <ClCompile Include="..\..\src\utility\tfilesys.c" />
+    <ClCompile Include="..\..\src\utility\tinteger.c" />
+    <ClCompile Include="..\..\src\utility\tstring.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\debugging\tdebug.h" />
+    <ClInclude Include="..\..\src\debugging\tlog.h" />
+    <ClInclude Include="..\..\src\debugging\tmemleak.h" />
+    <ClInclude Include="..\..\src\debugging\tprofiler.h" />
+    <ClInclude Include="..\..\src\geometry\tcuboid.h" />
+    <ClInclude Include="..\..\src\geometry\tline.h" />
+    <ClInclude Include="..\..\src\geometry\trectangle.h" />
+    <ClInclude Include="..\..\src\hardware\thardware.h" />
+    <ClInclude Include="..\..\src\io\tio.h" />
+    <ClInclude Include="..\..\src\io\treader.h" />
+    <ClInclude Include="..\..\src\io\twriter.h" />
+    <ClInclude Include="..\..\src\stdafx.h" />
+    <ClInclude Include="..\..\src\structure\tarray.h" />
+    <ClInclude Include="..\..\src\structure\theap.h" />
+    <ClInclude Include="..\..\src\structure\tlist.h" />
+    <ClInclude Include="..\..\src\structure\toctree.h" />
+    <ClInclude Include="..\..\src\structure\tquadtree.h" />
+    <ClInclude Include="..\..\src\structure\trbtree.h" />
+    <ClInclude Include="..\..\src\structure\tstack.h" />
+    <ClInclude Include="..\..\src\talloc.h" />
+    <ClInclude Include="..\..\src\tdefine.h" />
+    <ClInclude Include="..\..\src\terra.h" />
+    <ClInclude Include="..\..\src\tmath.h" />
+    <ClInclude Include="..\..\src\trand.h" />
+    <ClInclude Include="..\..\src\tthread.h" />
+    <ClInclude Include="..\..\src\ttime.h" />
+    <ClInclude Include="..\..\src\utility\tfilesys.h" />
+    <ClInclude Include="..\..\src\utility\tinteger.h" />
+    <ClInclude Include="..\..\src\utility\tstring.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

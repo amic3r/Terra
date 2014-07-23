@@ -84,28 +84,6 @@ void TMouseFree(TMouse *m)
 	free(m);
 }
 
-void TMouseChangeSpeed(size_t newspeed)
-{
-#ifdef _WINDOWS
-	SystemParametersInfo(SPI_SETMOUSESPEED,0,&newspeed,SPIF_SENDCHANGE);
-#endif
-}
-
-
-void TMouseShow()
-{
-#ifdef _WINDOWS
-	ShowCursor(1);
-#endif
-}
-
-void TMouseHide()
-{
-#ifdef _WINDOWS
-	ShowCursor(0);
-#endif
-}
-
 /*void printMouse(void)
 {
 	int numMouseButton = GetSystemMetrics(SM_CMOUSEBUTTONS);

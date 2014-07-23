@@ -33,11 +33,6 @@ typedef struct {
 TMouse *TMouseGetInf(void);
 void TMouseFree(TMouse *m);
 
-void TMouseChangeSpeed(size_t newspeed);
-
-void TMouseShow();
-void TMouseHide();
-
 //void printHardware(void);
 
 #endif

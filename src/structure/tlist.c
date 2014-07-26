@@ -391,9 +391,9 @@ void TSListSort(TSList *list,TCompareFunc func)
 }
 
 void *TSListPopIndex(TSList *list, size_t index) {
-	TSListNode *n = TSListFetch(list,index-1);
 	void *data = 0;
-	
+
+	TSListNode *n = TSListFetch(list,index-1);
 	if (n) {
 		if(n->next) {
 			data = n->next->data;
@@ -418,7 +418,7 @@ void TSListRemove(TSList *list, void *data) {
 	if (cur) TSListRemovePtrFrom(list,origin);
 }
 
-void TSListEemovePtr(TSList *list, TSListNode *ptr) {
+void TSListRemovePtr(TSList *list, TSListNode *ptr) {
     TSListNode *cur = list->head, *origin = 0;
     
     while (cur && cur != ptr) {

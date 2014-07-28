@@ -1,8 +1,7 @@
 
-for v 1.0.0:
+for v1.0:
 
 --PRIORITY
-	- Implement the Profiler
 
 --REQUIRED
 
@@ -14,7 +13,7 @@ for v 1.0.0:
 	- Implement better tests
 	- Set up the License
 	- Comments in header
-	- Implement cpu info
+	- Implement hardware info (partially done)
 
 --OPTIONAL
 
@@ -22,3 +21,4 @@ for v 1.0.0:
 	- Implement customizable allocation
 	- Improve code of data structure (iterators,...)
 	- Implement regex
+	

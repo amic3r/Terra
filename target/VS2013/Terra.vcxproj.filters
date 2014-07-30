@@ -78,6 +78,7 @@
     <ClCompile Include="..\..\src\hardware\thardware.c">
       <Filter>hardware</Filter>
     </ClCompile>
+	<ClCompile Include="..\..\src\talloc.c" />
     <ClCompile Include="..\..\src\tthread.c" />
   </ItemGroup>
   <ItemGroup>

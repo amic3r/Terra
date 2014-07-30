@@ -59,6 +59,7 @@
     <ClCompile Include="..\..\src\hardware\thardware.c">
       <Filter>hardware</Filter>
     </ClCompile>
+	<ClCompile Include="..\..\src\talloc.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />

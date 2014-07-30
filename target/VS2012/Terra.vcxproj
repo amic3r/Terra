@@ -85,6 +85,7 @@
     <ClCompile Include="..\..\src\structure\tquadtree.c" />
     <ClCompile Include="..\..\src\structure\trbtree.c" />
     <ClCompile Include="..\..\src\structure\tstack.c" />
+	<ClCompile Include="..\..\src\talloc.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\tthread.c" />
     <ClCompile Include="..\..\src\ttime.c" />

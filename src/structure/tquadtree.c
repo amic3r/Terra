@@ -8,6 +8,8 @@
 #include "tarray.h"
 #include "tstack.h"
 
+#include "debugging/tlog.h"
+
 #include "utility/tinteger.h"
 
 TQuadObj *TQuadObjNew(const TRectangle *rect, void *data)

@@ -192,7 +192,7 @@ void TListRemovePtr(TList *list, TListNode *ptr) {
 
 //------------- Single-Linked TList ---------------//
 
-TSListNode *TSListNodeNew(void *data) {
+TSListNode *TSListNodeNew(const void *data) {
 	TSListNode *node = (TSListNode *)TAlloc(sizeof(TSListNode));
 	if(!node) return 0;
 
@@ -245,14 +245,14 @@ void TSListEmpty(TSList *list,TFreeFunc func)
 {
 	while (list->head) {
 		TSListNode *remove = list->head;
-		if(func) func(list->head->data);
+		if(func) func((void *) list->head->data);
 		list->head = list->head->next;
 		free(remove);
 	}
 	TSListInit(list);
 }
 
-int TSListInsert(TSList *list,void *data, size_t index)
+int TSListInsert(TSList *list, const void *data, size_t index)
 {
 	TSListNode *newnode = TSListNodeNew(data);
 	if(!newnode) return 1;
@@ -279,7 +279,7 @@ int TSListInsert(TSList *list,void *data, size_t index)
 	return 0;
 }
 
-void TSListReplace(TSList *list,void *data, size_t index)
+void TSListReplace(TSList *list, const void *data, size_t index)
 {
 	if(TSListFetch(list,index)) return;
 
@@ -301,7 +301,7 @@ void TSListForeach(const TSList *list,TIterFunc func)
 	TSListNode *cur = list->head;
 
 	while (cur) {
-		func(cur->data);
+		func((void *) cur->data);
 		cur = cur->next;
 	}
 }
@@ -311,7 +311,7 @@ void *TSListForeachData(const TSList *list,TDataIterFunc func,void *user_data)
 	TSListNode *cur = list->head;
 
 	while (cur) {
-		void *value = func(cur->data,user_data);
+		void *value = func((void *) cur->data,user_data);
 		if(value) return value;
 		cur = cur->next;
 	}
@@ -323,7 +323,7 @@ void *TSListGet(TSList *list,size_t index)
 {
 	TSListNode *n = TSListFetch(list,index);
 
-	return n ? n->data : 0;
+	return n ? (void *) n->data : 0;
 }
 
 void *TSListNext(TSList *list)
@@ -391,7 +391,7 @@ void TSListSort(TSList *list,TCompareFunc func)
 }
 
 void *TSListPopIndex(TSList *list, size_t index) {
-	void *data = 0;
+	const void *data = 0;
 
 	TSListNode *n = TSListFetch(list,index-1);
 	if (n) {
@@ -404,10 +404,10 @@ void *TSListPopIndex(TSList *list, size_t index) {
 		TSListRemovePtrFrom(list,0);
 	}
 	
-	return data;
+	return (void *) data;
 }
 
-void TSListRemove(TSList *list, void *data) {
+void TSListRemove(TSList *list, const void *data) {
     TSListNode *cur = list->head, *origin = 0;
     
     while (cur && cur->data != data) {

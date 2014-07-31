@@ -49,7 +49,7 @@ static inline void *TListPop(TList *l) { return TListPopIndex(l,l->len-1);}
 
 typedef struct _TSListNode {
 	struct _TSListNode *next;
-	void *data;
+	const void *data;
 } TSListNode;
 
 
@@ -67,11 +67,11 @@ void TSListInit(TSList *list);
 void TSListFree(TSList *list,TFreeFunc func);
 void TSListEmpty(TSList *list,TFreeFunc func);
 
-int TSListInsert(TSList *list,void *data, size_t index);
-static inline int TSListPrepend(TSList *list,void *data) { return TSListInsert(list,data,0); }
-static inline int TSListAppend(TSList *list,void *data) { return TSListInsert(list,data,list->len); }
+int TSListInsert(TSList *list,const void *data, size_t index);
+static inline int TSListPrepend(TSList *list,const void *data) { return TSListInsert(list,data,0); }
+static inline int TSListAppend(TSList *list,const void *data) { return TSListInsert(list,data,list->len); }
 
-void TSListReplace(TSList *list,void *data, size_t index);
+void TSListReplace(TSList *list,const void *data, size_t index);
 
 void TSListConcat(TSList *list,const TSList *list2);
 
@@ -87,7 +87,7 @@ void TSListSort(TSList *list,TCompareFunc func);
 
 void *TSListPopIndex(TSList *list, size_t index);
 
-void TSListRemove(TSList *list, void *data);
+void TSListRemove(TSList *list,const void *data);
 void TSListRemovePtr(TSList *list, TSListNode *ptr);
 void TSListRemoveIndex(TSList *list, size_t index);
 void TSListRemovePtrFrom(TSList *list, TSListNode *origin);

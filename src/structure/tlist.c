@@ -263,8 +263,9 @@ int TSListInsert(TSList *list, const void *data, size_t index)
 	} else if (index >= list->len) {
         list->end = list->end->next = newnode;
 		list->previousindex = list->len;
-	} else if (index <= 0) {
-		list->head = newnode->next = list->head;
+	} else if (!index) {
+		newnode->next = list->head;
+		list->head = newnode;
 		list->previousindex = 0;
 	} else {
 		TSListFetch(list,index-1);

@@ -30,24 +30,24 @@ int monitorEnum(HMONITOR hm, HDC hdc, LPRECT rect, LPARAM p)
 
 TScreens *TScreensGetInf(void)
 {
-#ifdef _WINDOWS
 	TScreens *scrs = (TScreens *) TAlloc(sizeof(TScreens));
-	struct Data {
-		TScreen *screens;
-		int idx;
-	} data;
-	
-	scrs->numscreens = GetSystemMetrics(SM_CMONITORS);
+	if (scrs) {
+		scrs->numscreens = GetSystemMetrics(SM_CMONITORS);
+		scrs->screens = 0;
+#ifdef _WINDOWS
+		struct Data {
+			TScreen *screens;
+			int idx;
+		} data;
 
-	scrs->screens = data.screens = (TScreen *) TAlloc(sizeof(TScreen) * scrs->numscreens);
-	data.idx = 0;
+		scrs->screens = data.screens = (TScreen *) TAlloc(sizeof(TScreen) * scrs->numscreens);
+		data.idx = 0;
 
-	EnumDisplayMonitors(NULL,NULL,(MONITORENUMPROC) monitorEnum,(LPARAM) &data);
+		EnumDisplayMonitors(NULL,NULL,(MONITORENUMPROC) monitorEnum,(LPARAM) &data);
+#endif
+	}
 
 	return scrs;
-#endif
-
-	return 0;
 }
 
 void TScreensFree(TScreens *scrs)

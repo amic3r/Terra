@@ -30,6 +30,7 @@
 #include "utility/tinteger.h"
 #include "utility/tstring.h"
 
+#include "structure/tstack.h"
 #include "structure/tarray.h"
 #include "structure/trbtree.h"
 #include "structure/theap.h"
@@ -39,5 +40,19 @@
 #include "io/treader.h"
 #include "io/twriter.h"
 #include "io/tio.h"
+
+inline void TerraInitialize(void)
+{
+	TLogSetFile(stdout);
+	TIOInitialize();
+	TTimeInitialise();
+	TRandInitialize(42);
+}
+
+inline void TerraDestroy(void)
+{
+	TRandDestroy();
+	TIODestroy();
+}
 
 #endif

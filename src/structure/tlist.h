@@ -90,6 +90,7 @@ void *TSListPopIndex(TSList *list, size_t index);
 void TSListRemove(TSList *list,const void *data);
 void TSListRemovePtr(TSList *list, TSListNode *ptr);
 void TSListRemoveIndex(TSList *list, size_t index);
+void TSListRemoveIndexes(TSList *list, size_t start, size_t range);
 void TSListRemovePtrFrom(TSList *list, TSListNode *origin);
 
 #define TSListPush(l,d) TSListPrepend(l,d)

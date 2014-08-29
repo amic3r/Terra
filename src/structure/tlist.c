@@ -430,10 +430,22 @@ void TSListRemovePtr(TSList *list, TSListNode *ptr) {
     if (cur) TSListRemovePtrFrom(list,origin);
 }
 
-void TSLRemoveIndex(TSList *list, size_t index) {
+void TSListRemoveIndex(TSList *list, size_t index) {
 	TSListNode *n = TSListFetch(list,index-1);
     
 	if(n) if(n->next) TSListRemovePtrFrom(list,n);
+}
+
+void TSListRemoveIndexes(TSList *list, size_t start, size_t range)
+{
+	if(list && range) {
+		TSListNode *n = TSListFetch(list,start-1);
+		while(n && range) {
+			if(!n->next) break;
+			TSListRemovePtrFrom(list,n);
+			range--;
+		}
+	}
 }
 
 void TSListRemovePtrFrom(TSList *list, TSListNode *origin) {

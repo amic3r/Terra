@@ -60,6 +60,8 @@ typedef union _Matrix4f {
 
 #define Quat   Tuple4f
 
+static const Vector upVector = {0, 1, 0};
+
 // utility macros
 // assuming IEEE-754(GLfloat), which i believe has max precision of 7 bits
 #define Epsilon 1.0e-5

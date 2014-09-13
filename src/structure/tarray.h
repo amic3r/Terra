@@ -43,6 +43,8 @@ static inline void *TArrayGet(TArray *arr,size_t index)
 	return arr->data[index];
 }
 
+size_t TArrayFind(TArray *arr, const void *data);
+
 void TArraySort(TArray *arr);
 
 void *TArrayPopIndex(TArray *arr,size_t index);

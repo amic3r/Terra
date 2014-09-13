@@ -6,10 +6,10 @@
 
 typedef struct {
 	int x,y;
-	int w,h;
+	size_t w,h;
 } TRectangle;
 
-static inline void TRectangleSet(TRectangle *r,int x, int y, unsigned int w, unsigned int h)
+static inline void TRectangleSet(TRectangle *r,int x, int y, size_t w, size_t h)
 {
 	r->x = x;
 	r->y = y;
@@ -27,26 +27,26 @@ static inline void TRectangleCopy(TRectangle *r1,const TRectangle *r2)
 
 static inline unsigned char TRectangleIntersect(const TRectangle *r1, const TRectangle *r2)
 {
-	return (r1->x+r1->w >= r2->x || r1->x <= r2->x+r2->w) &&
-		   (r1->y+r1->h >= r2->y || r1->y <= r2->y+r2->h);
+	return (r1->x + (int)r1->w >= r2->x || r1->x <= r2->x + (int)r2->w) &&
+		   (r1->y + (int)r1->h >= r2->y || r1->y <= r2->y + (int)r2->h);
 }
 
 static inline unsigned char TRectangleContains(const TRectangle *r1, const TRectangle *r2)
 {
-	return (r1->x+r1->w >= r2->x+r2->w && r1->x <= r2->x) &&
-		   (r1->y+r1->h >= r2->y+r2->h && r1->y <= r2->y);
+	return (r1->x + (int)r1->w >= r2->x + (int)r2->w && r1->x <= r2->x) &&
+		   (r1->y + (int)r1->h >= r2->y + (int)r2->h && r1->y <= r2->y);
 }
 
 static inline unsigned char TRectangleContainsPoint(const TRectangle *r, int x, int y)
 {
-	return (r->x+r->w >= x && r->x <= x) &&
-		   (r->y+r->h >= y && r->y <= y);
+	return (r->x + (int)r->w >= x && r->x <= x) &&
+		   (r->y + (int)r->h >= y && r->y <= y);
 }
 
 static inline unsigned char TRectangleContainsPointF(const TRectangle *r, const Point *pt)
 {
 	float x1 = (float) r->x, y1 = (float) r->y;
-	float x2 = (float) (r->x+r->w), y2 = (float)(r->y+r->h);
+	float x2 = (float) (r->x + (int)r->w), y2 = (float)(r->y + (int)r->h);
 	return (x2 >= pt->x && x1 <= pt->x) &&
 		   (y2 >= pt->y && y1 <= pt->y);
 }
@@ -62,7 +62,7 @@ static inline void TRectangleMove(TRectangle *r, int x, int y)
 	r->y = y;
 }
 
-static inline void TRectangleResize(TRectangle *r, unsigned int w, unsigned int h)
+static inline void TRectangleResize(TRectangle *r, size_t w, size_t h)
 {
 	r->w = w;
 	r->h = h;
@@ -78,7 +78,7 @@ static inline void TRectangleMerge(TRectangle *r1, const TRectangle *r2)
 	} else {
 		int x2 = r1->x + r1->w;
 		r1->x = TMIN(r1->x,r2->x);
-		r1->w = TMAX(x2,r2->x + r2->w) - r1->x;
+		r1->w = TMAX(x2,r2->x + (int)r2->w) - r1->x;
 	}
 
 	if (r1->y == -1) {
@@ -87,7 +87,7 @@ static inline void TRectangleMerge(TRectangle *r1, const TRectangle *r2)
 	} else {
 		int y2 = r1->y + r1->h;
 		r1->y = TMIN(r1->y,r2->y);
-		r1->h = TMAX(y2,r2->y + r2->h) - r1->y;
+		r1->h = TMAX(y2,r2->y + (int)r2->h) - r1->y;
 	}
 }
 

@@ -6,7 +6,8 @@
 
 //Default storage
 
-typedef struct { int x, y; } Tuple2i;
+typedef struct { short x, y; } Tuple2s;
+typedef struct { int x, y; }   Tuple2i;
 typedef struct { float x, y; } Tuple2f;
 
 typedef struct { int x, y, z; } Tuple3i;

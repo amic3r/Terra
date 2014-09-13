@@ -55,9 +55,9 @@ int TArrayResize(TArray *arr, size_t _size)
 			arr->size = arr->used = arr->len = 0;
 			arr->data = 0;
 		} else {
-			if(!TRAlloc((void **) &arr->data,sizeof(void *) * _size)) return 1;
+			if(!TRAlloc((void **) &arr->data,sizeof(char *) * _size)) return 1;
 
-			if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(void *) *(_size-arr->size));
+			if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(char *) *(_size-arr->size));
 			else arr->len = TMIN(arr->len,_size);
 
 			arr->size = _size;
@@ -184,6 +184,17 @@ void *TArrayForeachData(TArray *arr, TDataIterFunc func,void *user_data)
 	}
 
 	return 0;
+}
+
+size_t TArrayFind(TArray *arr, const void *data)
+{
+	size_t i = 0;
+
+	for(; i < arr->len; ++i)
+		if(data == arr->data[i])
+			return i;
+
+	return i;
 }
 
 void TArraySort(TArray *arr)

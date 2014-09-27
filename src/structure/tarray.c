@@ -224,7 +224,7 @@ void TArrayRemove(TArray *arr,size_t index)
 
 	if(arr->data[index]) arr->used -= 1;
 
-	for(; index < arr->len-1; ++index) arr->data[index] = arr->data[index+1];
+	memcpy(arr->data[index],arr->data[index+1],sizeof(void *) *(arr->len - (index + 1)));
 	arr->len -= 1;
 
 	if(arr->len <= (arr->size >> 2)) TArrayShrink(arr);
@@ -442,7 +442,7 @@ void TIArrayRemove(TIArray *arr,size_t index)
 {
 	if(index >= arr->len) return;
 
-	for(; index < arr->len-1; ++index) arr->data[index] = arr->data[index+1];
+	memcpy(arr->data + index,arr->data +(index+1),sizeof(int) *(arr->len - (index + 1)));
 	arr->len -= 1;
 
 	if(arr->len <= (arr->size >> 2)) TIArrayShrink(arr);

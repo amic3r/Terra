@@ -41,9 +41,9 @@
 #include "io/twriter.h"
 #include "io/tio.h"
 
-inline void TerraInitialize(void)
+inline void TerraInitialize(FILE *logfile)
 {
-	TLogSetFile(stdout);
+	TLogSetFile(logfile);
 	TIOInitialize();
 	TTimeInitialise();
 	TRandInitialize(42);

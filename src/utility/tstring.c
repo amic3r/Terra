@@ -260,6 +260,29 @@ char *TStringAddCharacter(const char *string, char character, size_t start, size
 	return newstring;
 }
 
+char *TStringConcat(const char *str, ...)
+{
+	va_list components;
+	const char *component;
+	char *buffer;
+	unsigned int bufferlen = 0;
+	
+	buffer = strdup(str);
+	bufferlen = strlen(buffer);
+	
+	va_start(components, str);
+	while((component = va_arg(components, const char *)))
+	{
+		size_t llen = strlen(component);
+		TRAlloc(&buffer, bufferlen + llen + 1);
+		_snprintf(buffer + bufferlen,llen + 1,"%s",component);
+		bufferlen += llen;
+	}
+	va_end(components);
+	
+	return buffer;
+}
+
 void TStringStripTrailingWhitespace(char *string)
 {
 	int i = strlen(string)-1;

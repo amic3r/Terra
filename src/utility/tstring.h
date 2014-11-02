@@ -63,6 +63,8 @@ char **TStringSplit(const char *string, const char *substr, size_t *size, size_t
 char **TStringRSplit(const char *string, const char *substr, size_t *size, size_t limit);
 char *TStringAddCharacter(const char *string, char character, size_t start, size_t end);
 
+char *TStringConcat(const char *str, ...);
+
 void TStringStripTrailingWhitespace(char *string);	// Removes trailing /n, /r, space
 char *TStringLowerCase(const char *thestring);
 

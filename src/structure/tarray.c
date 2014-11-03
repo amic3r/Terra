@@ -30,9 +30,7 @@ TArray *TArrayNew(size_t size)
 
 void TArrayInit(TArray *arr,size_t size)
 {
-	arr->size = size;
-	arr->used = arr->len = 0;
-	arr->data = 0;
+	memset(arr,0,sizeof(TArray));
 
 	if(size) TArrayResize(arr,size);
 }

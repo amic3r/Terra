@@ -36,7 +36,7 @@ void hardware_test_mouse_inf(void)
 	TMouseFree(m);
 	m = 0;
 
-	TMouseChangeSpeed(20);
+	/*TMouseChangeSpeed(20);
 
 	m = TMouseGetInf();
 
@@ -45,7 +45,7 @@ void hardware_test_mouse_inf(void)
 	TMouseFree(m);
 	m = 0;
 
-	TMouseChangeSpeed(10);
+	TMouseChangeSpeed(10);*/
 }
 
 

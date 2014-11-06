@@ -32,13 +32,13 @@ TScreens *TScreensGetInf(void)
 {
 	TScreens *scrs = (TScreens *) TAlloc(sizeof(TScreens));
 	if (scrs) {
-		scrs->numscreens = GetSystemMetrics(SM_CMONITORS);
-		scrs->screens = 0;
 #ifdef _WINDOWS
 		struct Data {
 			TScreen *screens;
 			int idx;
 		} data;
+
+		scrs->numscreens = GetSystemMetrics(SM_CMONITORS);
 
 		scrs->screens = data.screens = (TScreen *) TAlloc(sizeof(TScreen) * scrs->numscreens);
 		data.idx = 0;

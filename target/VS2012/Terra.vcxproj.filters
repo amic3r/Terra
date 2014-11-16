@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\stdafx.c" />
+    <ClCompile Include="..\..\src\terror.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\ttime.c" />
     <ClCompile Include="..\..\src\debugging\tdebug.c">
@@ -54,6 +55,9 @@
     <ClCompile Include="..\..\src\utility\tstring.c">
       <Filter>utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\utility\targparser.c">
+      <Filter>utility</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\structure\tarray.c">
       <Filter>structure</Filter>
     </ClCompile>
@@ -78,7 +82,7 @@
     <ClCompile Include="..\..\src\hardware\thardware.c">
       <Filter>hardware</Filter>
     </ClCompile>
-	<ClCompile Include="..\..\src\talloc.c" />
+    <ClCompile Include="..\..\src\talloc.c" />
     <ClCompile Include="..\..\src\tthread.c" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +90,7 @@
     <ClInclude Include="..\..\src\talloc.h" />
     <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\terra.h" />
+    <ClInclude Include="..\..\src\terror.h" />
     <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\ttime.h" />
@@ -126,6 +131,9 @@
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\utility\tstring.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\targparser.h">
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\structure\tarray.h">

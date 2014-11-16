@@ -14,9 +14,11 @@
 
 #include "filesys_test.h"
 
+#include "argparse_test.h"
+
 int main(int argc, char **argv)
 {
-	TLogSetFile(0);
+	TLogSetFile(stdout);
 
 	TLogReport(T_LOG_PROGRESS,0,"Running tests...\n");
 
@@ -28,7 +30,9 @@ int main(int argc, char **argv)
 
 	//stack_test();
 
-	hardware_test();
+	//hardware_test();
+
+	argparse_test();
 
 	//string_test();
 

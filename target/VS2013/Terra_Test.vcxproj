@@ -83,6 +83,7 @@
     <ClCompile Include="..\..\src\tests\string_test.c" />
     <ClCompile Include="..\..\src\tests\test.c" />
     <ClCompile Include="..\..\src\tests\test_utils.c" />
+    <ClCompile Include="..\..\src\tests\argparse_test.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\tests\array_test.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="..\..\src\tests\string_test.h" />
     <ClInclude Include="..\..\src\tests\test.h" />
     <ClInclude Include="..\..\src\tests\test_utils.h" />
+    <ClInclude Include="..\..\src\tests\argparse_test.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Terra.vcxproj">

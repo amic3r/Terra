@@ -75,12 +75,12 @@ static unsigned char FilterMatch(const char *_filename, const char *_filter)
 	}
 }*/
 
-int TFileSysListDirectory(TSList *list, const char *_dir, const char *_filter, unsigned char _fullFilename)
+size_t TFileSysListDirectory(char **output, const char *_dir, const char *_filter, unsigned char _fullFilename)
 {
+	size_t idx = 0;
 #ifdef _WINDOWS
 	unsigned int dirlen = 0;
 	long fileindex = -1;
-	char *searchstring = 0;
 	struct _finddata_t thisfile;
 	char *dir;
 #else
@@ -88,15 +88,14 @@ int TFileSysListDirectory(TSList *list, const char *_dir, const char *_filter, u
 	struct dirent *entry;
 #endif
 
-	if(!list) return 1;
-	if(_filter == NULL || _filter[0] == '\0') _filter = "*";
-	if(_dir == NULL || _dir[0] == '\0')       _dir = ".";
+	if(!_filter || !(*_filter)) _filter = "*";
+	if(!_dir || !(*_dir))       _dir = ".";
 
 	// Now add on all files found locally
 #ifdef _WINDOWS
 	dirlen = strlen(_dir);
 	dir = TFileSysConcatPaths(_dir, _filter, NULL);
-	if(!dir) return 1;
+	if(!dir) return 0;
 
 	fileindex = _findfirst(dir, &thisfile);
 	free(dir);
@@ -114,41 +113,49 @@ int TFileSysListDirectory(TSList *list, const char *_dir, const char *_filter, u
 				else
 					sprintf(newname, "%s", thisfile.name);
 
-				TSListAppend(list,newname);
+				output = TRAlloc(output,sizeof(char *) * (idx + 1));
+				output[idx] = newname;
+				idx++;
 			}
 		} while(!_findnext(fileindex, &thisfile));
 	}
 #else
 	dir = opendir(_dir);
-	if(!dir) return 1;
+	if(!dir) return 0;
 	for(;(entry = readdir(dir))!= NULL;) {
 		if(FilterMatch(entry->d_name, _filter)) {
 			char fullname[strlen(_dir) + strlen(entry->d_name) + 2];
 			sprintf(fullname, "%s%s%s", _dir, _dir[0] ? "/" : "", entry->d_name);
-			if(!TFileSysIsDirectory(fullname))
-				TSListAppend(list,strdup(_fullFilename ? fullname : entry->d_name));
+			if(!TFileSysIsDirectory(fullname)) {
+				output = TRAlloc(output,sizeof(char *) * (idx + 1));
+				output[idx] = strdup(_fullFilename ? fullname : entry->d_name);
+				idx++;
+			}
 		}
 	}
 	closedir(dir);
 #endif
 
-	return 0;
+	return idx;
 }
 
-int TFileSysListSubDirectoryNames(TSList *list, const char *_dir)
+size_t TFileSysListSubDirectoryNames(char **output, const char *_dir)
 {
+	size_t idx = 0;
+
 #ifdef _WINDOWS
 	struct _finddata_t thisfile;
 	char *dir = TFileSysConcatPaths(_dir, "*", NULL);
 	long fileindex = _findfirst(dir, &thisfile);
 
-	if(!list) return 1;
 	if(fileindex != -1) {
 		while(!_findnext(fileindex, &thisfile)) {
 			if(thisfile.name[0] != '.' && thisfile.attrib & _A_SUBDIR) {
 				char *newname = strdup(thisfile.name);
 				
-				TSListAppend(list,newname);
+				output = TRAlloc(output,sizeof(char *) * (idx + 1));
+				output[idx] = newname;
+				idx++;
 			}
 		} 
 	}
@@ -158,7 +165,7 @@ int TFileSysListSubDirectoryNames(TSList *list, const char *_dir)
 	DIR *dir = opendir(_dir);
 	struct dirent *entry;
 
-	if(!list || !dir) return 1;
+	if(!dir) return 0;
 	for(;(entry = readdir(dir))!= NULL;) {
 		if(entry->d_name[0] == '.')
 			continue;
@@ -166,12 +173,15 @@ int TFileSysListSubDirectoryNames(TSList *list, const char *_dir)
 		char fullname[strlen(_dir) + strlen(entry->d_name) + 2];
 		sprintf(fullname, "%s%s%s", _dir, _dir[0] ? "/" : "", entry->d_name);
 
-		if(TFileSysIsDirectory(fullname))
-			TSListAppend(list,strdup(entry->d_name));
+		if(TFileSysIsDirectory(fullname)) {
+			output = TRAlloc(output,sizeof(char *) * (idx + 1));
+			output[idx] = strdup(newname);
+			idx++;
+		}
 	}
 	closedir(dir);
 #endif
-	return 0;
+	return idx;
 }
 
 unsigned char TFileSysFileExists(const char *_fullPath)
@@ -426,23 +436,26 @@ unsigned char TFileSysCreateDirectoryRecursively(const char *_directory)
 	const char *p;
 	char *buffer;
 	unsigned char error = 0;
+	char match;
 	
-	if(strlen(_directory)== 0)
-		return 0;
+	if(!strlen(_directory)) return 0;
+	match = strchr(_directory, '/') ? '/' : '\\';
 
 	buffer = (char *) TAlloc(strlen(_directory) + 1);
 	if(!buffer) return 1;
+
 	p = _directory;
-	if(*p == '/')
-		p++;
+	if(*p == match) p++;
 	
-	p = strchr(p, '/');
+	p = strchr(p, match);
 	while(p && !error) {
-		memcpy(buffer, _directory, p - _directory);
-		buffer[ p-_directory ] = '\0';
-		error = !TFileSysCreateDirectory(buffer);
-		p = strchr(p+1, '/');
+		memcpy(buffer, _directory, p - _directory + 1);
+		buffer[ p-_directory + 1 ] = '\0';
+		if (!TFileSysIsDirectory(buffer)) error = TFileSysCreateDirectory(buffer);
+		p = strchr(p+1, match);
 	}
+
+	TDeAlloc(buffer);
 	
 	return error ? 1 : TFileSysCreateDirectory(_directory);
 }

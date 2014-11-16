@@ -6,6 +6,7 @@
 #include "ttime.h"
 
 #include "talloc.h"
+#include "terror.h"
 
 static const char * tHexIndex = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 "abcdefghijklmnopqrstuvwxyz"
@@ -14,7 +15,9 @@ static const char * tHexIndex = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 int TStringAdjustSize(char **text,size_t oldsize,size_t newsize)
 {
-	if(TRAlloc((void **) &text, newsize)) return 1;
+	void *nptr = TRAlloc(text, newsize);
+	if(!nptr) return 1;
+	text = (char **) nptr;
 
 	if(newsize > oldsize) memset(text+oldsize,'\0',newsize);
 
@@ -274,7 +277,7 @@ char *TStringConcat(const char *str, ...)
 	while((component = va_arg(components, const char *)))
 	{
 		size_t llen = strlen(component);
-		TRAlloc((void **) &buffer, bufferlen + llen + 1);
+		buffer = TRAlloc(buffer, bufferlen + llen + 1);
 		_snprintf(buffer + bufferlen,llen + 1,"%s",component);
 		bufferlen += llen;
 	}

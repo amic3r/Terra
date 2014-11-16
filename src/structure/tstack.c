@@ -87,15 +87,20 @@ void *TStackPeek(TStack *stack)
 void TStackResize(TStack *stack,size_t _size)
 {
 	if(_size >stack->size) {
-		if(TRAlloc((void **) &stack->bottom,sizeof(void *) * _size)) {
+		void *nptr = TRAlloc(stack->bottom,sizeof(void *) * _size);
+		if(nptr) {
+			stack->bottom = nptr;
 			stack->size = _size;
 			stack->top = stack->bottom + stack->len;
 		}
 	} else if (_size < stack->size) {
 		if(stack->len > _size) return;
 
-		if(TRAlloc((void **) &stack->bottom,sizeof(void *) * _size))
+		void *nptr = TRAlloc(stack->bottom,sizeof(void *) * _size);
+		if(nptr) {
+			stack->bottom = nptr;
 			stack->size = _size;
+		}
 	}
 }
 

@@ -53,7 +53,9 @@ int TArrayResize(TArray *arr, size_t _size)
 			arr->size = arr->used = arr->len = 0;
 			arr->data = 0;
 		} else {
-			if(!TRAlloc((void **) &arr->data,sizeof(char *) * _size)) return 1;
+			void *nptr = TRAlloc(arr->data,sizeof(char *) * _size);
+			if(!nptr) return 1;
+			arr->data = nptr;
 
 			if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(char *) *(_size-arr->size));
 			else arr->len = TMIN(arr->len,_size);
@@ -297,7 +299,9 @@ int TIArrayResize(TIArray *arr, size_t _size)
 			arr->data = 0;
 			arr->len = arr->size = 0;
 		} else {
-			if(!TRAlloc((void **) &arr->data,sizeof(int) * _size)) return 1;
+			void *nptr = TRAlloc(arr->data,sizeof(int) * _size);
+			if(!nptr) return 1;
+			arr->data = (int *) nptr;
 
 			if(_size > arr->size) memset(arr->data+arr->size,0,sizeof(int) *(_size-arr->size));
 			else arr->len = TMIN(arr->len,_size);

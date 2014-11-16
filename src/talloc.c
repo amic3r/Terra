@@ -11,16 +11,15 @@ void *allocDef(size_t size)
 	return d;
 }
 
-int rAllocDef(void **ptr, size_t size)
+void *rAllocDef(void *ptr, size_t size)
 {
-	void *d = realloc(*ptr,size);
+	void *d = realloc(ptr,size);
 	if(!d) TLogReport(T_LOG_WARNING,"TRAlloc","Out of memory.");
-	else *ptr = d;
-	return d != 0;
+	return d;
 }
 
 static void *(*alloc)(size_t) = allocDef;
-static int (*ralloc)(void **, size_t) = rAllocDef;
+static void *(*ralloc)(void *, size_t) = rAllocDef;
 static void (*dalloc)(void *) = free;
 
 void *TAlloc(size_t size)
@@ -28,7 +27,7 @@ void *TAlloc(size_t size)
 	return alloc(size);
 }
 
-int TRAlloc(void **ptr, size_t size)
+void *TRAlloc(void *ptr, size_t size)
 {
 	return ralloc(ptr,size);
 }
@@ -38,7 +37,7 @@ void TDeAlloc(void *ptr)
 	dalloc(ptr);
 }
 
-void TAllocSet(void *(*_alloc)(size_t), int (*_ralloc)(void **, size_t),void (*_dalloc) (void *))
+void TAllocSet(void *(*_alloc)(size_t), void *(*_ralloc)(void *, size_t),void (*_dalloc) (void *))
 {
 	if(!_alloc) _alloc = allocDef;
 	if(!_ralloc) _ralloc = rAllocDef;

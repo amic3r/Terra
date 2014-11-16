@@ -85,13 +85,15 @@
     <ClCompile Include="..\..\src\structure\tquadtree.c" />
     <ClCompile Include="..\..\src\structure\trbtree.c" />
     <ClCompile Include="..\..\src\structure\tstack.c" />
-	<ClCompile Include="..\..\src\talloc.c" />
+    <ClCompile Include="..\..\src\talloc.c" />
+    <ClCompile Include="..\..\src\terror.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\tthread.c" />
     <ClCompile Include="..\..\src\ttime.c" />
     <ClCompile Include="..\..\src\utility\tfilesys.c" />
     <ClCompile Include="..\..\src\utility\tinteger.c" />
     <ClCompile Include="..\..\src\utility\tstring.c" />
+    <ClCompile Include="..\..\src\utility\targparser.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\debugging\tdebug.h" />
@@ -116,6 +118,7 @@
     <ClInclude Include="..\..\src\talloc.h" />
     <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\terra.h" />
+    <ClInclude Include="..\..\src\terror.h" />
     <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\tthread.h" />
@@ -123,6 +126,7 @@
     <ClInclude Include="..\..\src\utility\tfilesys.h" />
     <ClInclude Include="..\..\src\utility\tinteger.h" />
     <ClInclude Include="..\..\src\utility\tstring.h" />
+    <ClInclude Include="..\..\src\utility\targparser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

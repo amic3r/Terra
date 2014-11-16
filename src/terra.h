@@ -4,7 +4,7 @@
 
 #define TERRA_NAME        "Terra"
 #define TERRA_DESCRIPTION "Utility library"
-#define TERRA_VERSION     "0.7.0"
+#define TERRA_VERSION     "0.7.2"
 
 #define TERRA_LINE
 #define TERRA_RECTANGLE
@@ -12,8 +12,10 @@
 
 #include "tdefine.h"
 
+#include "terror.h"
+#include "talloc.h"
+
 #include "debugging/tdebug.h"
-#include "debugging/tlog.h"
 #include "debugging/tmemleak.h"
 #include "debugging/tprofiler.h"
 
@@ -24,12 +26,12 @@
 
 #include "hardware/thardware.h"
 
-#include "structure/tlist.h"
-
 #include "utility/tfilesys.h"
 #include "utility/tinteger.h"
 #include "utility/tstring.h"
+#include "utility/targparser.h"
 
+#include "structure/tlist.h"
 #include "structure/tstack.h"
 #include "structure/tarray.h"
 #include "structure/trbtree.h"
@@ -53,6 +55,7 @@ inline void TerraDestroy(void)
 {
 	TRandDestroy();
 	TIODestroy();
+	TErrorClear();
 }
 
 #endif

@@ -4,8 +4,8 @@
 
 #include "structure/tlist.h"
 
-int TFileSysListDirectory(TSList *list, const char *_dir, const char *_filter, unsigned char fullFilename);
-int TFileSysListSubDirectoryNames(TSList *list, const char *_dir);
+size_t TFileSysListDirectory(char **output, const char *_dir, const char *_filter, unsigned char fullFilename);
+size_t TFileSysListSubDirectoryNames(char **output, const char *_dir);
 
 unsigned char TFileSysIsDirectory(const char *_fullPath);
 unsigned char TFileSysFileExists(const char *_fullPath);

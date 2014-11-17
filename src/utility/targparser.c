@@ -153,15 +153,12 @@ static size_t TArgParserAmountLimit(const char format)
 
 static unsigned char TArgParserIsAmountValid(const char format, size_t amount)
 {
-	if(!format || format == '0') {
-		if(amount > 0) return 0;
-	} else if(format == '?') {
-		if(amount > 1) return 0;
-	} else if(format > '0' && format <= '9') {
-		if(amount != (format - '0')) return 0;
-	}
+	size_t limit = TArgParserAmountLimit(format);
 
-	return 1;
+	if(format >= '0' && format <= '9')
+		return amount == limit;
+
+	return amount <= limit;
 }
 
 static unsigned char TArgParserIsTypeValid(const char type, const char *arg)
@@ -187,11 +184,7 @@ static unsigned char TArgParserIsTypeValid(const char type, const char *arg)
 			if(*arg == '.') hasdot = 1;
 		}
 	} else if(type == 'c') {
-		size_t count = 0;
-		for(;*arg;arg++) {
-			if ((*arg < 'a' || *arg > 'z') && (*arg < 'A' || *arg > 'Z')) return 0;
-			if(count++) return 0;
-		}
+		return *arg && !*(arg+1);
 	}
 
 	return 1;

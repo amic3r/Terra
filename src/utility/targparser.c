@@ -192,9 +192,6 @@ static unsigned char TArgParserIsTypeValid(const char type, const char *arg)
 			if ((*arg < 'a' || *arg > 'z') && (*arg < 'A' || *arg > 'Z')) return 0;
 			if(count++) return 0;
 		}
-	} else if(type == 's') {
-		for(;*arg;arg++)
-			if ((*arg < 'a' || *arg > 'z') && (*arg < 'A' || *arg > 'Z')) return 0;
 	}
 
 	return 1;

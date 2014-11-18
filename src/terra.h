@@ -43,7 +43,7 @@
 #include "io/twriter.h"
 #include "io/tio.h"
 
-inline void TerraInitialize(FILE *logfile)
+static inline void TerraInitialize(FILE *logfile)
 {
 	TLogSetFile(logfile);
 	TIOInitialize();
@@ -51,7 +51,7 @@ inline void TerraInitialize(FILE *logfile)
 	TRandInitialize(42);
 }
 
-inline void TerraDestroy(void)
+static inline void TerraDestroy(void)
 {
 	TRandDestroy();
 	TIODestroy();

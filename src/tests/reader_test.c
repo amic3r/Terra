@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include "debugging/tdebug.h"
 #include "io/treader.h"
 #include "utility/tfilesys.h"
 

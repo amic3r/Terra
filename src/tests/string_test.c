@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
-#include "debugging/tdebug.h"
+#include "test_utils.h"
+
 #include "utility/tstring.h"
 
 #include "string_test.h"

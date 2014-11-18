@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
-#include "debugging/tdebug.h"
-
 #include "structure/theap.h"
 
 #include "heap_test.h"
+
+#include "test_utils.h"
 
 static THeap *test = 0;
 

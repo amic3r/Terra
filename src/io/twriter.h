@@ -27,7 +27,7 @@ void TWriterWrite(TWriter *w,const char *format,...);
 void TWriterWriteLine(TWriter *w,const char *format,...);
 void TWriterWriteComment(TWriter *w,unsigned int commentindex,const char *format,...);
 
-void TWriterWriteV(TWriter *w,const char *format, const va_list *list);
-void TWriterWriteLineV(TWriter *w,const char *format, const va_list *list);
+void TWriterWriteV(TWriter *w,const char *format, va_list list);
+void TWriterWriteLineV(TWriter *w,const char *format, va_list list);
 
 #endif

@@ -67,10 +67,10 @@ void TQuadNodeFree(TQuadNode *q,TFreeFunc func)
 	}
 }
 
-static inline int findObjPosition(const TQuadNode **cur, const TQuadNode *head, const TRectangle *r)
+static inline int findObjPosition(TQuadNode **cur, TQuadNode *head, const TRectangle *r)
 {
 	size_t i = 0;
-	const TQuadNode *c = 0;
+	TQuadNode *c = 0;
 	size_t level = 0;
 
 	while(head) {
@@ -99,7 +99,7 @@ static inline int findObjPosition(const TQuadNode **cur, const TQuadNode *head, 
 void TQuadNodeSplit(TQuadNode *q)
 {
 	TRectangle bounds = {q->bounds.x,q->bounds.y,q->bounds.w/2,q->bounds.h/2};
-	const TQuadNode *s;
+	TQuadNode *s;
 	TQuadObj *obj;
 	size_t size = q->objs->len;
 
@@ -121,7 +121,7 @@ void TQuadNodeSplit(TQuadNode *q)
 void TQuadNodeInsert(TQuadNode *q,TQuadObj *obj, size_t limit, size_t levellimit)
 {
 	size_t level = 1;
-	const TQuadNode *s;
+	TQuadNode *s;
 
 	if(!TRectangleContains(&q->bounds,&obj->rect)) return;
 
@@ -137,7 +137,7 @@ void TQuadNodeRemove(TQuadNode *q,TQuadObj *obj, const TRectangle *r)
 
 	if(!TRectangleContains(&q->bounds,r)) return;
 
-	findObjPosition((const TQuadNode **) &q,q,r);
+	findObjPosition(&q,q,r);
 
 	cur = (TQuadObj *) TSListFirst(q->objs);
 	while(cur) {

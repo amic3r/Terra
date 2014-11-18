@@ -1,9 +1,10 @@
 #include "stdafx.h"
 
-#include "debugging/tdebug.h"
 #include "utility/tfilesys.h"
 
 #include "filesys_test.h"
+
+#include "test_utils.h"
 
 void filesys_concat_path(void)
 {

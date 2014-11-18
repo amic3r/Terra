@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-#include "terra.h"
+#include "test_utils.h"
 
 void argparse_arguments(void)
 {

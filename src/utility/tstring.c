@@ -278,7 +278,7 @@ char *TStringConcat(const char *str, ...)
 	{
 		size_t llen = strlen(component);
 		buffer = TRAlloc(buffer, bufferlen + llen + 1);
-		_snprintf(buffer + bufferlen,llen + 1,"%s",component);
+		snprintf(buffer + bufferlen,llen + 1,"%s",component);
 		bufferlen += llen;
 	}
 	va_end(components);

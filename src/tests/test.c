@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-#include "terra.h"
+#include "test_utils.h"
 
 #include "memleak_test.h"
 

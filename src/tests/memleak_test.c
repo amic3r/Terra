@@ -2,8 +2,9 @@
 
 #include "memleak_test.h"
 
-#include "debugging/tdebug.h"
 #include "debugging/tmemleak.h"
+
+#include "test_utils.h"
 
 void memleak_test(void)
 {

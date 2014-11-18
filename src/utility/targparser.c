@@ -71,8 +71,7 @@ void TArgParserAddArgument(const char *name, char type, char amount, char def, c
 void TArgParserHelp(void)
 {
 	//TODO
-	fprintf(stdout,
-		"");
+	//fprintf(stdout,"");
 }
 
 void TArgParserFeed(int argc, const char **argv)
@@ -305,16 +304,16 @@ const void *TArgParserNextParameter(void)
 		sscanf(arg,"%d",p);
 		data = TArgParser.ph.param;
 	} else if(type == 'u') {
-		size_t *p;
-		TArgParser.ph.param = TAlloc(sizeof(size_t));
-		p = (size_t *) TArgParser.ph.param;
+		unsigned int *p;
+		TArgParser.ph.param = TAlloc(sizeof(unsigned int));
+		p = (unsigned int *) TArgParser.ph.param;
 		
 		sscanf(arg,"%u",p);
 		data = TArgParser.ph.param;
 	} else if(type == 'x' || type == 'X') {
-		unsigned long *p;
-		TArgParser.ph.param = TAlloc(sizeof(unsigned long));
-		p = (unsigned long *) TArgParser.ph.param;
+		unsigned int *p;
+		TArgParser.ph.param = TAlloc(sizeof(unsigned int));
+		p = (unsigned int *) TArgParser.ph.param;
 
 		sscanf(arg, type == 'x' ? "%x" : "%X",p);
 		data = TArgParser.ph.param;

@@ -175,7 +175,7 @@ size_t TFileSysListSubDirectoryNames(char **output, const char *_dir)
 
 		if(TFileSysIsDirectory(fullname)) {
 			output = TRAlloc(output,sizeof(char *) * (idx + 1));
-			output[idx] = strdup(newname);
+			output[idx] = strdup(fullname);
 			idx++;
 		}
 	}
@@ -216,7 +216,7 @@ char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data)
 {
 	const char *component;
 	char *buffer;
-	size_t size, i = 1;
+	size_t size;
 
 	if (!func) return 0;
 
@@ -243,7 +243,7 @@ char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data)
 				if (needsep) size += 1;
 
 				buffer = (char *)realloc(buffer, size);
-				_snprintf(buffer + olen, size - olen, needsep ? "/%s" : "%s", component);
+				snprintf(buffer + olen, size - olen, needsep ? "/%s" : "%s", component);
 			}
 		}
 
@@ -491,7 +491,8 @@ const char *TFileSysFindCaseInsensitive(const char *_fullPath)
 	static char retval[PATH_MAX];
 	char *dir = 0, *file = 0;
 	const char *res;
-	TSList *files;
+	char **files = 0;
+	size_t numfiles = 0;
 
 	if(!_fullPath) return 0;
 
@@ -506,30 +507,35 @@ const char *TFileSysFindCaseInsensitive(const char *_fullPath)
 		dir[strlen(dir) - 1] = '\0';
 		file = strdup(TFileSysGetFilenamePart(_fullPath));
 	}
-	files = TSListNew();
-	TFileSysListDirectory(files, dir, file, 0);
+	numfiles = TFileSysListDirectory(files, dir, file, 0);
 
 	free(dir); free(file);
 	dir = file = 0;
 
 	// We shouldn't have found more than one match.
-	if(files->len > 1) {TSListFree(files,free); return 0;}
+	if(numfiles > 1) {
+		size_t i = 0;
+		for(; i < numfiles; ++i) free(files[i]);
+		free(files);
+		return 0;
+	}
 
 	// No results, so maybe the file does not exist.
-	if(files->len == 0) {TSListFree(files,free); return _fullPath;}
+	if(numfiles == 0) return _fullPath;
 
 	// Copy the corrected path back, and prepare to return it.
-	res = (const char *) TSListGet(files,0);
+	res = (const char *) files[0];
 	memset(retval, 0, sizeof(retval));
 	TAssert(strlen(res)< PATH_MAX);
 	strcpy(retval, res);
+
+	free(files[0]);
+	free(files);
 
 	// Negate the possibility of a memory access violation.
 	// This way, we can simply strcpy the result inline without
 	// worrying about a buffer overflow.
 	TAssert(strlen(retval)== strlen(_fullPath));
-
-	TSListFree(files,free);
 
 	return retval;
 #endif

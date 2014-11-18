@@ -1,10 +1,11 @@
 #include "stdafx.h"
 
-#include "debugging/tdebug.h"
 #include "structure/tarray.h"
 #include "utility/tinteger.h"
 
 #include "array_test.h"
+
+#include "test_utils.h"
 
 static TArray testarray;
 //static TIArray iarr;

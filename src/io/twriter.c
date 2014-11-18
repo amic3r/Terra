@@ -249,14 +249,14 @@ void TWriterWriteComment(TWriter *w,unsigned int commentindex,const char *format
 	}
 }
 
-void TWriterWriteV(TWriter *w,const char *format, const va_list *list)
+void TWriterWriteV(TWriter *w,const char *format, va_list list)
 {
 	if(w && format) {
 
 #ifndef __GNUC__
 		TMutexLock(w->iomut);
 #endif
-		vfprintf(w->file,format,*list);
+		vfprintf(w->file,format,list);
 
 #ifndef __GNUC__
 		TMutexUnlock(w->iomut);
@@ -264,14 +264,14 @@ void TWriterWriteV(TWriter *w,const char *format, const va_list *list)
 	}
 }
 
-void TWriterWriteLineV(TWriter *w,const char *format, const va_list *list)
+void TWriterWriteLineV(TWriter *w,const char *format, va_list list)
 {
 	if(w && format) {
 
 #ifndef __GNUC__
 		TMutexLock(w->iomut);
 #endif
-		vfprintf(w->file,format,*list);
+		vfprintf(w->file,format,list);
 		fprintf(w->file, "%s", w->lineending);
 
 #ifndef __GNUC__

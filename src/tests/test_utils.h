@@ -2,7 +2,7 @@
 #ifndef __terra_test_test_utils_h
 #define __terra_test_test_utils_h
 
-#include "debugging/tdebug.h"
+#include "terra.h"
 
 void test_create_file(const char *filename, const char *data);
 

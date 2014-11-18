@@ -76,8 +76,10 @@ void TGenerateBlackBox(char *_msg)
 {
 	time_t timet = time(0);
 	struct tm *thetime = localtime(&timet);
+#ifdef _WINDOWS
 	unsigned *framePtr = 0;
 	unsigned *previousFramePtr = 0;
+#endif
 
 	TLogWrite("=========================\n");
 	TLogWrite("=   BLACK BOX REPORT    =\n");
@@ -86,23 +88,16 @@ void TGenerateBlackBox(char *_msg)
 	TLogWrite("Date %d:%d, %d/%d/%d\n\n", thetime->tm_hour, thetime->tm_min, thetime->tm_mday, thetime->tm_mon+1, thetime->tm_year+1900);
 
 	if(_msg)TLogWrite("ERROR : '%s'\n", _msg);
-#ifndef _MACOSX				
-	// For MacOSX, suggest Smart Crash Reports: http://smartcrashreports.com/
-	// Print stack trace
-	// Get our frame pointer, chain upwards
+
+	//TODO this for Linux
+#ifdef _WINDOWS
 	TLogWrite("\n");
 	TLogWrite("=========================\n");
 	TLogWrite("=      STACKTRACE       =\n");
 	TLogWrite("=========================\n\n");
 
-#ifdef _WINDOWS
 	__asm { mov [framePtr], ebp }
-#else
-	asm(
-		"movl %%ebp, %0;"
-		:"=r"(framePtr)
-		);
-#endif
+
 	while(framePtr) {
 		TLogWrite("retAddress = %p\n", getRetAddress(framePtr));
 		framePtr = *(unsigned **)framePtr;
@@ -113,12 +108,10 @@ void TGenerateBlackBox(char *_msg)
 		if(framePtr <= previousFramePtr) break;
 
 		// Can two DWORDs be read from the supposed frame address?
-#ifdef _WINDOWS
 		if(IsBadWritePtr(framePtr, sizeof(PVOID)*2)|| IsBadReadPtr(framePtr, sizeof(PVOID)*2))
 			break;
-#endif
 
 		previousFramePtr = framePtr;
 	}
-#endif // TARGET_OS_MACOSX
+#endif // _WINDOWS				
 }

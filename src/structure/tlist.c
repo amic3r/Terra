@@ -401,8 +401,10 @@ void *TSListPopIndex(TSList *list, size_t index) {
 			TSListRemovePtrFrom(list,n);
 		}
 	} else if (index == 0) {
-		data = list->head->data;
-		TSListRemovePtrFrom(list,0);
+		if(list->head) {
+			data = list->head->data;
+			TSListRemovePtrFrom(list,0);
+		}
 	}
 	
 	return (void *) data;

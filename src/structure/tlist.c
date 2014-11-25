@@ -237,8 +237,10 @@ void TSListInit(TSList *list)
 
 void TSListFree(TSList *list,TFreeFunc func)
 {
-	TSListEmpty(list,func);
-	free(list);
+	if(list) {
+		TSListEmpty(list,func);
+		free(list);
+	}
 }
 
 void TSListEmpty(TSList *list,TFreeFunc func)

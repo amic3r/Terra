@@ -51,6 +51,16 @@ static inline unsigned char TRectangleContainsPointF(const TRectangle *r, const 
 		   (y2 >= pt->y && y1 <= pt->y);
 }
 
+static inline unsigned char TRectangleXContainsPoint(const TRectangle *r, int x, int y)
+{
+	return (r->x + (int)r->w >= x && r->x <= x);
+}
+
+static inline unsigned char TRectangleYContainsPoint(const TRectangle *r, int x, int y)
+{
+	return (r->y + (int)r->h >= y && r->y <= y);
+}
+
 static inline unsigned char TRectangleEqual(const TRectangle *r1, const TRectangle *r2)
 {
 	return r2->x == r1->x && r2->y == r1->y && r2->w == r1->w && r2->h == r1->h;

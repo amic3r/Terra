@@ -5,8 +5,8 @@
 #include "tdefine.h"
 
 typedef struct {
-	int x,y,z;
-	int w,h,d;
+	float x,y,z;
+	float w,h,d;
 } TCuboid;
 
 static inline void TCuboidCopy(TCuboid *c1,const TCuboid *c2)

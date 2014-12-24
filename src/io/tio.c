@@ -5,6 +5,8 @@
 
 #include "tthread.h"
 
+#include "structure/tlist.h"
+
 #ifdef _WINDOWS
 #include <shlobj.h>
 #endif
@@ -53,7 +55,7 @@ FILE *TIOGetFile(const char *filename,const char *mode)
 	char *found = 0;
 	if(!filename) return 0;
 
-	if(!mode) mode = "r";
+	if(!mode) mode = "rb";
 
 	found = (char *) TSListForeachData(searchpaths,testpath,(void *) filename);
 	if(found) {
@@ -67,29 +69,29 @@ FILE *TIOGetFile(const char *filename,const char *mode)
 	return 0;
 }
 
-TReader *TIOGetReader(const char *filename,unsigned char binarymode)
+TRW *TIOGetRW(const char *filename,const char *mode)
 {
-	TReader *reader = 0;
+	TRW *trw = 0;
 
-	FILE *f = TIOGetFile(filename,binarymode ? "rb" : "r");
-	if(f) reader = TReaderFilePointerNew(f);
+	FILE *f = TIOGetFile(filename,mode);
+	if(f) trw = TRWFromFilePointer(f,1);
 
-	return reader;
+	return trw;
 }
 
-unsigned char *TIOGetBufferedFile(const char *filename,unsigned char binarymode,unsigned int *size)
+unsigned char *TIOGetBufferedFile(const char *filename, const char *mode, unsigned int *size)
 {
 	unsigned char *buffer = 0;
 	unsigned int finalsize = 0;
 	
-	TReader *r = TIOGetReader(filename,binarymode);
-	if(!r) return 0;
+	TRW *trw = TIOGetRW(filename,mode);
+	if(!trw) return 0;
 
-	finalsize = TReaderSize(r);
+	finalsize = TRWSize(trw);
 	buffer = (unsigned char *) malloc(sizeof(unsigned char) * finalsize);
-	*size = TReaderReadBlock(r,finalsize, buffer);
+	*size = TRWReadBlock(trw, buffer, finalsize);
 
-	TReaderFree(r,1);
+	TRWFree(trw);
 
 	return buffer;
 }

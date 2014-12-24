@@ -1,40 +1,71 @@
 #include "stdafx.h"
 
-#include "io/treader.h"
+#include "io/trw.h"
 #include "utility/tfilesys.h"
+#include "terror.h"
 
 #include "test_utils.h"
 
 #include "reader_test.h"
 
-void test_reader()
+void test_rw_file(void)
 {
-	const char data[] = "a 42 this is        a test\n";
+	const char data[] = "a 42 this is        a test";
 	const char filename[] = "test_file_for_testing";
-	const char *token = 0;
-	TReader *testread = 0;
+	TRW *testrw;
 	unsigned char character = 0;
 	unsigned char buffer[32];
 
 	test_create_file(filename,data);
 
-	testread = TReaderFileNew(filename,0);
-	TAssert(testread);
+	testrw = TRWFromFile(filename,"rb");
+	TAssert(testrw);
 
-	TAssert(!TReaderEof(testread));
-	TAssert(TReaderSize(testread) == strlen(data)+1);
+	TAssert(TRWSize(testrw) == strlen(data));
 
-	character = TReaderRead8(testread);
+	character = TRWRead8(testrw);
 	TAssert(character == 'a');
 
-	TReaderReadBlock(testread,32,buffer);
+	TRWReadBlock(testrw,buffer,32);
 
-	TReaderSeek(testread,0,0);
-	
-	token = TReaderNextToken(testread);
-	while(token)
-		token = TReaderNextToken(testread);
+	TAssert(!strcmp(data+1,buffer));
 
-	TReaderFree(testread,1);
+	TRWSeek(testrw,0,SEEK_SET);
+
+	TRWWrite(testrw,"bleh");
+	TAssert(TErrorGetCode() == T_ERROR_OPERATION_NOT_SUPPORTED);
+
+	TRWFree(testrw);
 	TFileSysDelete(filename);
+}
+
+void test_rw_buffer(void)
+{
+	const char data[] = "amazing sample";
+	TRW *testrw;
+	char buf[32];
+	char *cpy = strdup(data);
+
+	testrw = TRWFromMem(cpy,sizeof(data));
+	TAssert(testrw);
+	TAssert(TRWSize(testrw) == sizeof(data));
+
+	TRWReadBlock(testrw,buf,32);
+	TAssert(!strcmp(cpy,buf));
+
+	TRWSeek(testrw,0,SEEK_SET);
+	TRWWriteBlock(testrw,"4m4z1ng", 6);
+	TRWSeek(testrw,0,SEEK_SET);
+	TRWReadBlock(testrw,buf,32);
+
+	TAssert(!strcmp("4m4z1ng sample",buf));
+
+	TRWFree(testrw);
+	free(cpy);
+}
+
+void rw_test(void)
+{
+	test_rw_file();
+	test_rw_buffer();
 }

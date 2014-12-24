@@ -40,10 +40,7 @@
     <ClCompile Include="..\..\src\io\tio.c">
       <Filter>io</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\io\treader.c">
-      <Filter>io</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\io\twriter.c">
+    <ClCompile Include="..\..\src\io\trw.c">
       <Filter>io</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\utility\tfilesys.c">
@@ -118,10 +115,7 @@
     <ClInclude Include="..\..\src\io\tio.h">
       <Filter>io</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\io\treader.h">
-      <Filter>io</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\io\twriter.h">
+    <ClInclude Include="..\..\src\io\trw.h">
       <Filter>io</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\utility\tfilesys.h">

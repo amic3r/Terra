@@ -2,8 +2,20 @@
 #ifndef __included_terra_error_h
 #define __included_terra_error_h
 
-void TErrorReport(size_t code);
-void TErrorReportFull(size_t code, const char *message);
+enum T_ERROR_CODES {
+	T_ERROR_NONE,
+	T_ERROR_UNKNOWN,
+	T_ERROR_NULL_POINTER,
+	T_ERROR_OUT_OF_MEMORY,
+	T_ERROR_PERMISSION_DENIED,
+	T_ERROR_INVALID_INPUT,
+	T_ERROR_OPERATION_NOT_SUPPORTED,
+
+	T_ERROR_AMOUNT,
+};
+
+void TErrorReport(int code);
+void TErrorReportFull(int code, const char *message);
 
 int TErrorGetCode(void);
 const char *TErrorGetString(void);
@@ -12,10 +24,12 @@ void TErrorClear(void);
 
 #define TError(code) \
 	TErrorReport(code); \
-	return
+	return;
 
 #define TErrorFull(code, message) \
 	TErrorReportFull(code, message); \
-	return
+	return;
+
+extern const char *TErrorMessages[];
 
 #endif

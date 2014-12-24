@@ -39,8 +39,6 @@
 #include "structure/tquadtree.h"
 #include "structure/toctree.h"
 
-#include "io/treader.h"
-#include "io/twriter.h"
 #include "io/tio.h"
 
 static inline void TerraInitialize(FILE *logfile)

@@ -13,7 +13,7 @@
 #include "hardware_test.h"
 
 #include "filesys_test.h"
-
+#include "reader_test.h"
 #include "argparse_test.h"
 
 int main(int argc, char **argv)
@@ -30,13 +30,15 @@ int main(int argc, char **argv)
 
 	//stack_test();
 
-	//hardware_test();
+	hardware_test();
 
-	argparse_test();
+	//argparse_test();
 
 	//string_test();
 
 	//filesys_test();
+
+	rw_test();
 
 	TLogReport(T_LOG_PROGRESS,0,"All Tests have been executed.\n");
 

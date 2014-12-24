@@ -74,8 +74,7 @@
     <ClCompile Include="..\..\src\debugging\tprofiler.c" />
     <ClCompile Include="..\..\src\hardware\thardware.c" />
     <ClCompile Include="..\..\src\io\tio.c" />
-    <ClCompile Include="..\..\src\io\treader.c" />
-    <ClCompile Include="..\..\src\io\twriter.c" />
+    <ClCompile Include="..\..\src\io\trw.c" />
     <ClCompile Include="..\..\src\stdafx.c">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -106,8 +105,7 @@
     <ClInclude Include="..\..\src\geometry\trectangle.h" />
     <ClInclude Include="..\..\src\hardware\thardware.h" />
     <ClInclude Include="..\..\src\io\tio.h" />
-    <ClInclude Include="..\..\src\io\treader.h" />
-    <ClInclude Include="..\..\src\io\twriter.h" />
+    <ClInclude Include="..\..\src\io\trw.h" />
     <ClInclude Include="..\..\src\stdafx.h" />
     <ClInclude Include="..\..\src\structure\tarray.h" />
     <ClInclude Include="..\..\src\structure\theap.h" />

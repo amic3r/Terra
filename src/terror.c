@@ -5,24 +5,24 @@
 static int TErrorCode = 0;
 static const char *TErrorString = 0;
 
-static const char *TErrorCommon[] = {
+const char *TErrorMessages[] = {
 	"No error",
 	"Unknown error",
-	"Invalid Input",
+	"NULL Pointer",
 	"Out of memory",
 	"Permission denied",
+	"Invalid Input",
+	"Operation not supported",
 };
-static size_t TErrorAmount = 4;
 
-void TErrorReport(size_t code)
+void TErrorReport(int code)
 {
-	TErrorReportFull(code, code < TErrorAmount ? TErrorCommon[code] : TErrorCommon[0]);
+	if(code < 0 || code >= T_ERROR_AMOUNT) code = 1;
+	TErrorReportFull(code, TErrorMessages[code]);
 }
 
-void TErrorReportFull(size_t code, const char *message)
+void TErrorReportFull(int code, const char *message)
 {
-	TErrorClear();
-
 	TErrorCode = code;
 	TErrorString = message;
 }
@@ -39,6 +39,6 @@ const char *TErrorGetString(void)
 
 void TErrorClear(void)
 {
-	TErrorString = 0;
+	TErrorString = TErrorMessages[0];
 	TErrorCode = 0;
 }

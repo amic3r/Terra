@@ -2,19 +2,19 @@
 
 #include "talloc.h"
 
-#include "debugging/tlog.h"
+#include "terror.h"
 
 void *allocDef(size_t size)
 {
 	void *d = malloc(size);
-	if(!d) TLogReport(T_LOG_WARNING,"TAlloc","Out of memory.");
+	if(!d) TErrorReport(T_ERROR_OUT_OF_MEMORY);
 	return d;
 }
 
 void *rAllocDef(void *ptr, size_t size)
 {
 	void *d = realloc(ptr,size);
-	if(!d) TLogReport(T_LOG_WARNING,"TRAlloc","Out of memory.");
+	if(!d) TErrorReport(T_ERROR_OUT_OF_MEMORY);
 	return d;
 }
 

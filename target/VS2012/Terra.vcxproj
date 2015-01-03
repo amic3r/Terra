@@ -85,6 +85,7 @@
     <ClCompile Include="..\..\src\structure\trbtree.c" />
     <ClCompile Include="..\..\src\structure\tstack.c" />
     <ClCompile Include="..\..\src\talloc.c" />
+    <ClCompile Include="..\..\src\tdata.c" />
     <ClCompile Include="..\..\src\terror.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\tthread.c" />
@@ -114,6 +115,7 @@
     <ClInclude Include="..\..\src\structure\trbtree.h" />
     <ClInclude Include="..\..\src\structure\tstack.h" />
     <ClInclude Include="..\..\src\talloc.h" />
+    <ClInclude Include="..\..\src\tdata.h" />
     <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\terra.h" />
     <ClInclude Include="..\..\src\terror.h" />

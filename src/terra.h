@@ -19,6 +19,7 @@
 #include "debugging/tmemleak.h"
 #include "debugging/tprofiler.h"
 
+#include "tdata.h"
 #include "tmath.h"
 #include "trand.h"
 #include "ttime.h"

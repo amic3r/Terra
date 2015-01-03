@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\stdafx.c" />
+    <ClCompile Include="..\..\src\tdata.c" />
     <ClCompile Include="..\..\src\terror.c" />
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\ttime.c" />
@@ -85,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\stdafx.h" />
     <ClInclude Include="..\..\src\talloc.h" />
+    <ClInclude Include="..\..\src\tdata.h" />
     <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\terra.h" />
     <ClInclude Include="..\..\src\terror.h" />

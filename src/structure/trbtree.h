@@ -13,12 +13,12 @@ void TRBTreeEmpty(TRBTree *t);
 
 size_t TRBTreeSize(const TRBTree *t);
 
-unsigned char TRBTreeInsert(TRBTree *t, void *key, void *data);
-void *TRBTreeReplace(TRBTree *t, void *key, void *data);
-void TRBTreeErase(TRBTree *t, void *key);
+unsigned char TRBTreeInsert(TRBTree *t, const void *key, const void *data);
+const void *TRBTreeReplace(TRBTree *t, const void *key, const void *data);
+void TRBTreeErase(TRBTree *t, const void *key);
 
-void *TRBTreeFind(const TRBTree *t, void *key);
-unsigned char TRBTreeExists(const TRBTree *t, void *key);
+const void *TRBTreeFind(const TRBTree *t, const void *key);
+unsigned char TRBTreeExists(const TRBTree *t, const void *key);
 
 size_t TRBTreeMemUsage(const TRBTree *t);
 
@@ -32,7 +32,7 @@ typedef struct TRBTreeIterator TRBTreeIterator;
 TRBTreeIterator *TRBTreeIteratorNew(const TRBTree *t);
 void TRBTreeIteratorFree(TRBTreeIterator *iter);
 
-int TRBTreeIteratorNext(TRBTreeIterator *iter, void **key, void **data);
-int TRBTreeIteratorPrevious(TRBTreeIterator *iter, void **key, void **data);
+int TRBTreeIteratorNext(TRBTreeIterator *iter, const void **key, const void **data);
+int TRBTreeIteratorPrevious(TRBTreeIterator *iter, const void **key, const void **data);
 
 #endif

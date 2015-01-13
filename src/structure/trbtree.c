@@ -9,8 +9,8 @@ enum color_t {Red,Black};
 
 typedef struct TRBTreeNode
 {
-	void *key;
-	void *data;
+	const void *key;
+	const void *data;
 	int color;
 
 	struct TRBTreeNode *left, *right, *parent;
@@ -32,8 +32,8 @@ TRBTreeNode *TRBTreeNodeNew(void)
 void TRBTreeNodeFree(TRBTreeNode *n, TFreeFunc fk, TFreeFunc fd)
 {
 	if(n) {
-		if(fk) fk(n->key);
-		if(fd) fd(n->data);
+		if(fk) fk((void *) n->key);
+		if(fd) fd((void *) n->data);
 		TRBTreeNodeFree(n->left, fk, fd);
 		TRBTreeNodeFree(n->right, fk, fd);
 		free(n);
@@ -227,7 +227,7 @@ void TRBTreeInsertFixup(TRBTree *t, TRBTreeNode *x)
 	t->root->color = Black;
 }
 
-inline TRBTreeNode *TRBTreeFindNode(const TRBTree *t, void *key)
+inline TRBTreeNode *TRBTreeFindNode(const TRBTree *t, const void *key)
 {
 	TRBTreeNode *current = t->root;
 
@@ -244,16 +244,16 @@ inline TRBTreeNode *TRBTreeFindNode(const TRBTree *t, void *key)
 	return 0;
 }
 
-void *TRBTreeReplace(TRBTree *t, void *key, void *data)
+const void *TRBTreeReplace(TRBTree *t, const void *key, const void *data)
 {
 	TRBTreeNode *current = TRBTreeFindNode(t, key);
 	if (!current) return 0;
 
-	TSWAP(current->data,data);
+	TSWAPT(current->data,data,const void *);
 	return data;
 }
 
-unsigned char TRBTreeInsert(TRBTree *t, void *key, void *data)
+unsigned char TRBTreeInsert(TRBTree *t, const void *key, const void *data)
 {
 	TRBTreeNode *current = t->root, *parent = 0, *x = 0;
 	int ret;
@@ -374,10 +374,7 @@ void TRBTreeKillNode(TRBTree *t, TRBTreeNode *z)
 	}
 
 	/* x is y's only child */
-	if (y->left)
-		x = y->left;
-	else
-		x = y->right;
+	x = y->left ? y->left : y->right;
 
 	/* remove y from the parent chain */
 	if (x) x->parent = y->parent;
@@ -390,12 +387,10 @@ void TRBTreeKillNode(TRBTree *t, TRBTreeNode *z)
 	} else
 		t->root = x;
 
+	if(t->fk) t->fk((void *) z->key);
 	if (y != z) {
-		t->fk(z->key);
 		z->key = y->key;
 		z->data = y->data;
-	} else {
-		t->fk(y->key);
 	}
 
 	if (y->color == Black)
@@ -404,10 +399,10 @@ void TRBTreeKillNode(TRBTree *t, TRBTreeNode *z)
 	t->size--;
 
 	y->left = y->right = 0;
-	free(y);
+	TDeAlloc(y);
 }
 
-void TRBTreeErase(TRBTree *t, void *key)
+void TRBTreeErase(TRBTree *t, const void *key)
 {
 	TRBTreeNode *z =  TRBTreeFindNode(t,key);
 
@@ -417,14 +412,14 @@ void TRBTreeErase(TRBTree *t, void *key)
 	if(z) TRBTreeKillNode(t, z);
 }
 
-void *TRBTreeFind(const TRBTree *t, void *key)
+const void *TRBTreeFind(const TRBTree *t, const void *key)
 {
 	TRBTreeNode *current = TRBTreeFindNode(t,key);
 
 	return current ? current->data : 0;
 }
 
-unsigned char TRBTreeExists(const TRBTree *t, void *key)
+unsigned char TRBTreeExists(const TRBTree *t, const void *key)
 {
 	TRBTreeNode *current = TRBTreeFindNode(t, key);
 	
@@ -492,7 +487,7 @@ void TRBTreeIteratorFree(TRBTreeIterator *iter)
 	free(iter);
 }
 
-int TRBTreeIteratorNext(TRBTreeIterator *iter, void **key, void **data)
+int TRBTreeIteratorNext(TRBTreeIterator *iter, const void **key, const void **data)
 {
 	iter->beginning = 0;
 	if(iter->end) return 0;
@@ -530,7 +525,7 @@ int TRBTreeIteratorNext(TRBTreeIterator *iter, void **key, void **data)
 	return 1;
 }
 
-int TRBTreeIteratorPrevious(TRBTreeIterator *iter, void **key, void **data)
+int TRBTreeIteratorPrevious(TRBTreeIterator *iter, const void **key, const void **data)
 {
 	iter->end = 0;
 	if(iter->beginning) {

@@ -35,19 +35,19 @@ typedef union _Matrix4f {
 		union {float m00; float xx;};
 		union {float m10; float xy;};
 		union {float m20; float xz;};
-		union {float m30; float xw;};
+		union {float m30; float xt;};
 		union {float m01; float yx;};
 		union {float m11; float yy;};
 		union {float m21; float yz;};
-		union {float m31; float yw;};
+		union {float m31; float yt;};
 		union {float m02; float zx;};
 		union {float m12; float zy;};
 		union {float m22; float zz;};
-		union {float m32; float zw;};
+		union {float m32; float zt;};
 		union {float m03; float tx;};
 		union {float m13; float ty;};
 		union {float m23; float tz;};
-		union {float m33; float tw;};
+		union {float m33; float tt;};
 	} s;
 	float M[16];
 } Matrix4f;
@@ -66,6 +66,16 @@ static const Vector upVector = {0, 1, 0};
 // utility macros
 // assuming IEEE-754(GLfloat), which i believe has max precision of 7 bits
 #define Epsilon 1.0e-5
+
+static inline float TMathDegToRad(float degrees)
+{ 
+	return (float)((double)degrees * (M_PI / 180.0));
+}
+
+static inline float TMathRadToDeg(float radian)
+{ 
+	return (float)((double)radian * (180.0 / M_PI));
+}
 
 inline static void PointAdd(Point *to, const Point *from)
 {
@@ -212,37 +222,15 @@ inline static Vector NormalfromTuples(const Tuple3f *v1,const Tuple3f *v2,const 
 	return out;
 }
 
-inline static void Matrix3fSetZero(Matrix3f *mat)
+inline static void Matrix3fSetZero(Matrix3f *matrix)
 {
-	mat->s.m00 = mat->s.m01 = mat->s.m02 = mat->s.m10 = mat->s.m11 = mat->s.m12 = mat->s.m20 = mat->s.m21 = mat->s.m22 = 0.0f;
+	memset(matrix,0, sizeof(matrix->M));
 }
 
-inline static void Matrix3fSetIdentity(Matrix3f * mat)
+inline static void Matrix3fSetIdentity(Matrix3f *matrix)
 {
-	Matrix3fSetZero(mat);
-
-	mat->s.m00 = mat->s.m11 = mat->s.m22 = 1.0f;
-}
-
-inline static void Matrix3fSetRotationFromQuat(Matrix3f *mat, const Quat * q1)
-{
-	float n, s;
-	float xs, ys, zs;
-	float wx, wy, wz;
-	float xx, xy, xz;
-	float yy, yz, zz;
-
-	n = (q1->x * q1->x) + (q1->y * q1->y) + (q1->z * q1->z) + (q1->w * q1->w);
-	s = (n > 0.0f) ? (2.0f / n) : 0.0f;
-
-	xs = q1->x * s;  ys = q1->y * s;  zs = q1->z * s;
-	wx = q1->w * xs; wy = q1->w * ys; wz = q1->w * zs;
-	xx = q1->x * xs; xy = q1->x * ys; xz = q1->x * zs;
-	yy = q1->y * ys; yz = q1->y * zs; zz = q1->z * zs;
-
-	mat->s.xx = 1.0f - (yy + zz); mat->s.yx = xy - wz;          mat->s.zx = xz + wy;
-	mat->s.xy = xy + wz;          mat->s.yy = 1.0f - (xx + zz); mat->s.zy = yz - wx;
-	mat->s.zx = xz - wy;          mat->s.yz = yz + wx;          mat->s.zz = 1.0f - (xx + yy);
+	Matrix3fSetZero(matrix);
+	matrix->s.m00 = matrix->s.m11 = matrix->s.m22 = 1.0f;
 }
 
 inline static void Matrix3fMulMatrix3f(Matrix3f *m1, const Matrix3f * m2)
@@ -260,19 +248,154 @@ inline static void Matrix3fMulMatrix3f(Matrix3f *m1, const Matrix3f * m2)
 	m1->s.m22 = (m1->s.m20 * m2->s.m02) + (m1->s.m21 * m2->s.m12) + (m1->s.m22 * m2->s.m22);
 }
 
-inline static void Matrix4fSetZero(Matrix4f *mat)
+inline static void Matrix3fSetScale(Matrix3f *matrix, float x, float y, float z)
 {
-	mat->s.m00 = mat->s.m01 = mat->s.m02 = mat->s.m03 = 0.0f;
-	mat->s.m10 = mat->s.m11 = mat->s.m12 = mat->s.m13 = 0.0f;
-	mat->s.m20 = mat->s.m21 = mat->s.m22 = mat->s.m23 = 0.0f;
-	mat->s.m30 = mat->s.m31 = mat->s.m32 = mat->s.m33 = 0.0f;
+	Matrix3f mat;
+	Matrix3fSetZero(&mat);
+
+	mat.s.xx = x;
+	mat.s.yy = y;
+	mat.s.zz = z;
+
+	Matrix3fMulMatrix3f(matrix,&mat);
 }
 
-inline static void Matrix4fSetIdentity(Matrix4f * mat)
+inline static void Matrix3fSetRotate(Matrix3f *matrix, float angle, float x, float y, float z)
 {
-	Matrix4fSetZero(mat);
+	Matrix3f mat;
+	float c = cosf(angle), oc = 1 - c;
+	float s = sinf(angle);
+	Vector v = {x,y,z};
+	VectorNormalize(&v);
+	x = v.x * v.x;
+	y = v.y * v.y;
+	z = v.z * v.z;
 
-	mat->s.m00 = mat->s.m11 = mat->s.m22 = mat->s.m33 = 1.0f;
+	mat.s.xx = c + (x * oc);
+	mat.s.xy = (v.x * v.y * oc) - (v.z * s);
+	mat.s.xz = (v.x * v.z * oc) + (v.y * s);
+
+	mat.s.yx = (v.x * v.y * oc) + (v.z * s);
+	mat.s.yy = c + (y * oc);
+	mat.s.yz = (v.y * v.z * oc) - (v.x * s);
+
+	mat.s.zx = (v.x * v.z * oc) - (v.y * s);
+	mat.s.zy = (v.y * v.z * oc) + (v.x * s);
+	mat.s.zz = c + (z * oc);
+
+	Matrix3fMulMatrix3f(matrix,&mat);
+}
+
+inline static void Matrix3fSetRotationFromQuat(Matrix3f *matrix, const Quat * q1)
+{
+	float n, s;
+	float xs, ys, zs;
+	float wx, wy, wz;
+	float xx, xy, xz;
+	float yy, yz, zz;
+
+	n = (q1->x * q1->x) + (q1->y * q1->y) + (q1->z * q1->z) + (q1->w * q1->w);
+	s = (n > 0.0f) ? (2.0f / n) : 0.0f;
+
+	xs = q1->x * s;  ys = q1->y * s;  zs = q1->z * s;
+	wx = q1->w * xs; wy = q1->w * ys; wz = q1->w * zs;
+	xx = q1->x * xs; xy = q1->x * ys; xz = q1->x * zs;
+	yy = q1->y * ys; yz = q1->y * zs; zz = q1->z * zs;
+
+	matrix->s.xx = 1.0f - (yy + zz); matrix->s.yx = xy - wz;          matrix->s.zx = xz + wy;
+	matrix->s.xy = xy + wz;          matrix->s.yy = 1.0f - (xx + zz); matrix->s.zy = yz - wx;
+	matrix->s.zx = xz - wy;          matrix->s.yz = yz + wx;          matrix->s.zz = 1.0f - (xx + yy);
+}
+
+inline static void Matrix4fSetZero(Matrix4f *matrix)
+{
+	memset(matrix,0,sizeof(matrix->M));
+}
+
+inline static void Matrix4fSetIdentity(Matrix4f *matrix)
+{
+	Matrix4fSetZero(matrix);
+
+	matrix->s.m00 = matrix->s.m11 = matrix->s.m22 = matrix->s.m33 = 1.0f;
+}
+
+inline static void Matrix4fMulMatrix4f(Matrix4f *m1, const Matrix4f * m2)
+{
+	m1->s.m00 = (m1->s.m00 * m2->s.m00) + (m1->s.m01 * m2->s.m10) + (m1->s.m02 * m2->s.m20) + (m1->s.m03 * m2->s.m30);
+	m1->s.m01 = (m1->s.m00 * m2->s.m01) + (m1->s.m01 * m2->s.m11) + (m1->s.m02 * m2->s.m21) + (m1->s.m03 * m2->s.m31);
+	m1->s.m02 = (m1->s.m00 * m2->s.m02) + (m1->s.m01 * m2->s.m12) + (m1->s.m02 * m2->s.m22) + (m1->s.m03 * m2->s.m32);
+	m1->s.m03 = (m1->s.m00 * m2->s.m03) + (m1->s.m01 * m2->s.m13) + (m1->s.m02 * m2->s.m23) + (m1->s.m03 * m2->s.m33);
+
+	m1->s.m10 = (m1->s.m10 * m2->s.m00) + (m1->s.m11 * m2->s.m10) + (m1->s.m12 * m2->s.m20) + (m1->s.m13 * m2->s.m30);
+	m1->s.m11 = (m1->s.m10 * m2->s.m01) + (m1->s.m11 * m2->s.m11) + (m1->s.m12 * m2->s.m21) + (m1->s.m13 * m2->s.m31);
+	m1->s.m12 = (m1->s.m10 * m2->s.m02) + (m1->s.m11 * m2->s.m12) + (m1->s.m12 * m2->s.m22) + (m1->s.m13 * m2->s.m32);
+	m1->s.m13 = (m1->s.m10 * m2->s.m03) + (m1->s.m11 * m2->s.m13) + (m1->s.m12 * m2->s.m23) + (m1->s.m13 * m2->s.m33);
+
+	m1->s.m20 = (m1->s.m20 * m2->s.m00) + (m1->s.m21 * m2->s.m10) + (m1->s.m22 * m2->s.m20) + (m1->s.m23 * m2->s.m30);
+	m1->s.m21 = (m1->s.m20 * m2->s.m01) + (m1->s.m21 * m2->s.m11) + (m1->s.m22 * m2->s.m21) + (m1->s.m23 * m2->s.m31);
+	m1->s.m22 = (m1->s.m20 * m2->s.m02) + (m1->s.m21 * m2->s.m12) + (m1->s.m22 * m2->s.m22) + (m1->s.m23 * m2->s.m32);
+	m1->s.m23 = (m1->s.m20 * m2->s.m03) + (m1->s.m21 * m2->s.m13) + (m1->s.m22 * m2->s.m23) + (m1->s.m23 * m2->s.m33);
+
+	m1->s.m30 = (m1->s.m30 * m2->s.m00) + (m1->s.m31 * m2->s.m10) + (m1->s.m32 * m2->s.m20) + (m1->s.m33 * m2->s.m30);
+	m1->s.m31 = (m1->s.m30 * m2->s.m01) + (m1->s.m31 * m2->s.m11) + (m1->s.m32 * m2->s.m21) + (m1->s.m33 * m2->s.m31);
+	m1->s.m32 = (m1->s.m30 * m2->s.m02) + (m1->s.m31 * m2->s.m12) + (m1->s.m32 * m2->s.m22) + (m1->s.m33 * m2->s.m32);
+	m1->s.m33 = (m1->s.m30 * m2->s.m03) + (m1->s.m31 * m2->s.m13) + (m1->s.m32 * m2->s.m23) + (m1->s.m33 * m2->s.m33);
+}
+
+inline static void Matrix4fSetTranslation(Matrix4f *matrix, float x, float y, float z)
+{
+	Matrix4f mat;
+
+	Matrix4fSetIdentity(&mat);
+
+	mat.s.xt = x;
+	mat.s.yt = y;
+	mat.s.zt = z;
+
+	Matrix4fMulMatrix4f(matrix,&mat);
+}
+
+inline static void Matrix4fSetScale(Matrix4f *matrix, float x, float y, float z)
+{
+	Matrix4f mat;
+	Matrix4fSetZero(&mat);
+
+	mat.s.xx = x;
+	mat.s.yy = y;
+	mat.s.zz = z;
+	mat.s.tt = 1.0f;
+
+	Matrix4fMulMatrix4f(matrix,&mat);
+}
+
+inline static void Matrix4fSetRotation(Matrix4f *matrix, float angle, float x, float y, float z)
+{
+	Matrix4f mat;
+	float c = cosf(angle), oc = 1 - c;
+	float s = sinf(angle);
+	Vector v = {x,y,z};
+	VectorNormalize(&v);
+	x = v.x * v.x;
+	y = v.y * v.y;
+	z = v.z * v.z;
+
+	Matrix4fSetZero(&mat);
+
+	mat.s.xx = c + (x * oc);
+	mat.s.xy = (v.x * v.y * oc) - (v.z * s);
+	mat.s.xz = (v.x * v.z * oc) + (v.y * s);
+
+	mat.s.yx = (v.x * v.y * oc) + (v.z * s);
+	mat.s.yy = c + (y * oc);
+	mat.s.yz = (v.y * v.z * oc) - (v.x * s);
+
+	mat.s.zx = (v.x * v.z * oc) - (v.y * s);
+	mat.s.zy = (v.y * v.z * oc) + (v.x * s);
+	mat.s.zz = c + (z * oc);
+
+	mat.s.tt = 1.0f;
+
+	Matrix4fMulMatrix4f(matrix,&mat);
 }
 
 inline static void Matrix4fSetRotationScaleFromMatrix4f(Matrix4f * m1, const Matrix4f * m2)

@@ -9,6 +9,7 @@
 #define _WINDOWS 1
 #define inline _inline
 #define snprintf _snprintf
+#define _USE_MATH_DEFINES 1
 #elif defined(__linux) || defined(__linux__)
 #define _LINUX 1
 #endif
@@ -53,7 +54,7 @@ typedef void (*TIterFunc) (void *);
 typedef void *(*TDataIterFunc) (void *,void *);
 
 typedef void (*TPairIterFunc) (void *,void *);
-typedef void *(*TDataPairIterFunc) (void *,void *,void *);
+typedef void *(*TDataPairIterFunc) (void *, void *, void *);
 
 typedef int (*TCompareFunc) (const void *,const void *);
 

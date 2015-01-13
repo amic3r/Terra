@@ -19,20 +19,23 @@ struct _TData {
 	char autocast : 1;
 };
 
-TData TDataNewCpy(const void *data, size_t size, char type)
+static inline void TDataCpySet(TData context, const void *data, size_t size, char type)
 {
-	TData content = (TData) TAlloc(sizeof(TData));
-
 	char *d = (char *) TAlloc(size);
 	memcpy(d,data,size);
 
-	content->data = d;
+	context->data = d;
 	
-	content->type = type;
-	content->autodelete = 1;
-	content->autocast = 1;
+	context->type = type;
+	context->autodelete = 1;
+	context->autocast = 1;
+}
 
-	return content;
+static inline TData TDataNewCpy(const void *data, size_t size, char type)
+{
+	TData context = (TData) TAlloc(sizeof(TData));
+	TDataCpySet(context, data, size, type);
+	return context;
 }
 
 TData TDataFromMem(void *data)
@@ -49,60 +52,109 @@ TData TDataFromMem(void *data)
 
 TData TDataFromConstMem(const void *data, size_t size)
 {
-	return TDataNewCpy(data,size,T_DATA_UNKNOWN);
+	return TDataNewCpy(data, size, T_DATA_UNKNOWN);
 }
 
 TData TDataFromChar(char data)
 {
-	return TDataNewCpy(&data,sizeof(char),T_DATA_CHAR);
+	return TDataNewCpy(&data, sizeof(char), T_DATA_CHAR);
 }
 
 TData TDataFromInt(int data)
 {
-	return TDataNewCpy(&data,sizeof(int),T_DATA_INT32);
+	return TDataNewCpy(&data, sizeof(int), T_DATA_INT32);
 }
 
 TData TDataFromUnsignedInt(unsigned int data)
 {
-	return TDataNewCpy(&data,sizeof(int),T_DATA_UINT32);
+	return TDataNewCpy(&data, sizeof(int), T_DATA_UINT32);
 }
 
 TData TDataFromString(const char *data)
 {
-	return TDataNewCpy(&data,sizeof(char) * (strlen(data) + 1),T_DATA_STRING);
+	return TDataNewCpy(&data, sizeof(char) * (strlen(data) + 1), T_DATA_STRING);
 }
 
 TData TDataFromFloat(float data)
 {
-	return TDataNewCpy(&data,sizeof(float),T_DATA_FLOAT);
+	return TDataNewCpy(&data, sizeof(float), T_DATA_FLOAT);
 }
 
 TData TDataFromDouble(double data)
 {
-	return TDataNewCpy(&data,sizeof(double),T_DATA_DOUBLE);
+	return TDataNewCpy(&data, sizeof(double), T_DATA_DOUBLE);
 }
 
-void TDataSetAutoCast(TData data, char cast)
+void TDataSetFromMem(TData context, void *data)
 {
-	data->autocast = cast;
+	TDataEmpty(context);
+
+	context->data = (char *)data;
 }
 
-char TDataGetType(TData data)
+void TDataSetFromConstMem(TData context, const void *data, size_t size)
 {
-	return data->type;
+	TDataEmpty(context);
+	TDataCpySet(context, data, size, T_DATA_UNKNOWN);
 }
 
-const void *TDataToPointer(TData data, char *type)
+void TDataSetFromChar(TData context, char data)
 {
-	if(type) *type = data->type;
-	return data->data;
+	TDataEmpty(context);
+	TDataCpySet(context, &data, sizeof(char), T_DATA_CHAR);
 }
 
-char TDataToChar(TData data)
+void TDataSetFromInt(TData context, int data)
 {
-	if(data) {
-		if(data->type == T_DATA_CHAR) {
-			return *((char *) data->data);
+	TDataEmpty(context);
+	TDataCpySet(context, &data, sizeof(int), T_DATA_INT32);
+}
+
+void TDataSetFromUnsignedInt(TData context, unsigned int data)
+{
+	TDataEmpty(context);
+	TDataCpySet(context, &data, sizeof(int), T_DATA_UINT32);
+}
+
+void TDataSetFromString(TData context, const char *data)
+{
+	TDataEmpty(context);
+	TDataCpySet(context, &data, sizeof(char) * (strlen(data) + 1), T_DATA_STRING);
+}
+
+void TDataSetFromFloat(TData context, float data)
+{
+	TDataEmpty(context);
+	TDataCpySet(context, &data, sizeof(float), T_DATA_FLOAT);
+}
+
+void TDataSetFromDouble(TData context, double data)
+{
+	TDataEmpty(context);
+	TDataCpySet(context, &data, sizeof(double), T_DATA_DOUBLE);
+}
+
+void TDataSetAutoCast(TData context, char cast)
+{
+	context->autocast = cast;
+}
+
+char TDataGetType(TData context)
+{
+	return context->type;
+}
+
+const void *TDataToPointer(TData context, char *type)
+{
+	if(type) *type = context->type;
+	return context->data;
+}
+
+char TDataToChar(TData context)
+{
+	if(context) {
+		if(context->type == T_DATA_CHAR) {
+			return *((char *) context->data);
 		} //TODO casting
 	}
 
@@ -110,11 +162,11 @@ char TDataToChar(TData data)
 	return 0;
 }
 
-int TDataToInt(TData data)
+int TDataToInt(TData context)
 {
-	if(data) {
-		if(data->type == T_DATA_INT32) {
-			return *((int *) data->data);
+	if(context) {
+		if(context->type == T_DATA_INT32) {
+			return *((int *) context->data);
 		} //TODO casting
 	}
 
@@ -122,11 +174,11 @@ int TDataToInt(TData data)
 	return 0;
 }
 
-unsigned int TDataToUnsignedInt(TData data)
+unsigned int TDataToUnsignedInt(TData context)
 {
-	if(data) {
-		if(data->type == T_DATA_UINT32) {
-			return *((unsigned int *) data->data);
+	if(context) {
+		if(context->type == T_DATA_UINT32) {
+			return *((unsigned int *) context->data);
 		} //TODO casting
 	}
 
@@ -134,11 +186,11 @@ unsigned int TDataToUnsignedInt(TData data)
 	return 0;
 }
 
-const char *TDataToString(TData data)
+const char *TDataToString(TData context)
 {
-	if(data) {
-		if(data->type == T_DATA_STRING) {
-			return (char *) data->data;
+	if(context) {
+		if(context->type == T_DATA_STRING) {
+			return (char *) context->data;
 		} //TODO casting
 	}
 
@@ -146,11 +198,11 @@ const char *TDataToString(TData data)
 	return 0;
 }
 
-float TDataToFloat(TData data)
+float TDataToFloat(TData context)
 {
-	if(data) {
-		if(data->type == T_DATA_FLOAT) {
-			return *((float *) data->data);
+	if(context) {
+		if(context->type == T_DATA_FLOAT) {
+			return *((float *) context->data);
 		} //TODO casting
 	}
 
@@ -158,11 +210,11 @@ float TDataToFloat(TData data)
 	return 0;
 }
 
-double TDataToDouble(TData data)
+double TDataToDouble(TData context)
 {
-	if(data) {
-		if(data->type == T_DATA_DOUBLE) {
-			return *((double *) data->data);
+	if(context) {
+		if(context->type == T_DATA_DOUBLE) {
+			return *((double *) context->data);
 		} //TODO casting
 	}
 
@@ -170,11 +222,21 @@ double TDataToDouble(TData data)
 	return 0;
 }
 
-void TDataFree(TData data)
+void TDataEmpty(TData context) {
+	if(context) {
+		if(context->autodelete) TDeAlloc(context->data);
+		context->data = 0;
+		context->type = T_DATA_UNKNOWN;
+		context->autodelete = 0;
+		context->autocast = 0;
+	}
+}
+
+void TDataFree(TData context)
 {
-	if(data) {
-		if(data->autodelete) TDeAlloc(data->data);
-		TDeAlloc(data);
+	if(context) {
+		if(context->autodelete) TDeAlloc(context->data);
+		TDeAlloc(context);
 	}
 }
 

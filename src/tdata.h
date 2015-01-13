@@ -18,7 +18,6 @@ typedef struct _TData * TData;
 
 TData TDataFromMem(void *data);
 TData TDataFromConstMem(const void *data, size_t size);
-
 TData TDataFromChar(char data);
 TData TDataFromInt(int data);
 TData TDataFromUnsignedInt(unsigned int data);
@@ -26,18 +25,28 @@ TData TDataFromString(const char *data);
 TData TDataFromFloat(float data);
 TData TDataFromDouble(double data);
 
-void TDataSetAutoCast(TData data, char cast);
+void TDataSetFromMem(TData context, void *data);
+void TDataSetFromConstMem(TData context, const void *data, size_t size);
+void TDataSetFromChar(TData context, char data);
+void TDataSetFromInt(TData context, int data);
+void TDataSetFromUnsignedInt(TData context, unsigned int data);
+void TDataSetFromString(TData context, const char *data);
+void TDataSetFromFloat(TData context, float data);
+void TDataSetFromDouble(TData context, double data);
 
-char TDataGetType(TData data);
+void TDataSetAutoCast(TData context, char cast);
 
-const void *TDataToPointer(TData data, char *type);
-char TDataToChar(TData data);
-int TDataToInt(TData data);
-unsigned int TDataToUnsignedInt(TData data);
-const char *TDataToString(TData data);
-float TDataToFloat(TData data);
-double TDataToDouble(TData data);
+char TDataGetType(TData context);
 
-void TDataFree(TData data);
+const void *TDataToPointer(TData context, char *type);
+char TDataToChar(TData context);
+int TDataToInt(TData context);
+unsigned int TDataToUnsignedInt(TData context);
+const char *TDataToString(TData context);
+float TDataToFloat(TData context);
+double TDataToDouble(TData context);
+
+void TDataEmpty(TData context);
+void TDataFree(TData context);
 
 #endif

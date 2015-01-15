@@ -16,8 +16,8 @@ enum T_DATA_TYPE {
 
 typedef struct _TData * TData;
 
-TData TDataFromMem(void *data);
-TData TDataFromConstMem(const void *data, size_t size);
+TData TDataFromMem(void *data, size_t size);
+TData TDataFromConstMem(const void *data);
 TData TDataFromChar(char data);
 TData TDataFromInt(int data);
 TData TDataFromUnsignedInt(unsigned int data);

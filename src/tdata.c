@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 struct _TData {
-	char *data;
+	const char *data;
 	size_t size;
 
 	char type;
@@ -38,21 +38,21 @@ static inline TData TDataNewCpy(const void *data, size_t size, char type)
 	return context;
 }
 
-TData TDataFromMem(void *data)
+TData TDataFromMem(void *data,size_t size)
+{
+	return TDataNewCpy(data, size, T_DATA_UNKNOWN);
+}
+
+TData TDataFromConstMem(const void *data)
 {
 	TData content = (TData) TAlloc(sizeof(TData));
 
-	content->data = (char *)data;
+	content->data = data;
 	content->type = T_DATA_UNKNOWN;
 	content->autodelete = 0;
 	content->autocast = 0;
 
 	return content;
-}
-
-TData TDataFromConstMem(const void *data, size_t size)
-{
-	return TDataNewCpy(data, size, T_DATA_UNKNOWN);
 }
 
 TData TDataFromChar(char data)

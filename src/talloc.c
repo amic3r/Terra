@@ -18,32 +18,32 @@ void *rAllocDef(void *ptr, size_t size)
 	return d;
 }
 
-static void *(*alloc)(size_t) = allocDef;
-static void *(*ralloc)(void *, size_t) = rAllocDef;
-static void (*dalloc)(void *) = free;
+static void *(*talloc)(size_t) = allocDef;
+static void *(*tralloc)(void *, size_t) = rAllocDef;
+static void (*tfree)(void *) = free;
 
 void *TAlloc(size_t size)
 {
-	return alloc(size);
+	return talloc(size);
 }
 
 void *TRAlloc(void *ptr, size_t size)
 {
-	return ralloc(ptr,size);
+	return tralloc(ptr,size);
 }
 
-void TDeAlloc(void *ptr)
+void TFree(void *ptr)
 {
-	dalloc(ptr);
+	tfree(ptr);
 }
 
-void TAllocSet(void *(*_alloc)(size_t), void *(*_ralloc)(void *, size_t),void (*_dalloc) (void *))
+void TAllocSet(void *(*_alloc)(size_t), void *(*_ralloc)(void *, size_t),void (*_free) (void *))
 {
 	if(!_alloc) _alloc = allocDef;
 	if(!_ralloc) _ralloc = rAllocDef;
-	if(!_dalloc) _dalloc = free;
+	if(!_free) _free = free;
 
-	alloc = _alloc;
-	ralloc = _ralloc;
-	dalloc = _dalloc;
+	talloc = _alloc;
+	tralloc = _ralloc;
+	tfree = _free;
 }

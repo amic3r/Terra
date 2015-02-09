@@ -47,8 +47,8 @@ void TArgParserInit(void)
 
 void TArgParserDestroy(void)
 {
-	TArrayFree(TArgParser.argFormat,TDeAlloc);
-	TDeAlloc(TArgParser.ph.param);
+	TArrayFree(TArgParser.argFormat,TFree);
+	TFree(TArgParser.ph.param);
 }
 
 void TArgParserAddArgument(const char *name, char type, char amount, char def, const char *help)
@@ -228,7 +228,7 @@ static unsigned char TArgParserCheck(TArg *pat, const char *arg)
 
 static inline void TArgParserStoreParam(char type, char def, size_t amount)
 {
-	TDeAlloc(TArgParser.ph.param);
+	TFree(TArgParser.ph.param);
 	TArgParser.ph.param = 0;
 	TArgParser.ph.paramtype = type;
 	TArgParser.ph.paramdef = def;
@@ -242,7 +242,7 @@ const char *TArgParserNext(void)
 	// maybe we have reached the end already
 	if(!TArgParser.argv || (TArgParser.idx >= TArgParser.argc)) {
 		if(TArgParser.ph.param) {
-			TDeAlloc(TArgParser.ph.param);
+			TFree(TArgParser.ph.param);
 			TArgParser.ph.param = 0;
 		}
 		return next;
@@ -292,7 +292,7 @@ const void *TArgParserNextParameter(void)
 
 	if(!TArgParser.ph.remainingParams) return 0;
 
-	TDeAlloc(TArgParser.ph.param);
+	TFree(TArgParser.ph.param);
 
 	arg = TArgParser.argv[TArgParser.idx];
 

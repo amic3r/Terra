@@ -4,8 +4,8 @@
 
 void *TAlloc(size_t size);
 void *TRAlloc(void *ptr, size_t size);
-void TDeAlloc(void *ptr);
+void TFree(void *ptr);
 
-void TAllocSet(void *(*alloc)(size_t), void *(*ralloc)(void *, size_t),void (*dalloc) (void *));
+void TAllocSet(void *(*_alloc)(size_t), void *(*_ralloc)(void *, size_t),void (*_free) (void *));
 
 #endif

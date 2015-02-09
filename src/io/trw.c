@@ -199,7 +199,7 @@ TRW *TRWFromFilePointer(FILE *f, unsigned char autoclose)
 
 	file = (struct TRWFile *) TAlloc(sizeof(struct TRWFile));
 	if(!file) {
-		TDeAlloc(trw);
+		TFree(trw);
 		return 0;
 	}
 
@@ -226,7 +226,7 @@ TRW *TRWFromMem(char *buffer, int size)
 
 	buf = (struct TRWBuffer *) TAlloc(sizeof(struct TRWBuffer));
 	if(!buf) {
-		TDeAlloc(trw);
+		TFree(trw);
 		return 0;
 	}
 
@@ -512,7 +512,7 @@ void TRWWriteV(TRW *context, const char *format, va_list list)
 		if(context->operations.write) {
 			char buffer[256];
 			int res = vsnprintf(buffer,sizeof(buffer),format,list);
-			context->operations.write(context,buffer,sizeof(buffer));
+			context->operations.write(context,buffer,res);
 
 			if(res > sizeof(buffer)) {
 				//TODO

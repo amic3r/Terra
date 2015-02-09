@@ -455,7 +455,7 @@ unsigned char TFileSysCreateDirectoryRecursively(const char *_directory)
 		p = strchr(p+1, match);
 	}
 
-	TDeAlloc(buffer);
+	TFree(buffer);
 	
 	return error ? 1 : TFileSysCreateDirectory(_directory);
 }

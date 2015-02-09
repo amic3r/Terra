@@ -17,37 +17,19 @@ typedef struct { float x, y, z, w; } Tuple4f;
 
 typedef union _Matrix3f{
 	struct {
-		union {float m00; float xx;};
-		union {float m10; float xy;};
-		union {float m20; float xz;};
-		union {float m01; float yx;};
-		union {float m11; float yy;};
-		union {float m21; float yz;};
-		union {float m02; float zx;};
-		union {float m12; float zy;};
-		union {float m22; float zz;};
+		union {float m00; float xx;}; union {float m10; float yx;}; union {float m20; float zx;};
+		union {float m01; float xy;}; union {float m11; float yy;}; union {float m21; float zy;};
+		union {float m02; float xz;}; union {float m12; float yz;}; union {float m22; float zz;};
 	} s;
 	float M[9];
 } Matrix3f;
 
 typedef union _Matrix4f {
 	struct {
-		union {float m00; float xx;};
-		union {float m10; float xy;};
-		union {float m20; float xz;};
-		union {float m30; float xt;};
-		union {float m01; float yx;};
-		union {float m11; float yy;};
-		union {float m21; float yz;};
-		union {float m31; float yt;};
-		union {float m02; float zx;};
-		union {float m12; float zy;};
-		union {float m22; float zz;};
-		union {float m32; float zt;};
-		union {float m03; float tx;};
-		union {float m13; float ty;};
-		union {float m23; float tz;};
-		union {float m33; float tt;};
+		union {float m00; float xx;}; union {float m10; float yx;}; union {float m20; float zx;}; union {float m30; float tx;};
+		union {float m01; float xy;}; union {float m11; float yy;}; union {float m21; float zy;}; union {float m31; float ty;};
+		union {float m02; float xz;}; union {float m12; float yz;}; union {float m22; float zz;}; union {float m32; float tz;};
+		union {float m03; float xt;}; union {float m13; float yt;}; union {float m23; float zt;}; union {float m33; float tt;};
 	} s;
 	float M[16];
 } Matrix4f;
@@ -176,11 +158,11 @@ inline static void Tuple3fRotate(Vector *vector, const Tuple3f *cosangles, const
 
 inline static Vector VectorCross(const Vector *v1, const Vector *v2)
 {
-	Vector result;
-
-	result.x = (v1->y * v2->z) - (v1->z * v2->y);
-	result.y = (v1->z * v2->x) - (v1->x * v2->z);
-	result.z = (v1->x * v2->y) - (v1->y * v2->x);
+	Vector result = {
+		(v1->y * v2->z) - (v1->z * v2->y),
+		(v1->z * v2->x) - (v1->x * v2->z),
+		(v1->x * v2->y) - (v1->y * v2->x)
+	};
 
 	return result;
 }
@@ -235,17 +217,21 @@ inline static void Matrix3fSetIdentity(Matrix3f *matrix)
 
 inline static void Matrix3fMulMatrix3f(Matrix3f *m1, const Matrix3f * m2)
 {
-	m1->s.m00 = (m1->s.m00 * m2->s.m00) + (m1->s.m01 * m2->s.m10) + (m1->s.m02 * m2->s.m20);
-	m1->s.m01 = (m1->s.m00 * m2->s.m01) + (m1->s.m01 * m2->s.m11) + (m1->s.m02 * m2->s.m21);
-	m1->s.m02 = (m1->s.m00 * m2->s.m02) + (m1->s.m01 * m2->s.m12) + (m1->s.m02 * m2->s.m22);
+	Matrix3f res;
 
-	m1->s.m10 = (m1->s.m10 * m2->s.m00) + (m1->s.m11 * m2->s.m10) + (m1->s.m12 * m2->s.m20);
-	m1->s.m11 = (m1->s.m10 * m2->s.m01) + (m1->s.m11 * m2->s.m11) + (m1->s.m12 * m2->s.m21);
-	m1->s.m12 = (m1->s.m10 * m2->s.m02) + (m1->s.m11 * m2->s.m12) + (m1->s.m12 * m2->s.m22);
+	res.s.m00 = (m1->s.m00 * m2->s.m00) + (m1->s.m01 * m2->s.m10) + (m1->s.m02 * m2->s.m20);
+	res.s.m01 = (m1->s.m00 * m2->s.m01) + (m1->s.m01 * m2->s.m11) + (m1->s.m02 * m2->s.m21);
+	res.s.m02 = (m1->s.m00 * m2->s.m02) + (m1->s.m01 * m2->s.m12) + (m1->s.m02 * m2->s.m22);
 
-	m1->s.m20 = (m1->s.m20 * m2->s.m00) + (m1->s.m21 * m2->s.m10) + (m1->s.m22 * m2->s.m20);
-	m1->s.m21 = (m1->s.m20 * m2->s.m01) + (m1->s.m21 * m2->s.m11) + (m1->s.m22 * m2->s.m21);
-	m1->s.m22 = (m1->s.m20 * m2->s.m02) + (m1->s.m21 * m2->s.m12) + (m1->s.m22 * m2->s.m22);
+	res.s.m10 = (m1->s.m10 * m2->s.m00) + (m1->s.m11 * m2->s.m10) + (m1->s.m12 * m2->s.m20);
+	res.s.m11 = (m1->s.m10 * m2->s.m01) + (m1->s.m11 * m2->s.m11) + (m1->s.m12 * m2->s.m21);
+	res.s.m12 = (m1->s.m10 * m2->s.m02) + (m1->s.m11 * m2->s.m12) + (m1->s.m12 * m2->s.m22);
+
+	res.s.m20 = (m1->s.m20 * m2->s.m00) + (m1->s.m21 * m2->s.m10) + (m1->s.m22 * m2->s.m20);
+	res.s.m21 = (m1->s.m20 * m2->s.m01) + (m1->s.m21 * m2->s.m11) + (m1->s.m22 * m2->s.m21);
+	res.s.m22 = (m1->s.m20 * m2->s.m02) + (m1->s.m21 * m2->s.m12) + (m1->s.m22 * m2->s.m22);
+
+	memcpy(m1,&res,sizeof(res));
 }
 
 inline static void Matrix3fSetScale(Matrix3f *matrix, float x, float y, float z)
@@ -321,25 +307,28 @@ inline static void Matrix4fSetIdentity(Matrix4f *matrix)
 
 inline static void Matrix4fMulMatrix4f(Matrix4f *m1, const Matrix4f * m2)
 {
-	m1->s.m00 = (m1->s.m00 * m2->s.m00) + (m1->s.m01 * m2->s.m10) + (m1->s.m02 * m2->s.m20) + (m1->s.m03 * m2->s.m30);
-	m1->s.m01 = (m1->s.m00 * m2->s.m01) + (m1->s.m01 * m2->s.m11) + (m1->s.m02 * m2->s.m21) + (m1->s.m03 * m2->s.m31);
-	m1->s.m02 = (m1->s.m00 * m2->s.m02) + (m1->s.m01 * m2->s.m12) + (m1->s.m02 * m2->s.m22) + (m1->s.m03 * m2->s.m32);
-	m1->s.m03 = (m1->s.m00 * m2->s.m03) + (m1->s.m01 * m2->s.m13) + (m1->s.m02 * m2->s.m23) + (m1->s.m03 * m2->s.m33);
+	Matrix4f res;
+	res.s.m00 = (m1->s.m00 * m2->s.m00) + (m1->s.m01 * m2->s.m10) + (m1->s.m02 * m2->s.m20) + (m1->s.m03 * m2->s.m30);
+	res.s.m01 = (m1->s.m00 * m2->s.m01) + (m1->s.m01 * m2->s.m11) + (m1->s.m02 * m2->s.m21) + (m1->s.m03 * m2->s.m31);
+	res.s.m02 = (m1->s.m00 * m2->s.m02) + (m1->s.m01 * m2->s.m12) + (m1->s.m02 * m2->s.m22) + (m1->s.m03 * m2->s.m32);
+	res.s.m03 = (m1->s.m00 * m2->s.m03) + (m1->s.m01 * m2->s.m13) + (m1->s.m02 * m2->s.m23) + (m1->s.m03 * m2->s.m33);
 
-	m1->s.m10 = (m1->s.m10 * m2->s.m00) + (m1->s.m11 * m2->s.m10) + (m1->s.m12 * m2->s.m20) + (m1->s.m13 * m2->s.m30);
-	m1->s.m11 = (m1->s.m10 * m2->s.m01) + (m1->s.m11 * m2->s.m11) + (m1->s.m12 * m2->s.m21) + (m1->s.m13 * m2->s.m31);
-	m1->s.m12 = (m1->s.m10 * m2->s.m02) + (m1->s.m11 * m2->s.m12) + (m1->s.m12 * m2->s.m22) + (m1->s.m13 * m2->s.m32);
-	m1->s.m13 = (m1->s.m10 * m2->s.m03) + (m1->s.m11 * m2->s.m13) + (m1->s.m12 * m2->s.m23) + (m1->s.m13 * m2->s.m33);
+	res.s.m10 = (m1->s.m10 * m2->s.m00) + (m1->s.m11 * m2->s.m10) + (m1->s.m12 * m2->s.m20) + (m1->s.m13 * m2->s.m30);
+	res.s.m11 = (m1->s.m10 * m2->s.m01) + (m1->s.m11 * m2->s.m11) + (m1->s.m12 * m2->s.m21) + (m1->s.m13 * m2->s.m31);
+	res.s.m12 = (m1->s.m10 * m2->s.m02) + (m1->s.m11 * m2->s.m12) + (m1->s.m12 * m2->s.m22) + (m1->s.m13 * m2->s.m32);
+	res.s.m13 = (m1->s.m10 * m2->s.m03) + (m1->s.m11 * m2->s.m13) + (m1->s.m12 * m2->s.m23) + (m1->s.m13 * m2->s.m33);
 
-	m1->s.m20 = (m1->s.m20 * m2->s.m00) + (m1->s.m21 * m2->s.m10) + (m1->s.m22 * m2->s.m20) + (m1->s.m23 * m2->s.m30);
-	m1->s.m21 = (m1->s.m20 * m2->s.m01) + (m1->s.m21 * m2->s.m11) + (m1->s.m22 * m2->s.m21) + (m1->s.m23 * m2->s.m31);
-	m1->s.m22 = (m1->s.m20 * m2->s.m02) + (m1->s.m21 * m2->s.m12) + (m1->s.m22 * m2->s.m22) + (m1->s.m23 * m2->s.m32);
-	m1->s.m23 = (m1->s.m20 * m2->s.m03) + (m1->s.m21 * m2->s.m13) + (m1->s.m22 * m2->s.m23) + (m1->s.m23 * m2->s.m33);
+	res.s.m20 = (m1->s.m20 * m2->s.m00) + (m1->s.m21 * m2->s.m10) + (m1->s.m22 * m2->s.m20) + (m1->s.m23 * m2->s.m30);
+	res.s.m21 = (m1->s.m20 * m2->s.m01) + (m1->s.m21 * m2->s.m11) + (m1->s.m22 * m2->s.m21) + (m1->s.m23 * m2->s.m31);
+	res.s.m22 = (m1->s.m20 * m2->s.m02) + (m1->s.m21 * m2->s.m12) + (m1->s.m22 * m2->s.m22) + (m1->s.m23 * m2->s.m32);
+	res.s.m23 = (m1->s.m20 * m2->s.m03) + (m1->s.m21 * m2->s.m13) + (m1->s.m22 * m2->s.m23) + (m1->s.m23 * m2->s.m33);
 
-	m1->s.m30 = (m1->s.m30 * m2->s.m00) + (m1->s.m31 * m2->s.m10) + (m1->s.m32 * m2->s.m20) + (m1->s.m33 * m2->s.m30);
-	m1->s.m31 = (m1->s.m30 * m2->s.m01) + (m1->s.m31 * m2->s.m11) + (m1->s.m32 * m2->s.m21) + (m1->s.m33 * m2->s.m31);
-	m1->s.m32 = (m1->s.m30 * m2->s.m02) + (m1->s.m31 * m2->s.m12) + (m1->s.m32 * m2->s.m22) + (m1->s.m33 * m2->s.m32);
-	m1->s.m33 = (m1->s.m30 * m2->s.m03) + (m1->s.m31 * m2->s.m13) + (m1->s.m32 * m2->s.m23) + (m1->s.m33 * m2->s.m33);
+	res.s.m30 = (m1->s.m30 * m2->s.m00) + (m1->s.m31 * m2->s.m10) + (m1->s.m32 * m2->s.m20) + (m1->s.m33 * m2->s.m30);
+	res.s.m31 = (m1->s.m30 * m2->s.m01) + (m1->s.m31 * m2->s.m11) + (m1->s.m32 * m2->s.m21) + (m1->s.m33 * m2->s.m31);
+	res.s.m32 = (m1->s.m30 * m2->s.m02) + (m1->s.m31 * m2->s.m12) + (m1->s.m32 * m2->s.m22) + (m1->s.m33 * m2->s.m32);
+	res.s.m33 = (m1->s.m30 * m2->s.m03) + (m1->s.m31 * m2->s.m13) + (m1->s.m32 * m2->s.m23) + (m1->s.m33 * m2->s.m33);
+
+	memcpy(m1,&res,sizeof(res));
 }
 
 inline static void Matrix4fSetTranslation(Matrix4f *matrix, float x, float y, float z)

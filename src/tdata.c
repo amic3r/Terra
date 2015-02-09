@@ -33,7 +33,7 @@ static inline void TDataCpySet(TData context, const void *data, size_t size, cha
 
 static inline TData TDataNewCpy(const void *data, size_t size, char type)
 {
-	TData context = (TData) TAlloc(sizeof(TData));
+	TData context = (TData) TAlloc(sizeof(struct _TData));
 	TDataCpySet(context, data, size, type);
 	return context;
 }
@@ -45,9 +45,10 @@ TData TDataFromMem(void *data,size_t size)
 
 TData TDataFromConstMem(const void *data)
 {
-	TData content = (TData) TAlloc(sizeof(TData));
+	TData content = (TData) TAlloc(sizeof(struct _TData));
 
 	content->data = data;
+	content->size = sizeof(data);
 	content->type = T_DATA_UNKNOWN;
 	content->autodelete = 0;
 	content->autocast = 0;
@@ -224,7 +225,7 @@ double TDataToDouble(TData context)
 
 void TDataEmpty(TData context) {
 	if(context) {
-		if(context->autodelete) TDeAlloc(context->data);
+		if(context->autodelete) TFree((void *) context->data);
 		context->data = 0;
 		context->type = T_DATA_UNKNOWN;
 		context->autodelete = 0;
@@ -235,8 +236,9 @@ void TDataEmpty(TData context) {
 void TDataFree(TData context)
 {
 	if(context) {
-		if(context->autodelete) TDeAlloc(context->data);
-		TDeAlloc(context);
+		if(context->autodelete) TFree((void *) context->data);
+		context->data = 0;
+		TFree(context);
 	}
 }
 

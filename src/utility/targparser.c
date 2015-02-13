@@ -76,8 +76,8 @@ void TArgParserHelp(void)
 
 void TArgParserFeed(int argc, const char **argv)
 {
-	TArgParser.argc = argc;
-	TArgParser.argv = argv;
+	TArgParser.argc = argc-1;
+	TArgParser.argv = argv+1;
 }
 
 static inline unsigned char TArgParserIsSwitch(const char *arg)
@@ -115,7 +115,7 @@ static TArg *TArgParserMatchNonSwitch(void)
 	len = TArgParser.argFormat->len;
 	
 	while (idx < len) {
-		c = (TArg *) data[idx];
+		c = (TArg *) data[idx++];
 		if(c->name && !TArgParserIsSwitch(c->name))
 			return c;
 	}

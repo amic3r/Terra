@@ -23,7 +23,7 @@ static size_t TRWFileSize(TRW *context)
 	int now;
 	size_t size = 0;
 	struct TRWFile *content;
-	if(!context || !context->content) return 0;
+	if(!context->content) return 0;
 	content = (struct TRWFile *) context->content;
 
 	now = context->operations.tell(context);
@@ -37,7 +37,7 @@ static size_t TRWFileSize(TRW *context)
 static int TRWFileSeek(TRW *context, int offset, int origin)
 {
 	struct TRWFile *content;
-	if(!context || !context->content) return 0;
+	if(!context->content) return 0;
 	content = (struct TRWFile *) context->content;
 
 	return fseek(content->f, offset, origin);
@@ -46,17 +46,28 @@ static int TRWFileSeek(TRW *context, int offset, int origin)
 static int TRWFileTell(TRW *context)
 {
 	struct TRWFile *content;
-	if(!context || !context->content) return 0;
+	if(!context->content) return 0;
 	content = (struct TRWFile *) context->content;
 
 	return ftell(content->f);
 }
 
+static char TRWFileEOF(TRW *context)
+{
+	struct TRWFile *content;
+	if(!context->content) return 0;
+	content = (struct TRWFile *) context->content;
+
+	return feof(content->f);
+}
+
 static size_t TRWFileRead(TRW *context, void *buffer, size_t size)
 {
 	struct TRWFile *content;
-	if(!context || !context->content || !buffer || !size) return 0;
+	if(!context->content || !buffer || !size) return 0;
 	content = (struct TRWFile *) context->content;
+
+	if(feof(content->f)) return 0;
 
 	return fread(buffer, 1, size, content->f);
 }
@@ -64,7 +75,7 @@ static size_t TRWFileRead(TRW *context, void *buffer, size_t size)
 static size_t TRWFileWrite(TRW *context, const void *buffer, size_t size)
 {
 	struct TRWFile *content;
-	if(!context || !context->content || !buffer || !size) return 0;
+	if(!context->content || !buffer || !size) return 0;
 	content = (struct TRWFile *) context->content;
 
 	return fwrite(buffer, 1, size, content->f);
@@ -73,7 +84,7 @@ static size_t TRWFileWrite(TRW *context, const void *buffer, size_t size)
 static int TRWFileClose(TRW *context)
 {
 	struct TRWFile *content;
-	if(!context || !context->content) return 0;
+	if(!context->content) return 0;
 	content = (struct TRWFile *) context->content;
 
 	if(content->autoclose)
@@ -86,6 +97,7 @@ static TRWOps TRWFileOps = {
 	TRWFileSize,
 	TRWFileSeek,
 	TRWFileTell,
+	TRWFileEOF,
 	TRWFileRead,
 	TRWFileWrite,
 	TRWFileClose,
@@ -102,7 +114,7 @@ struct TRWBuffer {
 static size_t TRWBufferSize(TRW *context)
 {
 	struct TRWBuffer *content;
-	if(!context || !context->content) return 0;
+	if(!context->content) return 0;
 	content = (struct TRWBuffer *) context->content;
 
 	return content->size - content->offset;
@@ -111,7 +123,7 @@ static size_t TRWBufferSize(TRW *context)
 static int TRWBufferSeek(TRW *context, int offset, int origin)
 {
 	struct TRWBuffer *content;
-	if(!context || !context->content) return 0;
+	if(!context->content) return 0;
 	content = (struct TRWBuffer *) context->content;
 
 	if(origin == SEEK_CUR) {
@@ -130,18 +142,29 @@ static int TRWBufferSeek(TRW *context, int offset, int origin)
 static int TRWBufferTell(TRW *context)
 {
 	struct TRWBuffer *content;
-	if(!context || !context->content) return 0;
+	if(!context->content) return 0;
 	content = (struct TRWBuffer *) context->content;
 
 	return content->offset;
+}
+
+static char TRWBufferEOF(TRW *context)
+{
+	struct TRWBuffer *content;
+	if(!context->content) return 0;
+	content = (struct TRWBuffer *) context->content;
+
+	return content->offset >= content->size;
 }
 
 static size_t TRWBufferRead(TRW *context, void *buffer, size_t size)
 {
 	size_t cpysize;
 	struct TRWBuffer *content;
-	if(!context || !context->content || !buffer || !size) return 0;
+	if(!context->content || !buffer || !size) return 0;
 	content = (struct TRWBuffer *) context->content;
+
+	if(content->offset >= content->size) return 0;
 
 	cpysize = TMIN(size,(size_t) (content->size - content->offset));
 	memcpy(buffer,content->buffer + content->offset, sizeof(char) * cpysize);
@@ -154,7 +177,7 @@ static size_t TRWBufferWrite(TRW *context, const void *buffer, size_t size)
 {
 	size_t cpysize;
 	struct TRWBuffer *content;
-	if(!context || !context->content || !buffer || !size) return 0;
+	if(!context->content || !buffer || !size) return 0;
 	content = (struct TRWBuffer *) context->content;
 
 	cpysize = TMIN(size,(size_t) (content->size - content->offset));
@@ -168,6 +191,7 @@ static TRWOps TRWBufferOps = {
 	TRWBufferSize,
 	TRWBufferSeek,
 	TRWBufferTell,
+	TRWBufferEOF,
 	TRWBufferRead,
 	TRWBufferWrite,
 	0,
@@ -330,6 +354,21 @@ int TRWTell(TRW *context)
 	return 0;
 }
 
+char TRWEOF(TRW *context)
+{
+	if(context) {
+		if(context->operations.eof) {
+			return context->operations.eof(context);
+		}
+
+		TErrorReport(T_ERROR_OPERATION_NOT_SUPPORTED);
+		return 0;
+	}
+
+	TErrorReport(T_ERROR_NULL_POINTER);
+	return 0;
+}
+
 unsigned char TRWRead8(TRW *context)
 {
 	if(context) {
@@ -398,12 +437,12 @@ unsigned long long TRWRead64(TRW *context)
 	return 0;
 }
 
-size_t TRWReadBlock(TRW *context, char *buffer, size_t size)
+size_t TRWReadBlock(TRW *context, char *buffer, size_t count)
 {
-	if(context && buffer && size) {
+	if(context && buffer && count) {
 		if(context->operations.read) {
-			size_t end = context->operations.read(context,buffer,sizeof(char) * size);
-			buffer[TMIN(end,size-1)] = '\0';
+			size_t end = context->operations.read(context,buffer,count);
+			buffer[TMIN(end,count-1)] = '\0';
 			return end;
 		}
 

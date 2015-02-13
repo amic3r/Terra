@@ -12,6 +12,8 @@ typedef struct _TRWOps {
     int (*seek) (TRW *context, int offset, int origin);
 	int (*tell) (TRW *context);
 
+	char (*eof) (TRW *context);
+
     size_t (*read) (TRW *context, void *buffer, size_t size);
     size_t (*write) (TRW *context, const void *buffer, size_t size);
 
@@ -39,11 +41,13 @@ size_t TRWSize(TRW *context);
 int TRWSeek(TRW *context, int offset, int origin);
 int TRWTell(TRW *context);
 
+char TRWEOF(TRW *context);
+
 unsigned char TRWRead8(TRW *context);
 unsigned short TRWRead16(TRW *context);
 unsigned int TRWRead32(TRW *context);
 unsigned long long TRWRead64(TRW *context);
-size_t TRWReadBlock(TRW *context, char *buffer, size_t size);
+size_t TRWReadBlock(TRW *context, char *buffer, size_t count);
 
 int TRWWrite8(TRW *context, unsigned char data);
 int TRWWrite16(TRW *context, unsigned short data);

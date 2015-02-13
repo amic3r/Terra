@@ -56,6 +56,9 @@
     <ClCompile Include="..\..\src\utility\targparser.c">
       <Filter>utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\utility\ttokenizer.c">
+      <Filter>utility</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\structure\tarray.c">
       <Filter>structure</Filter>
     </ClCompile>
@@ -130,6 +133,9 @@
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\utility\targparser.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utility\ttokenizer.h">
       <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\structure\tarray.h">

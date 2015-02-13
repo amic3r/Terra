@@ -95,6 +95,7 @@
     <ClCompile Include="..\..\src\utility\tinteger.c" />
     <ClCompile Include="..\..\src\utility\tstring.c" />
     <ClCompile Include="..\..\src\utility\targparser.c" />
+    <ClCompile Include="..\..\src\utility\ttokenizer.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\debugging\tdebug.h" />
@@ -128,6 +129,7 @@
     <ClInclude Include="..\..\src\utility\tinteger.h" />
     <ClInclude Include="..\..\src\utility\tstring.h" />
     <ClInclude Include="..\..\src\utility\targparser.h" />
+    <ClInclude Include="..\..\src\utility\ttokenizer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

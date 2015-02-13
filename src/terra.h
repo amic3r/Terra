@@ -25,12 +25,15 @@
 #include "ttime.h"
 #include "tthread.h"
 
+#include "io/tio.h"
+
 #include "hardware/thardware.h"
 
 #include "utility/tfilesys.h"
 #include "utility/tinteger.h"
 #include "utility/tstring.h"
 #include "utility/targparser.h"
+#include "utility/ttokenizer.h"
 
 #include "structure/tlist.h"
 #include "structure/tstack.h"
@@ -40,18 +43,18 @@
 #include "structure/tquadtree.h"
 #include "structure/toctree.h"
 
-#include "io/tio.h"
-
 static inline void TerraInitialize(FILE *logfile)
 {
 	TLogSetFile(logfile);
 	TIOInitialize();
 	TTimeInitialise();
 	TRandInitialize(42);
+	TArgParserInit();
 }
 
 static inline void TerraDestroy(void)
 {
+	TArgParserDestroy();
 	TRandDestroy();
 	TIODestroy();
 	TErrorClear();

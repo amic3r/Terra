@@ -9,6 +9,8 @@ typedef struct _TThread TThread;
 TThread *TThreadCreate(int (*fn)(void *), void *data);
 int TThreadJoin(TThread *t);
 
+void TThreadSleep(int ms);
+
 //------------- Mutex ---------------//
 
 enum T_MUTEX_TYPET {
@@ -22,8 +24,6 @@ typedef struct _TMutex TMutex;
 
 TMutex *TMutexNew(int type);
 void TMutexFree(TMutex *m);
-
-void TMutexSleep(TMutex *m, int msec);
 
 void TMutexLock(TMutex *m);
 void TMutexUnlock(TMutex *m);

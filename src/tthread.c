@@ -75,6 +75,16 @@ int TThreadJoin(TThread *t)
 	return retval;
 }
 
+void TThreadSleep(int ms)
+{
+#ifdef _WINDOWS
+	Sleep(ms);
+#else
+	usleep(ms);
+#endif
+	
+}
+
 //------------- Mutex ---------------//
 
 struct _TMutex {

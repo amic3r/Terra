@@ -19,7 +19,7 @@ CMF      := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 TSRC     := $(shell find -type f -name '*.c' -iwholename '*tests*' | cut -c 3-)
 TOBJS    := $(TSRC:%.c=$(OBJSDIR)%.o)
 TLIBS    := $(OUT) pthread m
-TOUT     := terra_test
+TOUT     := $(OUT)_test
 
 #all
 all: $(OBJSPCH) $(OBJECTS)

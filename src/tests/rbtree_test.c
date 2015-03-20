@@ -18,14 +18,14 @@ void rbtree_test_iteration(const TRBTree tree)
 	if(!testNotNull(iter,"Initializing iterator\t\t")) return;
 
 	// next
-	while(TRBTreeIteratorNext(iter,(void **) &key,(void **) &data))
+	while(TRBTreeIteratorNext(iter,(const void **) &key,(const void **) &data))
 	{
 		TAssert(*key == *data && *key == i++);
 	}
 
 	// previous
 	--i;
-	while(TRBTreeIteratorPrevious(iter,(void **) &key,(void **) &data))
+	while(TRBTreeIteratorPrevious(iter,(const void **) &key,(const void **) &data))
 	{
 		TAssert(*key == *data && *key == --i);
 	}

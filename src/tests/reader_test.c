@@ -14,7 +14,7 @@ void test_rw_file(void)
 	const char filename[] = "test_file_for_testing";
 	TRW *testrw;
 	unsigned char character = 0;
-	unsigned char buffer[32];
+	char buffer[32];
 
 	test_create_file(filename,data);
 

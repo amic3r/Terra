@@ -79,16 +79,16 @@ TRW *TIOGetRW(const char *filename,const char *mode)
 	return trw;
 }
 
-unsigned char *TIOGetBufferedFile(const char *filename, const char *mode, unsigned int *size)
+char *TIOGetBufferedFile(const char *filename, const char *mode, unsigned int *size)
 {
-	unsigned char *buffer = 0;
+	char *buffer = 0;
 	unsigned int finalsize = 0;
 	
 	TRW *trw = TIOGetRW(filename,mode);
 	if(!trw) return 0;
 
 	finalsize = TRWSize(trw);
-	buffer = (unsigned char *) malloc(sizeof(unsigned char) * finalsize);
+	buffer = (char *) malloc(sizeof(char) * finalsize);
 	*size = TRWReadBlock(trw, buffer, finalsize);
 
 	TRWFree(trw);

@@ -437,14 +437,14 @@ size_t TRBTreeMemUsage(const TRBTree t)
 void *TRBTreeDataTraverse(const TRBTree t, TDataPairIterFunc f, void *udata)
 {
 	TRBTreeIterator iter;
-	void *key, *data;
+	const void *key, *data;
 	void *d = 0;
 	
 	if(!f) return 0;
 
 	iter = TRBTreeIteratorNew(t);
 
-	while(!d && TRBTreeIteratorNext(iter,&key,&data)) d = f(key,data,udata);
+	while(!d && TRBTreeIteratorNext(iter,&key,&data)) d = f((void *) key,(void *) data, udata);
 
 	TRBTreeIteratorFree(iter);
 
@@ -454,13 +454,13 @@ void *TRBTreeDataTraverse(const TRBTree t, TDataPairIterFunc f, void *udata)
 void TRBTreeTraverse(const TRBTree t, TPairIterFunc f)
 {
 	TRBTreeIterator iter;
-	void *key, *data;
+	const void *key, *data;
 	
 	if(!f) return;
 
 	iter = TRBTreeIteratorNew(t);
 
-	while(TRBTreeIteratorNext(iter,&key,&data)) f(key,data);
+	while(TRBTreeIteratorNext(iter,&key,&data)) f((void *) key,(void *) data);
 
 	TRBTreeIteratorFree(iter);
 }

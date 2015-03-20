@@ -134,7 +134,7 @@ static int TRWBufferSeek(TRW *context, int offset, int origin)
 	} else {
 		content->offset = offset;
 	}
-	TCLAMP(content->offset,0,content->size);
+	content->offset = TCLAMP(content->offset,0,content->size);
 
 	return 0;
 }
@@ -233,8 +233,10 @@ TRW *TRWFromFilePointer(FILE *f, unsigned char autoclose)
 	trw->content = file;
 	trw->operations = TRWFileOps;
 
+#ifdef _WINDOWS
 	if(f->_flag&TRW_READ_ONLY_FLAG)
 		trw->operations.write = 0;
+#endif
 
 	return trw;
 }

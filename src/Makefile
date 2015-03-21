@@ -22,8 +22,8 @@ TLIBS    := $(OUT) pthread m
 TOUT     := $(OUT)_test
 
 #all
-all: $(OBJSPCH) $(OBJECTS)
-	$(AR) lib$(OUT).a $(OBJECTS)
+all: lib $(TOBJS)
+	$(LD) -o $(TOUT) $(TOBJS) -L$(WORKDIR) $(TLIBS:%=-l%)
 
 #cleaning
 .PHONY: clean
@@ -31,9 +31,9 @@ clean:
 	$(RM) $(OBJSDIR) $(TOUT) lib$(OUT).a
 	
 #tests
-.PHONY: test
-test: $(TOBJS) all
-	$(LD) -o $(TOUT) $(TOBJS) -L$(WORKDIR) $(TLIBS:%=-l%)
+.PHONY: lib
+lib: $(OBJSPCH) $(OBJECTS)
+	$(AR) lib$(OUT).a $(OBJECTS)
 
 #compiling the precompiled header
 $(OBJSDIR)%.h.gch:%.h $(CMF)

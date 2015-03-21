@@ -1,8 +1,10 @@
 
 all:
 	$(MAKE) -C src
-test:
-	$(MAKE) test -C src
+
+lib:
+	$(MAKE) lib -C src
 
 clean:
 	$(MAKE) clean -C src
+

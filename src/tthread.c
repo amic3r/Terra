@@ -24,7 +24,7 @@ struct _TThread {
 };
 
 typedef struct _ThreadFunction {
-	int (*fn)(void *);
+	TThreadFunc fn;
 	void *data;
 } ThreadFunction;
 
@@ -37,13 +37,13 @@ void *run_wrapper(void *param) {
 	int (*fn)(void *) = tf->fn;
 	void *data = tf->data;
 
-	free(tf);
+	TFree(tf);
 	fn(data);
 
 	return 0;
 }
 
-TThread *TThreadCreate(int (*fn)(void *), void *data)
+TThread *TThreadCreate(TThreadFunc fn, void *data)
 {
 	ThreadFunction *tf = (ThreadFunction *) TAlloc(sizeof(ThreadFunction));
 	TThread *t = (TThread *) TAlloc(sizeof(TThread));
@@ -70,7 +70,7 @@ int TThreadJoin(TThread *t)
 #else
 	pthread_join(t->thread, (void **) &retval);
 #endif
-	free(t);
+	TFree(t);
 
 	return retval;
 }

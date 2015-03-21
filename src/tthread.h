@@ -6,7 +6,7 @@
 
 typedef struct _TThread TThread;
 
-TThread *TThreadCreate(int (*fn)(void *), void *data);
+TThread *TThreadCreate(TThreadFunc fn, void *data);
 int TThreadJoin(TThread *t);
 
 void TThreadSleep(int ms);

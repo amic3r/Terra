@@ -58,4 +58,6 @@ typedef void *(*TDataPairIterFunc) (void *, void *, void *);
 
 typedef int (*TCompareFunc) (const void *,const void *);
 
+typedef int (*TThreadFunc) (void *);
+
 #endif

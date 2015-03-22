@@ -2,7 +2,9 @@ bin/
 obj/
 ipch/
 lib/
+.objs/
 *.user
 *.suo
 *.opensdf
 *.sdf
+*.a

@@ -36,7 +36,6 @@ int monitorEnum(HMONITOR hm, HDC hdc, LPRECT rect, LPARAM p)
 TScreens *TScreensGetInf(void)
 {
 	TScreens *scrs = (TScreens *) TAlloc(sizeof(TScreens));
-	printf("bleh");
 	if (scrs) {
 #ifdef _WINDOWS
 		struct Data {
@@ -53,7 +52,6 @@ TScreens *TScreensGetInf(void)
 #else
 		Display *dspl = XOpenDisplay(0);
 
-		printf("bleh");
 		if(dspl) {
 			int i = 0, count = XScreenCount(dspl);
 					
@@ -64,7 +62,6 @@ TScreens *TScreensGetInf(void)
 				scrs->screens[i].dimensions.x = scrs->screens[i].dimensions.y = 0;
 				scrs->screens[i].dimensions.w = XDisplayWidth(dspl,i);
 				scrs->screens[i].dimensions.h = XDisplayHeight(dspl,i);
-				printf("screen %d: %dx%d",i,scrs->screens[i].dimensions.w,scrs->screens[i].dimensions.h);
 			}
 			XCloseDisplay(dspl);
 		} else {

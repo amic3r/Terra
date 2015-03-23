@@ -7,6 +7,11 @@
 
 #include "talloc.h"
 
+#ifndef _WINDOWS
+#include <X11/Xlib.h>
+#include <dirent.h>
+#endif
+
 //--- Screens ------------------------------//
 
 #ifdef _WINDOWS
@@ -31,6 +36,7 @@ int monitorEnum(HMONITOR hm, HDC hdc, LPRECT rect, LPARAM p)
 TScreens *TScreensGetInf(void)
 {
 	TScreens *scrs = (TScreens *) TAlloc(sizeof(TScreens));
+	printf("bleh");
 	if (scrs) {
 #ifdef _WINDOWS
 		struct Data {
@@ -44,6 +50,27 @@ TScreens *TScreensGetInf(void)
 		data.idx = 0;
 
 		EnumDisplayMonitors(NULL,NULL,(MONITORENUMPROC) monitorEnum,(LPARAM) &data);
+#else
+		Display *dspl = XOpenDisplay(0);
+
+		printf("bleh");
+		if(dspl) {
+			int i = 0, count = XScreenCount(dspl);
+					
+			scrs->numscreens = count;
+			scrs->screens = (TScreen *) TAlloc(sizeof(TScreen) * scrs->numscreens);
+			
+			for(; i < count; i++) {
+				scrs->screens[i].dimensions.x = scrs->screens[i].dimensions.y = 0;
+				scrs->screens[i].dimensions.w = XDisplayWidth(dspl,i);
+				scrs->screens[i].dimensions.h = XDisplayHeight(dspl,i);
+				printf("screen %d: %dx%d",i,scrs->screens[i].dimensions.w,scrs->screens[i].dimensions.h);
+			}
+			XCloseDisplay(dspl);
+		} else {
+			TFree(scrs);
+			scrs = 0;
+		}
 #endif
 	}
 

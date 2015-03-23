@@ -18,7 +18,7 @@ CMF      := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 
 TSRC     := $(shell find -type f -name '*.c' -iwholename '*tests*' | cut -c 3-)
 TOBJS    := $(TSRC:%.c=$(OBJSDIR)%.o)
-TLIBS    := $(OUT) pthread m
+TLIBS    := $(OUT) X11 pthread m
 TOUT     := $(OUT)_test
 
 #all

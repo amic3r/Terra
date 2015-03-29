@@ -102,9 +102,12 @@
     <ClInclude Include="..\..\src\debugging\tlog.h" />
     <ClInclude Include="..\..\src\debugging\tmemleak.h" />
     <ClInclude Include="..\..\src\debugging\tprofiler.h" />
-    <ClInclude Include="..\..\src\geometry\tcuboid.h" />
-    <ClInclude Include="..\..\src\geometry\tline.h" />
-    <ClInclude Include="..\..\src\geometry\trectangle.h" />
+    <ClInclude Include="..\..\src\math\tcuboid.h" />
+    <ClInclude Include="..\..\src\math\tline.h" />
+    <ClInclude Include="..\..\src\math\trectangle.h" />
+    <ClInclude Include="..\..\src\math\tmath.h" />
+    <ClInclude Include="..\..\src\math\tmatrix.h" />
+    <ClInclude Include="..\..\src\math\ttuple.h" />
     <ClInclude Include="..\..\src\hardware\thardware.h" />
     <ClInclude Include="..\..\src\io\tio.h" />
     <ClInclude Include="..\..\src\io\trw.h" />
@@ -121,7 +124,6 @@
     <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\terra.h" />
     <ClInclude Include="..\..\src\terror.h" />
-    <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\tthread.h" />
     <ClInclude Include="..\..\src\ttime.h" />

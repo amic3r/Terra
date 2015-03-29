@@ -4,7 +4,7 @@
 
 #define TERRA_NAME        "Terra"
 #define TERRA_DESCRIPTION "Utility library"
-#define TERRA_VERSION     "0.7.2"
+#define TERRA_VERSION     "0.7.5"
 
 #define TERRA_LINE
 #define TERRA_RECTANGLE
@@ -20,7 +20,6 @@
 #include "debugging/tprofiler.h"
 
 #include "tdata.h"
-#include "tmath.h"
 #include "trand.h"
 #include "ttime.h"
 #include "tthread.h"
@@ -28,6 +27,8 @@
 #include "io/tio.h"
 
 #include "hardware/thardware.h"
+
+#include "math/tmath.h"
 
 #include "utility/tfilesys.h"
 #include "utility/tinteger.h"

@@ -4,7 +4,7 @@
     <Filter Include="debugging">
       <UniqueIdentifier>{aef9f6e0-fe8a-422e-a743-280bae0c8928}</UniqueIdentifier>
     </Filter>
-    <Filter Include="geometry">
+    <Filter Include="math">
       <UniqueIdentifier>{484f8881-3c52-4f43-be3d-ad5bb2a00f24}</UniqueIdentifier>
     </Filter>
     <Filter Include="io">
@@ -93,7 +93,6 @@
     <ClInclude Include="..\..\src\tdefine.h" />
     <ClInclude Include="..\..\src\terra.h" />
     <ClInclude Include="..\..\src\terror.h" />
-    <ClInclude Include="..\..\src\tmath.h" />
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\ttime.h" />
     <ClInclude Include="..\..\src\debugging\tdebug.h">
@@ -108,14 +107,23 @@
     <ClInclude Include="..\..\src\debugging\tprofiler.h">
       <Filter>debugging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\geometry\tcuboid.h">
-      <Filter>geometry</Filter>
+    <ClInclude Include="..\..\src\math\tcuboid.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\geometry\tline.h">
-      <Filter>geometry</Filter>
+    <ClInclude Include="..\..\src\math\tline.h">
+      <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\geometry\trectangle.h">
-      <Filter>geometry</Filter>
+    <ClInclude Include="..\..\src\math\trectangle.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\tmath.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\tmatrix.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\ttuple.h">
+      <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\io\tio.h">
       <Filter>io</Filter>

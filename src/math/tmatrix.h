@@ -1,19 +1,8 @@
 
-#ifndef _included_terra_math_h
-#define _included_terra_math_h
+#ifndef _included_terra_matrix_h
+#define _included_terra_matrix_h
 
-#include <math.h>
-
-//Default storage
-
-typedef struct { short x, y; } Tuple2s;
-typedef struct { int x, y; }   Tuple2i;
-typedef struct { float x, y; } Tuple2f;
-
-typedef struct { int x, y, z; } Tuple3i;
-typedef struct { float x, y, z; } Tuple3f;
-
-typedef struct { float x, y, z, w; } Tuple4f;
+// Common matrices
 
 typedef union _Matrix3f{
 	struct {
@@ -34,175 +23,7 @@ typedef union _Matrix4f {
 	float M[16];
 } Matrix4f;
 
-#define Point  Tuple2f
-
-#define Vector2f Tuple2f
-
-#define Point3 Tuple3f
-#define Vector Tuple3f
-
-#define Quat   Tuple4f
-
-static const Vector upVector = {0, 1, 0};
-
-// utility macros
-// assuming IEEE-754(GLfloat), which i believe has max precision of 7 bits
-#define Epsilon 1.0e-5
-
-static inline float TMathDegToRad(float degrees)
-{ 
-	return (float)((double)degrees * (M_PI / 180.0));
-}
-
-static inline float TMathRadToDeg(float radian)
-{ 
-	return (float)((double)radian * (180.0 / M_PI));
-}
-
-inline static void PointAdd(Point *to, const Point *from)
-{
-	to->x += from->x;
-	to->y += from->y;
-}
-
-inline static void PointSub(Point *to, const Point *from)
-{
-	to->x -= from->x;
-	to->y -= from->y;
-}
-
-inline static unsigned char PointEqual(const Point *p1, const Point *p2)
-{
-	return p1->x == p2->x && p1->y == p2->y;
-}
-
-inline static float euclidian_distance(const Point *to, const Point *from)
-{
-	float y = to->y-from->y, x = to->x-from->x;
-	return sqrtf(y*y + x*x);
-}
-
-inline static void Tuple3fSet(Tuple3f *t, float x, float y, float z)
-{
-	t->x = x; t->y = y; t->z = z;
-}
-
-inline static void Tuple3fCopy(Tuple3f *t1, const Tuple3f *t2)
-{
-	t1->x = t2->x; t1->y = t2->y; t1->z = t2->z;
-}
-
-inline static unsigned char Tuple3fEqual(const Tuple3f *t1,const Tuple3f *t2)
-{
-	return t1->x == t2->x && t1->y == t2->y &&t1->z == t2->z;
-}
-
-inline static void Tuple3fMin(Tuple3f *t1,const Tuple3f *t2)
-{
-	t1->x = TMIN(t1->x,t2->x);
-	t1->y = TMIN(t1->y,t2->y);
-	t1->z = TMIN(t1->z,t2->z);
-}
-
-inline static void Tuple3fMax(Tuple3f *t1,const Tuple3f *t2)
-{
-	t1->x = TMIN(t1->x,t2->x);
-	t1->y = TMIN(t1->y,t2->y);
-	t1->z = TMIN(t1->z,t2->z);
-}
-
-inline static void Tuple3fAdd(Tuple3f *t1,const Tuple3f *t2)
-{
-	t1->x += t2->x;
-	t1->y += t2->y;
-	t1->z += t2->z;
-}
-
-inline static void Tuple3fSub(Tuple3f *t1,const Tuple3f *t2)
-{
-	t1->x -= t2->x;
-	t1->y -= t2->y;
-	t1->z -= t2->z;
-}
-
-inline static void Tuple3fRotate(Vector *vector, const Tuple3f *cosangles, const Tuple3f *sinangles)
-{
-	float cx = cosangles->x, sx = sinangles->x;
-	float cy = cosangles->y, sy = sinangles->y;
-	float cz = cosangles->z, sz = sinangles->z;
-	float x = vector->x;
-	float y = vector->y;
-	float z = vector->z;
-
-	//rotate around x
-	float t = y;
-
-	y = cx*y - sx*z;
-	z = sx*t + cx*z;
-
-	//rotate around y
-	t = x;
-
-	x = cy*x + sy*z;
-	vector->z = cy*z - sy*t;
-
-	//rotate around z
-	t = x;
-
-	vector->x = cz*x - sz*y;
-	vector->y = sz*t + cz*y;
-}
-
-#define VectorSet Tuple3fSet
-#define VectorRotate Tuple3fRotate
-
-inline static Vector VectorCross(const Vector *v1, const Vector *v2)
-{
-	Vector result = {
-		(v1->y * v2->z) - (v1->z * v2->y),
-		(v1->z * v2->x) - (v1->x * v2->z),
-		(v1->x * v2->y) - (v1->y * v2->x)
-	};
-
-	return result;
-}
-
-inline static float VectorDot(const Vector *v1, const Vector *v2)
-{
-	return (v1->x * v2->x) + (v1->y * v2->y) + (v1->z * v2->z);
-}
-
-inline static float VectorLengthSquared(const Vector *v)
-{
-	return (v->x * v->x) + (v->y * v->y) + (v->z * v->z);
-}
-
-inline static float VectorLength(const Vector *v)
-{
-	return sqrtf(VectorLengthSquared(v));
-}
-
-inline static void VectorNormalize(Vector *v)
-{
-	float length = VectorLength(v);
-
-	v->x /= length;
-	v->y /= length;
-	v->z /= length;
-}
-
-inline static Vector NormalfromTuples(const Tuple3f *v1,const Tuple3f *v2,const Tuple3f *v3)
-{
-	Vector vec1 = *v1,vec2 = *v2,out;
-
-	Tuple3fSub(&vec1,v2);
-	Tuple3fSub(&vec2,v3);
-
-	out = VectorCross(&vec1,&vec2);
-	VectorNormalize(&out);
-
-	return out;
-}
+// Matrix3f operations
 
 inline static void Matrix3fSetZero(Matrix3f *matrix)
 {
@@ -280,11 +101,11 @@ inline static void Matrix3fSetRotationFromQuat(Matrix3f *matrix, const Quat * q1
 	float xx, xy, xz;
 	float yy, yz, zz;
 
-	n = (q1->x * q1->x) + (q1->y * q1->y) + (q1->z * q1->z) + (q1->w * q1->w);
+	n = (q1->x * q1->x) + (q1->y * q1->y) + (q1->z * q1->z) + (q1->t * q1->t);
 	s = (n > 0.0f) ? (2.0f / n) : 0.0f;
 
 	xs = q1->x * s;  ys = q1->y * s;  zs = q1->z * s;
-	wx = q1->w * xs; wy = q1->w * ys; wz = q1->w * zs;
+	wx = q1->t * xs; wy = q1->t * ys; wz = q1->t * zs;
 	xx = q1->x * xs; xy = q1->x * ys; xz = q1->x * zs;
 	yy = q1->y * ys; yz = q1->y * zs; zz = q1->z * zs;
 
@@ -292,6 +113,8 @@ inline static void Matrix3fSetRotationFromQuat(Matrix3f *matrix, const Quat * q1
 	matrix->s.xy = xy + wz;          matrix->s.yy = 1.0f - (xx + zz); matrix->s.zy = yz - wx;
 	matrix->s.zx = xz - wy;          matrix->s.yz = yz + wx;          matrix->s.zz = 1.0f - (xx + yy);
 }
+
+// Matrix4f operations
 
 inline static void Matrix4fSetZero(Matrix4f *matrix)
 {
@@ -479,15 +302,4 @@ inline static void Matrix4fSetRotationFromMatrix3f(Matrix4f *m1, const Matrix3f 
 	Matrix4fMulRotationScale(m1,scale);
 }
 
-#ifdef TERRA_LINE
-#include "geometry/tline.h"
-#endif
-
-#ifdef TERRA_RECTANGLE
-#include "geometry/trectangle.h"
-#endif
-
-#ifdef TERRA_CUBOID
-#include "geometry/tcuboid.h"
-#endif
 #endif

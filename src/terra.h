@@ -26,9 +26,9 @@
 
 #include "io/tio.h"
 
-#include "hardware/thardware.h"
-
 #include "math/tmath.h"
+
+#include "hardware/thardware.h"
 
 #include "utility/tfilesys.h"
 #include "utility/tinteger.h"

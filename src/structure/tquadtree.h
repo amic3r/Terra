@@ -5,7 +5,7 @@
 #include "tdefine.h"
 
 #define TERRA_RECTANGLE
-#include "tmath.h"
+#include "math/tmath.h"
 
 #include "tlist.h"
 

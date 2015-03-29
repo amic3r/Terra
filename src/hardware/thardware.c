@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #define TERRA_RECTANGLE
-#include "tmath.h"
+#include "math/tmath.h"
 
 #include "thardware.h"
 

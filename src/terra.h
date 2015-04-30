@@ -9,6 +9,7 @@
 #define TERRA_LINE
 #define TERRA_RECTANGLE
 #define TERRA_CUBOID
+#define TERRA_TRANSFORM
 
 #include "tdefine.h"
 

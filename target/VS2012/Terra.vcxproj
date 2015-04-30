@@ -106,6 +106,7 @@
     <ClInclude Include="..\..\src\math\trectangle.h" />
     <ClInclude Include="..\..\src\math\tmath.h" />
     <ClInclude Include="..\..\src\math\tmatrix.h" />
+    <ClInclude Include="..\..\src\math\ttransform.h" />
     <ClInclude Include="..\..\src\math\ttuple.h" />
     <ClInclude Include="..\..\src\hardware\thardware.h" />
     <ClInclude Include="..\..\src\io\tio.h" />

@@ -62,6 +62,8 @@ typedef struct _TSList {
 	size_t previousindex;
 } TSList;
 
+static inline int TSListValidU(const TSList *list, size_t index) { return index < list->len; }
+
 TSList *TSListNew(void);
 void TSListInit(TSList *list);
 void TSListFree(TSList *list,TFreeFunc func);
@@ -75,6 +77,7 @@ void TSListReplace(TSList *list,const void *data, size_t index);
 
 void TSListConcat(TSList *list,const TSList *list2);
 
+int TSListFind(const TList *list, const void *data);
 void TSListForeach(const TSList *list,TIterFunc func);
 void *TSListForeachData(const TSList *list,TDataIterFunc func,void *user_data);
 

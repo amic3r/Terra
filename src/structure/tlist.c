@@ -230,9 +230,11 @@ TSList *TSListNew(void)
 
 void TSListInit(TSList *list)
 {
-	list->head = list->end = 0;
-	list->len = list->previousindex = 0;
-	list->previous = 0;
+	if(list) {
+		list->head = list->end = 0;
+		list->len = list->previousindex = 0;
+		list->previous = 0;
+	}
 }
 
 void TSListFree(TSList *list,TFreeFunc func)
@@ -245,13 +247,15 @@ void TSListFree(TSList *list,TFreeFunc func)
 
 void TSListEmpty(TSList *list,TFreeFunc func)
 {
-	while (list->head) {
-		TSListNode *remove = list->head;
-		if(func) func((void *) list->head->data);
-		list->head = list->head->next;
-		free(remove);
+	if(list) {
+		while (list->head) {
+			TSListNode *remove = list->head;
+			if(func) func((void *) list->head->data);
+			list->head = list->head->next;
+			free(remove);
+		}
+		TSListInit(list);
 	}
-	TSListInit(list);
 }
 
 int TSListInsert(TSList *list, const void *data, size_t index)
@@ -297,6 +301,21 @@ void TSListConcat(TSList *list,const TSList *list2)
 		TSListAppend(list,cur->data);
 		cur = cur->next;
 	}
+}
+
+int TSListFind(const TList *list, const void *data)
+{
+	TSListNode *cur = list->head, *origin = 0;
+	int idx = 0;
+    
+    while (cur && cur->data != data) {
+		origin = cur;
+        cur = cur->next;
+		idx++;
+	}
+
+	if(cur) return idx;
+	return -1;
 }
 
 void TSListForeach(const TSList *list,TIterFunc func)
@@ -413,31 +432,37 @@ void *TSListPopIndex(TSList *list, size_t index) {
 }
 
 void TSListRemove(TSList *list, const void *data) {
-    TSListNode *cur = list->head, *origin = 0;
+	if(list) {
+		TSListNode *cur = list->head, *origin = 0;
     
-    while (cur && cur->data != data) {
-		origin = cur;
-        cur = cur->next;
-	}
+		while (cur && cur->data != data) {
+			origin = cur;
+			cur = cur->next;
+		}
 	
-	if (cur) TSListRemovePtrFrom(list,origin);
+		if (cur) TSListRemovePtrFrom(list,origin);
+	}
 }
 
 void TSListRemovePtr(TSList *list, TSListNode *ptr) {
-    TSListNode *cur = list->head, *origin = 0;
+	if(list && ptr) {
+		TSListNode *cur = list->head, *origin = 0;
     
-    while (cur && cur != ptr) {
-		origin = cur;
-        cur = cur->next;
+		while (cur && cur != ptr) {
+			origin = cur;
+			cur = cur->next;
+		}
+    
+		if (cur) TSListRemovePtrFrom(list,origin);
 	}
-    
-    if (cur) TSListRemovePtrFrom(list,origin);
 }
 
 void TSListRemoveIndex(TSList *list, size_t index) {
-	TSListNode *n = TSListFetch(list,index-1);
+	if(list) {
+		TSListNode *n = TSListFetch(list,index-1);
     
-	if(n) if(n->next) TSListRemovePtrFrom(list,n);
+		if(n) if(n->next) TSListRemovePtrFrom(list,n);
+	}
 }
 
 void TSListRemoveIndexes(TSList *list, size_t start, size_t range)

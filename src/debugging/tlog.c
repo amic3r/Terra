@@ -24,6 +24,8 @@ void TLogReport(int category, const char *function, const char *format,...)
 		va_end(ap);
 
 		fprintf(tLogFile,"\n");
+
+		fflush(tLogFile);
 	}
 }
 

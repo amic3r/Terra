@@ -305,7 +305,7 @@ void TSListConcat(TSList *list,const TSList *list2)
 
 int TSListFind(const TList *list, const void *data)
 {
-	TSListNode *cur = list->head, *origin = 0;
+	TSListNode * cur = (TSListNode *) list->head, *origin = 0;
 	int idx = 0;
     
     while (cur && cur->data != data) {
@@ -320,22 +320,26 @@ int TSListFind(const TList *list, const void *data)
 
 void TSListForeach(const TSList *list,TIterFunc func)
 {
-	TSListNode *cur = list->head;
+	if(list && func) {
+		TSListNode *cur = list->head;
 
-	while (cur) {
-		func((void *) cur->data);
-		cur = cur->next;
+		while (cur) {
+			func((void *) cur->data);
+			cur = cur->next;
+		}
 	}
 }
 
 void *TSListForeachData(const TSList *list,TDataIterFunc func,void *user_data)
 {
-	TSListNode *cur = list->head;
+	if(list && func) {
+		TSListNode *cur = list->head;
 
-	while (cur) {
-		void *value = func((void *) cur->data,user_data);
-		if(value) return value;
-		cur = cur->next;
+		while (cur) {
+			void *value = func((void *) cur->data,user_data);
+			if(value) return value;
+			cur = cur->next;
+		}
 	}
 
 	return 0;

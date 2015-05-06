@@ -12,6 +12,14 @@ typedef struct _TTransform2D {
 	float rotation;
 } TTransform2D;
 
+inline static void TTransform2DInitialize(TTransform2D *context)
+{
+	if(context) {
+		memset(context,0,sizeof(TTransform2D));
+		context->scaling.x = context->scaling.y = 1.0f;
+	}
+}
+
 inline static void TTransform2DSetTranslation(TTransform2D *context, float x,float y)
 {
 	context->translation.x = x;
@@ -47,6 +55,14 @@ typedef struct _TTransform3D {
 	Tuple3f scaling;
 	Tuple3f rotation;
 } TTransform3D;
+
+inline static void TTransform3DInitialize(TTransform3D *context)
+{
+	if(context) {
+		memset(context,0,sizeof(TTransform3D));
+		context->scaling.x = context->scaling.y = context->scaling.z = 1.0f;
+	}
+}
 
 inline static void TTransform3DSetTranslation(TTransform3D *context, float x, float y, float z)
 {

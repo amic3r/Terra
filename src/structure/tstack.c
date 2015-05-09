@@ -94,9 +94,11 @@ void TStackResize(TStack stack,size_t _size)
 			stack->top = stack->bottom + stack->len;
 		}
 	} else if (_size < stack->size) {
+		void *nptr;
+
 		if(stack->len > _size) return;
 
-		void *nptr = TRAlloc(stack->bottom,sizeof(void *) * _size);
+		nptr = TRAlloc(stack->bottom,sizeof(void *) * _size);
 		if(nptr) {
 			stack->bottom = nptr;
 			stack->size = _size;

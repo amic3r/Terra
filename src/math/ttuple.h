@@ -24,10 +24,6 @@ typedef Tuple3f Vector;
 
 typedef Tuple4f Quat;
 
-// Default upVector
-
-static const Vector upVector = {0, 1, 0};
-
 // 2D Point operation
 
 inline static void PointAdd(Point *to, const Point *from)

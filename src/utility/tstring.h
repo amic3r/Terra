@@ -66,9 +66,10 @@ char *TStringAddCharacter(const char *string, char character, size_t start, size
 char *TStringConcat(const char *str, ...);
 
 void TStringStripTrailingWhitespace(char *string);	// Removes trailing /n, /r, space
+const char *TStringStripLeadingSpaces(const char *string);
+
 char *TStringLowerCase(const char *thestring);
 
-char *TStringAseEncrypt(const char * src, unsigned char key);
 char *TStringPasswordEncrypt(const char *src);
 
 char *TStringDoubleChars(const char *string, const char escchar);

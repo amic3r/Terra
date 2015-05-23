@@ -8,11 +8,6 @@
 #include "talloc.h"
 #include "terror.h"
 
-static const char * tHexIndex = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                "abcdefghijklmnopqrstuvwxyz"
-                                "?!01-[]()*; @$%^&-_+={}:/.";
-#define tHexLen 78
-
 int TStringAdjustSize(char **text,size_t oldsize,size_t newsize)
 {
 	void *nptr = TRAlloc(text, newsize);
@@ -296,6 +291,12 @@ void TStringStripTrailingWhitespace(char *string)
 			break;
 }
 
+const char *TStringStripLeadingSpaces(const char *string)
+{
+	while(*string == ' ') string++;
+	return string;
+}
+
 char *TStringLowerCase(const char *thestring)
 {
 	const char *srcptr = thestring;
@@ -317,35 +318,6 @@ char *TStringLowerCase(const char *thestring)
 	}
 
 	return thecopy;
-}
-
-char *TStringAseEncrypt(const char *src, unsigned char key)
-{
-	size_t len = 0;
-	char *result = 0, *resptr = 0;
-	const char *ptr = src;
-	unsigned char last_char = 0, tmp = 0;
-	
-	if(!src) return 0;
-	
-	len = strlen(src);
-	if(!len) return 0;
-
-	result = (char *) TAlloc(sizeof(char)*(len+1));
-	if(!result) return 0;
-
-	last_char = key ^ ((int)(TTimeFetchTime()/125)*8 % 255);
-	resptr = result;
-
-	for (; *ptr != 0; ptr++, resptr++) {
-		tmp = *ptr ^ last_char;
-		last_char = *ptr ^ tmp;
-
-		*resptr = tHexIndex[tmp % tHexLen];
-	}
-	*resptr = 0;
-
-	return result;
 }
 
 char *TStringPasswordEncrypt(const char *src)

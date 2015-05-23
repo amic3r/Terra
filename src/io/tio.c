@@ -40,9 +40,9 @@ TSList *TIOListArchive(const char *_dir, const char *_filter, unsigned char full
 	return 0;
 }
 
-void *testpath(void *searchpath, void *filename)
+void *testpath(const char *searchpath, const char *filename)
 {
-	char *fullFilename = TFileSysConcatPaths((const char *) searchpath, filename,NULL);
+	char *fullFilename = TFileSysConcatPaths(searchpath, filename,NULL);
 	if(TFileSysFileExists(fullFilename)) return fullFilename;
 
 	free(fullFilename);
@@ -57,7 +57,7 @@ FILE *TIOGetFile(const char *filename,const char *mode)
 
 	if(!mode) mode = "rb";
 
-	found = (char *) TSListForeachData(searchpaths,testpath,(void *) filename);
+	found = (char *) TSListForeachData(searchpaths, (TDataIterFunc) testpath,(void *) filename);
 	if(found) {
 		FILE *f = fopen(found,mode);
 		free(found);

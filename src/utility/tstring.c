@@ -8,6 +8,19 @@
 #include "talloc.h"
 #include "terror.h"
 
+char *TStringCopy(const char *text)
+{
+	char *cpy = 0;
+
+	if(text) {
+		int size = sizeof(char) * (strlen(text) + 1);
+		cpy = (char *) TAlloc(size);
+		memcpy(cpy,text,size);
+	}
+
+	return cpy;
+}
+
 int TStringAdjustSize(char **text,size_t oldsize,size_t newsize)
 {
 	void *nptr = TRAlloc(text, newsize);

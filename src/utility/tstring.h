@@ -19,7 +19,7 @@ static inline char *TStringUpr(char *s) {
 	return s;
 }
 
-char *TStringCopy(char *text);
+char *TStringCopy(const char *text);
 
 int TStringAdjustSize(char **text,size_t oldsize,size_t newsize);
 

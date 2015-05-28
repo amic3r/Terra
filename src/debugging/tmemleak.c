@@ -22,7 +22,7 @@ typedef struct TMemLeakInput {
 	int frequency;
 } TMemLeakInput;
 
-static int TMemLeakParseInput(const char *_inputFilename, TRBTree input)
+static int TMemLeakParseInput(const char *_inputFilename, TRBTree *input)
 {
 	FILE *memoryfile = fopen(_inputFilename,"r");
 	int unrecognised = 0;
@@ -78,12 +78,12 @@ static int TMemLeakParseInput(const char *_inputFilename, TRBTree input)
 	return unrecognised;
 }
 
-static int TMemLeakSortInput(TRBTree input, TSList *sorted)
+static int TMemLeakSortInput(TRBTree *input, TSList *sorted)
 {
 	int totalsize = 0;
 	char *key;
 	TMemLeakInput *data;
-	TRBTreeIterator iter = TRBTreeIteratorNew(input);
+	TRBTreeIterator *iter = TRBTreeIteratorNew(input);
 
 	while(TRBTreeIteratorNext(iter,(void **) &key,(void **) &data)) {
 		unsigned char inserted = 0;
@@ -105,6 +105,7 @@ static int TMemLeakSortInput(TRBTree input, TSList *sorted)
 
 		totalsize += data->combined;
 	}
+	TRBTreeIteratorFree(iter);
 
 	return totalsize;
 }
@@ -143,7 +144,7 @@ void TMemLeakParseFile(const char *_inputFilename,const char *_outputFilename)
 	int total;
 
 	// Start up
-	TRBTree input = TRBTreeNew((TCompareFunc) strcmp,0,0);
+	TRBTree *input = TRBTreeNew((TCompareFunc) strcmp,0,0);
 
 	// Open the file and start parsing
 	int unrecognised = TMemLeakParseInput(_inputFilename,input);

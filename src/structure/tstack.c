@@ -12,7 +12,7 @@ struct TStack {
 	size_t size, len;
 };
 
-void TStackGrow(TStack stack)
+void TStackGrow(TStack *stack)
 {
 	size_t newsize = 0;
 	if(stack->size == 0) newsize = 2;
@@ -21,15 +21,15 @@ void TStackGrow(TStack stack)
 	TStackResize(stack, newsize);
 }
 
-void TStackShrink(TStack stack)
+void TStackShrink(TStack *stack)
 {
 	if(stack->len >= 2)
 		TStackResize(stack,TIntegerUpperPowerOfTwo(stack->len));
 }
 
-TStack TStackNew(void)
+TStack *TStackNew(void)
 {
-	TStack stack = (TStack) TAlloc(sizeof(struct TStack));
+	TStack *stack = (TStack *) TAlloc(sizeof(TStack));
 
 	if(stack) {
 		stack->bottom = stack->top = 0;
@@ -40,7 +40,7 @@ TStack TStackNew(void)
 	return stack;
 }
 
-void TStackFree(TStack stack, TFreeFunc func)
+void TStackFree(TStack *stack, TFreeFunc func)
 {
 	if(stack) {
 		TStackEmpty(stack, func);
@@ -48,14 +48,14 @@ void TStackFree(TStack stack, TFreeFunc func)
 	}
 }
 
-void TStackEmpty(TStack stack, TFreeFunc func)
+void TStackEmpty(TStack *stack, TFreeFunc func)
 {
 	if(func) while(stack->len > 0) func(TStackPop(stack));
 
 	free(stack->bottom);
 }
 
-void TStackPush(TStack stack, void *data)
+void TStackPush(TStack *stack, void *data)
 {
 	if(stack->size <= stack->len) TStackGrow(stack);
 
@@ -64,7 +64,7 @@ void TStackPush(TStack stack, void *data)
 	stack->len++;
 }
 
-void *TStackPop(TStack stack)
+void *TStackPop(TStack *stack)
 {
 	if(stack->len) {
 		void *data = *(--stack->top);
@@ -78,13 +78,13 @@ void *TStackPop(TStack stack)
 	return 0;
 }
 
-void *TStackPeek(TStack stack)
+void *TStackPeek(TStack *stack)
 {
 	if(stack->len == 0) return 0;
 	else return *(stack->top-1);
 }
 
-void TStackResize(TStack stack,size_t _size)
+void TStackResize(TStack *stack,size_t _size)
 {
 	if(_size >stack->size) {
 		void *nptr = TRAlloc(stack->bottom,sizeof(void *) * _size);
@@ -106,7 +106,7 @@ void TStackResize(TStack stack,size_t _size)
 	}
 }
 
-size_t TStackCount(TStack stack)
+size_t TStackCount(TStack *stack)
 {
 	return stack->len;
 }

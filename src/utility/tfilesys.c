@@ -151,7 +151,7 @@ size_t TFileSysListSubDirectoryNames(char **output, const char *_dir)
 	if(fileindex != -1) {
 		while(!_findnext(fileindex, &thisfile)) {
 			if(thisfile.name[0] != '.' && thisfile.attrib & _A_SUBDIR) {
-				char *newname = strdup(thisfile.name);
+				char *newname = TStringCopy(thisfile.name);
 				
 				output = TRAlloc(output,sizeof(char *) * (idx + 1));
 				output[idx] = newname;
@@ -160,7 +160,7 @@ size_t TFileSysListSubDirectoryNames(char **output, const char *_dir)
 		} 
 	}
 
-	free(dir);
+	TFree(dir);
 #else
 	DIR *dir = opendir(_dir);
 	struct dirent *entry;
@@ -220,7 +220,7 @@ char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data)
 
 	if (!func) return 0;
 
-	buffer = strdup(func(data));
+	buffer = TStringCopy(func(data));
 	if (!buffer) return 0;
 
 	size = strlen(buffer) + 1;
@@ -232,7 +232,7 @@ char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data)
 
 			getParent(buffer);
 			size = strlen(buffer) + 1;
-			if (osize != size) buffer = (char *)realloc(buffer, size);
+			if (osize != size) buffer = (char *)TRAlloc(buffer, size);
 		}
 		else if (strcmp(component, ".")) {
 			size_t clen = strlen(component);
@@ -242,7 +242,7 @@ char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data)
 				size += clen;
 				if (needsep) size += 1;
 
-				buffer = (char *)realloc(buffer, size);
+				buffer = (char *)TRAlloc(buffer, size);
 				snprintf(buffer + olen, size - olen, needsep ? "/%s" : "%s", component);
 			}
 		}
@@ -261,7 +261,7 @@ char *TFileSysConcatPathsArr(const char **paths, size_t size)
 
 	if(!paths || !size) return 0;
 
-	buffer = strdup(paths[0]);
+	buffer = TStringCopy(paths[0]);
 
 	if (i < size && !strcmp(paths[i],"..")) {
 		do {
@@ -270,7 +270,7 @@ char *TFileSysConcatPathsArr(const char **paths, size_t size)
 		} while(i < size && !strcmp(paths[i],".."));
 
 		bufferlen = strlen(buffer) + 1;
-		buffer = (char *)realloc(buffer, bufferlen);
+		buffer = (char *)TRAlloc(buffer, bufferlen);
 	} else {
 		bufferlen = strlen(buffer) + 1;
 	}
@@ -291,7 +291,7 @@ char *TFileSysConcatPathsArr(const char **paths, size_t size)
 			bufferlen += strlen(component);
 			if(needsep) bufferlen += 1;
 
-			buffer =(char *)realloc(buffer, bufferlen);
+			buffer =(char *)TRAlloc(buffer, bufferlen);
 			snprintf(buffer + oldlen,bufferlen-oldlen,needsep ? "/%s" : "%s",component);
 		}
 	}
@@ -306,7 +306,7 @@ char *TFileSysConcatPaths(const char *_firstComponent, ...)
 	char *buffer, *returnBuffer;
 	unsigned int bufferlen = 0;
 	
-	buffer = strdup(_firstComponent);
+	buffer = TStringCopy(_firstComponent);
 	bufferlen = strlen(buffer) + 1;
 	
 	va_start(components, _firstComponent);
@@ -325,8 +325,8 @@ char *TFileSysConcatPaths(const char *_firstComponent, ...)
 	}
 	va_end(components);
 	
-	returnBuffer = strdup(buffer);
-	free(buffer);
+	returnBuffer = TStringCopy(buffer);
+	TFree(buffer);
 	return returnBuffer;
 }
 

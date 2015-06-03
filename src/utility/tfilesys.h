@@ -2,8 +2,6 @@
 #ifndef __included_terra_filesys_h
 #define __included_terra_filesys_h
 
-#include "structure/tlist.h"
-
 size_t TFileSysListDirectory(char **output, const char *_dir, const char *_filter, unsigned char fullFilename);
 size_t TFileSysListSubDirectoryNames(char **output, const char *_dir);
 

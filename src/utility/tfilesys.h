@@ -14,9 +14,10 @@ char *TFileSysConcatPathsArr(const char **paths, size_t size);
 char *TFileSysConcatPaths(const char *_firstComponent, ...);
 
 char *TFileSysGetParent(const char *_fullFilePath);
-char *TFileSysGetDirectoryPart(const char *_fullFilePath);
-const char *TFileSysGetFilenamePart(const char *_fullFilePath);
-const char *TFileSysGetExtensionPart(const char *_fileFilePath);
+char *TFileSysGetDirectory(const char *_fullFilePath);
+char *TFileSysGetDirname(const char *_fullFilePath);
+const char *TFileSysGetFilename(const char *_fullFilePath);
+const char *TFileSysGetExtension(const char *_fileFilePath);
 char *TFileSysRemoveExtension(const char *_fullFileName);
 
 char **TFileSysSplitPath(const char *path);

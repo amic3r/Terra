@@ -339,7 +339,7 @@ char *TFileSysGetParent(const char *_fullFilePath)
 	return s_filePathBuffer;
 }
 
-char *TFileSysGetDirectoryPart(const char *_fullFilePath)
+char *TFileSysGetDirectory(const char *_fullFilePath)
 {
 	char *finalSlash = 0;
 	strncpy(s_filePathBuffer, _fullFilePath, FILE_PATH_BUFFER_SIZE);
@@ -353,12 +353,38 @@ char *TFileSysGetDirectoryPart(const char *_fullFilePath)
 	return 0;
 }
 
-const char *TFileSysGetFilenamePart(const char *_fullFilePath)
+char *TFileSysGetDirname(const char *_fullFilePath)
+{
+	char *cpy;
+	const char *start, *end;
+	
+	if(!_fullFilePath) return 0;
+
+	end = strrchr(_fullFilePath, '/');
+	if(!end) return 0;
+
+	if(end == _fullFilePath) {
+		start = 0;
+	} else {
+		const char *cur = _fullFilePath;
+		start = _fullFilePath;
+		while ((cur = strchr(cur,'/')) != end) { cur += 1; start = cur; }
+	}
+
+	if(!(end-start)) return 0;
+	cpy = (char *) malloc(sizeof(char) * (end-start+1));
+	if(cpy) memcpy(cpy, start, end-start);
+	cpy[end-start] = 0;
+	
+	return cpy;
+}
+
+const char *TFileSysGetFilename(const char *_fullFilePath)
 {
 	return strrchr(_fullFilePath, '/') + 1;
 }
 
-const char *TFileSysGetExtensionPart(const char *_fullFilePath)
+const char *TFileSysGetExtension(const char *_fullFilePath)
 {
 	return strrchr(_fullFilePath, '.') + 1;
 }
@@ -477,8 +503,7 @@ unsigned char TFileSysIsDirectory(const char *_fullPath)
 #else
 	struct stat s;
 	int rc = stat(_fullPath, &s);
-	if(rc != 0)
-		return 0;
+	if(rc != 0) return 0;
 	return(s.st_mode & S_IFDIR);
 #endif
 }

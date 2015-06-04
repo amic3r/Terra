@@ -15,6 +15,7 @@ TRW *TIOGetRW(const char *filename,const char *mode);
 char *TIOGetBufferedFile(const char *filename, const char *mode, size_t *size);
 
 void TIOAddSearchPath(const char *path);
+void TIORemoveLastSearchPath(void);
 void TIOClearSearchPath(void);
 
 static inline const char *TIOGetApplicationPath(void) { return "."; }

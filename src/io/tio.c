@@ -3,17 +3,19 @@
 
 #include "tio.h"
 
-#include "tthread.h"
-
-#include "structure/tlist.h"
-
 #ifdef _WINDOWS
 #include <shlobj.h>
 #endif
 
+#include "talloc.h"
+#include "tthread.h"
+
+#include "utility/tstring.h"
 #include "utility/tfilesys.h"
 
 #include "debugging/tdebug.h"
+
+#include "structure/tlist.h"
 
 static TSList *searchpaths = 0;
 
@@ -25,7 +27,7 @@ void TIOInitialize(void)
 
 void TIODestroy(void)
 {
-	TSListFree(searchpaths,free);
+	TSListFree(searchpaths,TFree);
 	searchpaths = 0;
 }
 
@@ -45,7 +47,7 @@ void *testpath(const char *searchpath, const char *filename)
 	char *fullFilename = TFileSysConcatPaths(searchpath, filename,NULL);
 	if(TFileSysFileExists(fullFilename)) return fullFilename;
 
-	free(fullFilename);
+	TFree(fullFilename);
 
 	return 0;
 }
@@ -60,7 +62,7 @@ FILE *TIOGetFile(const char *filename,const char *mode)
 	found = (char *) TSListForeachData(searchpaths, (TDataIterFunc) testpath,(void *) filename);
 	if(found) {
 		FILE *f = fopen(found,mode);
-		free(found);
+		TFree(found);
 		return f;
 	}
 
@@ -88,7 +90,7 @@ char *TIOGetBufferedFile(const char *filename, const char *mode, unsigned int *s
 	if(!trw) return 0;
 
 	finalsize = TRWSize(trw);
-	buffer = (char *) malloc(sizeof(char) * finalsize);
+	buffer = (char *) TAlloc(sizeof(char) * finalsize);
 	*size = TRWReadBlock(trw, buffer, finalsize);
 
 	TRWFree(trw);
@@ -100,11 +102,16 @@ void TIOAddSearchPath(const char *path)
 {
 	if(!searchpaths) searchpaths = TSListNew();
 
-	TSListAppend(searchpaths,strdup(path));
+	TSListAppend(searchpaths,TStringCopy(path));
+}
+
+void TIORemoveLastSearchPath(void)
+{
+	TSListRemoveIndex(searchpaths,searchpaths->len - 1);
 }
 
 void TIOClearSearchPath(void)
 {
-	TSListFree(searchpaths,free);
+	TSListFree(searchpaths,TFree);
 	TIOAddSearchPath(TIOGetApplicationPath());
 }

@@ -63,6 +63,7 @@ TThread *TThreadCreate(TThreadFunc fn, void *data)
 int TThreadJoin(TThread *t)
 {
 	int retval = 0;
+	if(!t) return retval;
 #ifdef _WINDOWS
 	WaitForSingleObject(t->thread, INFINITE);
 	GetExitCodeThread(t->thread,(unsigned long *) &retval);

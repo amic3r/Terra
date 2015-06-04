@@ -299,8 +299,8 @@ void TRWFree(TRW *context)
 		if(context->operations.close) {
 			context->operations.close(context);
 		}
-		free(context->content);
-		free(context);
+		TFree(context->content);
+		TFree(context);
 	}
 }
 

@@ -34,6 +34,7 @@ void TLogStartReport(int category, const char *function)
 	if(tLogFile) {
 		fputs(cattotext[category],tLogFile);
 		if(category > 0) fprintf(tLogFile,"In function %s: ", function);
+		fflush(tLogFile);
 	}
 }
 
@@ -45,10 +46,15 @@ void TLogWrite(const char *format,...)
 		va_start(ap, format);
 		vfprintf(tLogFile,format,ap);
 		va_end(ap);
+
+		fflush(tLogFile);
 	}
 }
 
 void TLogWriteV(const char *format,va_list ap)
 {
-	if(tLogFile) vfprintf(tLogFile,format,ap);
+	if(tLogFile) {
+		vfprintf(tLogFile,format,ap);
+		fflush(tLogFile);
+	}
 }

@@ -220,7 +220,7 @@ char **TStringRSplit(const char *string, const char *substr, size_t *size, size_
 	size_t i;
 	if(!size || !string || !substr || !*substr) return 0;
 
-	str = strdup(string);
+	str = TStringCopy(string);
 	len = strlen(substr);
 	*size = 1;
 	i = 0;
@@ -249,7 +249,7 @@ char **TStringRSplit(const char *string, const char *substr, size_t *size, size_
 			ptr = strchr(sto[i-1],0)+len;
 			sto[i++] = ptr;
 		}
-	} else free(str);
+	} else TFree(str);
 	return sto;
 }
 

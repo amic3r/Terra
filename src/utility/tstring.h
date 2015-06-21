@@ -66,6 +66,7 @@ char **TStringRSplit(const char *string, const char *substr, size_t *size, size_
 char *TStringAddCharacter(const char *string, char character, size_t start, size_t end);
 
 char *TStringConcat(const char *str, ...);
+char *TStringConcatSeparator(const char *separator, const char *str, ...);
 
 void TStringStripTrailingWhitespace(char *string);	// Removes trailing /n, /r, space
 const char *TStringStripLeadingSpaces(const char *string);

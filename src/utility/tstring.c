@@ -278,7 +278,7 @@ char *TStringConcat(const char *str, ...)
 	char *buffer;
 	unsigned int bufferlen = 0;
 	
-	buffer = strdup(str);
+	buffer = TStringCopy(str);
 	bufferlen = strlen(buffer);
 	
 	va_start(components, str);
@@ -291,6 +291,30 @@ char *TStringConcat(const char *str, ...)
 	}
 	va_end(components);
 	
+	return buffer;
+}
+
+char *TStringConcatSeparator(const char *separator, const char *str, ...)
+{
+	va_list components;
+	const char *component;
+	char *buffer;
+	unsigned int bufferlen = 0;
+	unsigned int seplen = strlen(separator);
+
+	buffer = TStringCopy(str);
+	bufferlen = strlen(buffer);
+
+	va_start(components, str);
+	while ((component = va_arg(components, const char *)))
+	{
+		size_t llen = strlen(component) + seplen;
+		buffer = TRAlloc(buffer, bufferlen + llen + 1);
+		snprintf(buffer + bufferlen, llen + 1, "%s%s", separator, component);
+		bufferlen += llen;
+	}
+	va_end(components);
+
 	return buffer;
 }
 

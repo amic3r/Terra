@@ -381,12 +381,14 @@ char *TFileSysGetDirname(const char *_fullFilePath)
 
 const char *TFileSysGetFilename(const char *_fullFilePath)
 {
-	return strrchr(_fullFilePath, '/') + 1;
+	const char *result = strrchr(_fullFilePath, '/');
+	return result ? result + 1 : result;
 }
 
 const char *TFileSysGetExtension(const char *_fullFilePath)
 {
-	return strrchr(_fullFilePath, '.') + 1;
+	const char *result = strrchr(_fullFilePath, '.');
+	return result ? result + 1 : result;
 }
 
 char *TFileSysRemoveExtension(const char *_fullFileName)

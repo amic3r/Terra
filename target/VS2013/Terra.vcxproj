@@ -133,6 +133,7 @@
     <ClInclude Include="..\..\src\utility\tstring.h" />
     <ClInclude Include="..\..\src\utility\targparser.h" />
     <ClInclude Include="..\..\src\utility\ttokenizer.h" />
+	<ClInclude Include="..\..\TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

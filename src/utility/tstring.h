@@ -19,7 +19,10 @@ static inline char *TStringUpr(char *s) {
 	return s;
 }
 
+int TStringCaseInsensitiveCompare(const char *str1, const char *str2);
+
 char *TStringCopy(const char *text);
+char *TStringNCopy(const char *text, int num);
 
 int TStringAdjustSize(char **text,size_t oldsize,size_t newsize);
 

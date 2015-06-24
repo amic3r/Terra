@@ -8,6 +8,19 @@
 #include "talloc.h"
 #include "terror.h"
 
+int TStringCaseInsensitiveCompare(const char *str1, const char *str2)
+{
+	char *lstr1 = TStringLowerCase(str1);
+	char *lstr2 = TStringLowerCase(str2);
+
+	int res = strcmp(lstr1, lstr2);
+
+	TFree(lstr1);
+	TFree(lstr2);
+
+	return res;
+}
+
 char *TStringCopy(const char *text)
 {
 	char *cpy = 0;
@@ -16,6 +29,20 @@ char *TStringCopy(const char *text)
 		int size = sizeof(char) * (strlen(text) + 1);
 		cpy = (char *) TAlloc(size);
 		memcpy(cpy,text,size);
+	}
+
+	return cpy;
+}
+
+char *TStringNCopy(const char *text, int num)
+{
+	char *cpy = 0;
+
+	if (text) {
+		int size = sizeof(char) * (num + 1);
+		cpy = (char *)TAlloc(size);
+		memcpy(cpy, text, size-1);
+		cpy[num] = 0;
 	}
 
 	return cpy;

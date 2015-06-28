@@ -330,6 +330,42 @@ char *TFileSysConcatPaths(const char *_firstComponent, ...)
 	return returnBuffer;
 }
 
+char *TFileSysConcatPathsExt(const char *_firstComponent, ...)
+{
+	va_list components;
+	const char *component, *peek;
+	char *buffer, *returnBuffer;
+	unsigned int bufferlen = 0;
+
+	buffer = TStringCopy(_firstComponent);
+	bufferlen = strlen(buffer) + 1;
+
+	va_start(components, _firstComponent);
+	component = va_arg(components, const char *);
+	while (component)
+	{
+		peek = va_arg(components, const char *);
+
+		if (!strcmp(component, "..")) {
+			getParent(buffer);
+			bufferlen = strlen(buffer) + 1;
+
+		}
+		else if (strcmp(component, ".")) {
+			bufferlen += strlen(component) + 1;
+			buffer = (char *)realloc(buffer, bufferlen);
+			if (buffer[0]) strcat(buffer, peek ? "/" : ".");
+			strcat(buffer, component);
+		}
+		component = peek;
+	}
+	va_end(components);
+
+	returnBuffer = TStringCopy(buffer);
+	TFree(buffer);
+	return returnBuffer;
+}
+
 char *TFileSysGetParent(const char *_fullFilePath)
 {
 	strncpy(s_filePathBuffer, _fullFilePath, FILE_PATH_BUFFER_SIZE);

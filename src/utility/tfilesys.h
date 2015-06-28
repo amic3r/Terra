@@ -13,6 +13,8 @@ char *TFileSysConcatPathsFetch(const char *(*func)(void *), void *data);
 char *TFileSysConcatPathsArr(const char **paths, size_t size);
 char *TFileSysConcatPaths(const char *_firstComponent, ...);
 
+char *TFileSysConcatPathsExt(const char *_firstComponent, ...);
+
 char *TFileSysGetParent(const char *_fullFilePath);
 char *TFileSysGetDirectory(const char *_fullFilePath);
 char *TFileSysGetDirname(const char *_fullFilePath);

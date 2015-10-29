@@ -427,8 +427,8 @@ char *TStringDoubleChars(const char *string, const char escchar)
 			}
 		} while(esc);
 
-		escstring = strdup(newstring);
-		free(newstring);
+		escstring = TStringCopy(newstring);
+		TFree(newstring);
 	}
 
 	return escstring;
@@ -458,9 +458,154 @@ char *TStringRemoveDuplication(const char *string, const char escchar)
 			}
 		} while(esc);
 
-		escstring = strdup(newstring);
-		free(newstring);
+		escstring = TStringCopy(newstring);
+		TFree(newstring);
 	}
 
 	return escstring;
 }
+
+TInt8 stoi8(const char *str) {
+	size_t len = strlen(str);
+	if (len <= 4) {
+		TInt8 convert = 0;
+		TInt8 offset = 1;
+		TUInt8 negative = str[0] == '-';
+		char i;
+
+		if (negative) { str = str + 1; len--; }
+
+		for (i = (char)len - 1; i >= 0; i--) {
+			if (str[i] < '0' || str[i] > '9') return 0;
+			convert += (str[i] - '0') * offset;
+			offset *= 10;
+		}
+
+		if (negative) convert = -convert;
+		return convert;
+	}
+
+	return 0;
+};
+
+TUInt8 stoui8(const char *str) {
+	size_t len = strlen(str);
+	if (len < 4) {
+		TInt8 convert = 0;
+		TInt8 offset = 1;
+		char i;
+
+		for (i = (char)len - 1; i >= 0; i--) {
+			if (str[i] < '0' || str[i] > '9') return 0;
+			convert += (str[i] - '0') * offset;
+			offset *= 10;
+		}
+
+		return convert;
+	}
+
+	return 0;
+};
+
+TInt16 stoi16(const char *str) {
+	size_t len = strlen(str);
+	if (len <= 6) {
+		TInt16 convert = 0;
+		TInt16 offset = 1;
+		TUInt8 negative = str[0] == '-';
+		char i;
+
+		if (negative) { str = str + 1; len--; }
+
+		for (i = (char)len - 1; i >= 0; i--) {
+			if (str[i] < '0' || str[i] > '9') return 0;
+			convert += (str[i] - '0') * offset;
+			offset *= 10;
+		}
+
+		if (negative) convert = -convert;
+		return convert;
+	}
+
+	return 0;
+};
+
+TUInt16 stoui16(const char *str) {
+	size_t len = strlen(str);
+	if (len < 6) {
+		TUInt16 convert = 0;
+		TUInt16 offset = 1;
+		char i;
+
+		for (i = (char)len - 1; i >= 0; i--) {
+			if (str[i] < '0' || str[i] > '9') return 0;
+			convert += (str[i] - '0') * offset;
+			offset *= 10;
+		}
+
+		return convert;
+	}
+
+	return 0;
+};
+
+TUInt32 stoui32(const char *str) {
+	size_t len = strlen(str);
+	if (len < 11) {
+		TUInt32 convert = 0;
+		TUInt32 offset = 1;
+		char i;
+
+		for (i = (char)len - 1; i >= 0; i--) {
+			if (str[i] < '0' || str[i] > '9') return 0;
+			convert += (str[i] - '0') * offset;
+			offset *= 10;
+		}
+
+		return convert;
+	}
+
+	return 0;
+};
+
+TInt64 stoi64(const char *str) {
+	size_t len = strlen(str);
+	if (len <= 20) {
+		TInt64 convert = 0;
+		TInt64 offset = 1;
+		TUInt8 negative = str[0] == '-';
+		char i;
+
+		if (negative) { str = str + 1; len--; }
+
+		for (i = (char)len - 1; i >= 0; i--) {
+			if (str[i] < '0' || str[i] > '9') return 0;
+			convert += (str[i] - '0') * offset;
+			offset *= 10;
+		}
+
+		if (negative) convert = -convert;
+		return convert;
+	}
+
+	return 0;
+};
+
+TUInt64 stoui64(const char *str) {
+	size_t len = strlen(str);
+	if (len < 21) {
+		TUInt64 convert = 0;
+		TUInt64 offset = 1;
+		char i;
+
+		for (i = (char)len - 1; i >= 0; i--) {
+			if (str[i] < '0' || str[i] > '9') return 0;
+			convert += (str[i] - '0') * offset;
+			offset *= 10;
+		}
+
+		return convert;
+	}
+
+	return 0;
+};

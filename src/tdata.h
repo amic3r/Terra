@@ -2,51 +2,49 @@
 #ifndef __included_terra_data_h
 #define __included_terra_data_h
 
-enum T_DATA_TYPE {
-	T_DATA_UNKNOWN = 0,
-	T_DATA_CHAR,
-	T_DATA_INT32,
-	T_DATA_UINT32,
-	T_DATA_INT64,
-	T_DATA_UINT64,
-	T_DATA_STRING,
-	T_DATA_FLOAT,
-	T_DATA_DOUBLE,
-};
+typedef struct _TData TData;
 
-typedef struct _TData * TData;
+TData *TDataFromPtr(TPtr data, TUInt64 size);
+TData *TDataFromConstPtr(TCPtr data);
 
-TData TDataFromMem(void *data, size_t size);
-TData TDataFromConstMem(const void *data);
-TData TDataFromChar(char data);
-TData TDataFromInt(int data);
-TData TDataFromUnsignedInt(unsigned int data);
-TData TDataFromString(const char *data);
-TData TDataFromFloat(float data);
-TData TDataFromDouble(double data);
+TData *TDataFromInt8(TInt8 data);
+TData *TDataFromUInt8(TUInt8 data);
+TData *TDataFromInt16(TInt16 data);
+TData *TDataFromUInt16(TUInt16 data);
+TData *TDataFromInt32(TInt32 data);
+TData *TDataFromUInt32(TUInt32 data);
+TData *TDataFromInt64(TInt64 data);
+TData *TDataFromUInt64(TUInt64 data);
 
-void TDataSetFromMem(TData context, void *data);
-void TDataSetFromConstMem(TData context, const void *data, size_t size);
-void TDataSetFromChar(TData context, char data);
-void TDataSetFromInt(TData context, int data);
-void TDataSetFromUnsignedInt(TData context, unsigned int data);
-void TDataSetFromString(TData context, const char *data);
-void TDataSetFromFloat(TData context, float data);
-void TDataSetFromDouble(TData context, double data);
+TData *TDataFromConstString(const char *data);
+TData *TDataFromString(char *data);
+TData *TDataFromChar(char data);
 
-void TDataSetAutoCast(TData context, char cast);
+TData *TDataFromFloat(float data);
+TData *TDataFromDouble(double data);
 
-char TDataGetType(TData context);
+TUInt16 TDataGetType(const TData *context);
 
-const void *TDataToPointer(TData context, char *type);
-char TDataToChar(TData context);
-int TDataToInt(TData context);
-unsigned int TDataToUnsignedInt(TData context);
-const char *TDataToString(TData context);
-float TDataToFloat(TData context);
-double TDataToDouble(TData context);
+TCPtr TDataToConstPointer(const TData *context, TUInt16 *type);
+TPtr TDataToPointer(const TData *context, TUInt16 *type);
 
-void TDataEmpty(TData context);
-void TDataFree(TData context);
+const char *TDataToConstString(const TData *context);
+char *TDataToString(const TData *context);
+char TDataToChar(const TData *context);
+
+TInt8 TDataToInt8(const TData *context);
+TUInt8 TDataToUInt8(const TData *context);
+TInt16 TDataToInt16(const TData *context);
+TUInt16 TDataToUInt16(const TData *context);
+TInt32 TDataToInt32(const TData *context);
+TUInt32 TDataToUInt32(const TData *context);
+
+TInt64 TDataToInt64(const TData *context);
+TUInt64 TDataToUInt64(const TData *context);
+
+float TDataToFloat(const TData *context);
+double TDataToDouble(const TData *context);
+
+void TDataFree(TData *context);
 
 #endif

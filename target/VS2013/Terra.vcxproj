@@ -91,10 +91,11 @@
     <ClCompile Include="..\..\src\trand.c" />
     <ClCompile Include="..\..\src\tthread.c" />
     <ClCompile Include="..\..\src\ttime.c" />
+    <ClCompile Include="..\..\src\utility\targparser.c" />
+    <ClCompile Include="..\..\src\utility\tconvert.c" />
     <ClCompile Include="..\..\src\utility\tfilesys.c" />
     <ClCompile Include="..\..\src\utility\tinteger.c" />
     <ClCompile Include="..\..\src\utility\tstring.c" />
-    <ClCompile Include="..\..\src\utility\targparser.c" />
     <ClCompile Include="..\..\src\utility\ttokenizer.c" />
   </ItemGroup>
   <ItemGroup>
@@ -128,12 +129,13 @@
     <ClInclude Include="..\..\src\trand.h" />
     <ClInclude Include="..\..\src\tthread.h" />
     <ClInclude Include="..\..\src\ttime.h" />
+    <ClInclude Include="..\..\src\utility\targparser.h" />
+    <ClInclude Include="..\..\src\utility\tconvert.h" />
     <ClInclude Include="..\..\src\utility\tfilesys.h" />
     <ClInclude Include="..\..\src\utility\tinteger.h" />
     <ClInclude Include="..\..\src\utility\tstring.h" />
-    <ClInclude Include="..\..\src\utility\targparser.h" />
     <ClInclude Include="..\..\src\utility\ttokenizer.h" />
-	<ClInclude Include="..\..\TODO.txt" />
+    <ClInclude Include="..\..\TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -2,14 +2,21 @@
 #ifndef __included_terra_define_h
 #define __included_terra_define_h
 
-#undef  NULL
-#define NULL 0
+/**
+* Terra Definition
+*
+*   The purpose of this file is to setup basic definitions
+*   used throughout the library.
+*
+*/
+
 
 #if defined(_WIN32) || defined(_WIN64)
 #define _WINDOWS 1
+#define _USE_MATH_DEFINES 1
+
 #define inline _inline
 #define snprintf _snprintf
-#define _USE_MATH_DEFINES 1
 #elif defined(__linux) || defined(__linux__)
 #define _LINUX 1
 #endif
@@ -22,7 +29,9 @@
 #define stricmp _stricmp
 #endif
 
-#define UNREFERENCED_PARAMETER(P) (P)
+#ifndef __unused_param
+#define __unused_param __attribute__ ((unused))
+#endif
 
 #define TMAX(a,b)     ((a > b) ?  a : b)
 #define TMIN(a,b)     ((a < b) ?  a : b)
@@ -46,18 +55,52 @@
 typedef void * TPtr;
 typedef const void * TCPtr;
 
-typedef void (*TFreeFunc) (void *);
+typedef signed char TInt8;
+typedef unsigned char TUInt8;
+typedef signed short TInt16;
+typedef unsigned short TUInt16;
+typedef signed int TInt32;
+typedef unsigned int TUInt32;
+typedef signed long long TInt64;
+typedef unsigned long long TUInt64;
 
-typedef void *(*TCopyFunc) (void *);
+typedef void(*TFreeFunc) (TPtr);
 
-typedef void (*TIterFunc) (void *);
-typedef void *(*TDataIterFunc) (void *,void *);
+typedef TPtr (*TCopyFunc) (TPtr);
 
-typedef void (*TPairIterFunc) (void *,void *);
-typedef void *(*TDataPairIterFunc) (void *, void *, void *);
+typedef void (*TIterFunc) (TPtr);
+typedef TPtr (*TDataIterFunc) (TPtr, TPtr);
 
-typedef int (*TCompareFunc) (const void *,const void *);
+typedef void (*TPairIterFunc) (TPtr, TPtr);
+typedef TPtr (*TDataPairIterFunc) (TPtr, TPtr, TPtr);
 
-typedef int (*TThreadFunc) (void *);
+typedef int (*TCompareFunc) (TCPtr, TCPtr);
+
+typedef int (*TThreadFunc) (TPtr);
+
+enum T_DATA_TYPE {
+	T_DATA_UNKNOWN = 0,
+	T_DATA_CONST_UNKNOWN,
+
+	T_DATA_NULL,
+
+	T_DATA_INT8,
+	T_DATA_UINT8,
+	T_DATA_INT16,
+	T_DATA_UINT16,
+	T_DATA_INT32,
+	T_DATA_UINT32,
+	T_DATA_INT64,
+	T_DATA_UINT64,
+
+	T_DATA_CONST_STRING,
+	T_DATA_STRING,
+	T_DATA_CHAR,
+
+	T_DATA_FLOAT,
+	T_DATA_DOUBLE,
+
+	T_DATA_AMOUNT,
+};
 
 #endif

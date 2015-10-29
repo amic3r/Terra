@@ -4,40 +4,40 @@
 
 #include "terror.h"
 
-void *allocDef(size_t size)
+TPtr allocDef(TUInt64 size)
 {
-	void *d = malloc(size);
+	TPtr d = malloc((size_t) size);
 	if(!d) TErrorReport(T_ERROR_OUT_OF_MEMORY);
 	return d;
 }
 
-void *rAllocDef(void *ptr, size_t size)
+TPtr rAllocDef(TPtr ptr, TUInt64 size)
 {
-	void *d = realloc(ptr,size);
+	TPtr d = realloc(ptr, (size_t) size);
 	if(!d) TErrorReport(T_ERROR_OUT_OF_MEMORY);
 	return d;
 }
 
-static void *(*talloc)(size_t) = allocDef;
-static void *(*tralloc)(void *, size_t) = rAllocDef;
-static void (*tfree)(void *) = free;
+static TPtr (*talloc)(TUInt64) = allocDef;
+static TPtr (*tralloc)(TPtr , TUInt64) = rAllocDef;
+static void (*tfree)(TPtr ) = free;
 
-void *TAlloc(size_t size)
+TPtr TAlloc(TUInt64 size)
 {
 	return talloc(size);
 }
 
-void *TRAlloc(void *ptr, size_t size)
+TPtr TRAlloc(TPtr ptr, TUInt64 size)
 {
 	return tralloc(ptr,size);
 }
 
-void TFree(void *ptr)
+void TFree(TPtr ptr)
 {
 	tfree(ptr);
 }
 
-void TAllocSet(void *(*_alloc)(size_t), void *(*_ralloc)(void *, size_t),void (*_free) (void *))
+void TAllocSet(TPtr (*_alloc)(TUInt64), TPtr (*_ralloc)(TPtr , TUInt64),void (*_free) (TPtr ))
 {
 	if(!_alloc) _alloc = allocDef;
 	if(!_ralloc) _ralloc = rAllocDef;

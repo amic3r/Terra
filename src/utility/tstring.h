@@ -81,4 +81,15 @@ char *TStringPasswordEncrypt(const char *src);
 char *TStringDoubleChars(const char *string, const char escchar);
 char *TStringRemoveDuplication(const char *string, const char escchar);
 
+TInt8 stoi8(const char *str);
+TUInt8 stoui8(const char *str);
+
+TInt16 stoi16(const char *str);
+TUInt16 stoui16(const char *str);
+
+TUInt32 stoui32(const char *str);
+
+TInt64 stoi64(const char *str);
+TUInt64 stoui64(const char *str);
+
 #endif

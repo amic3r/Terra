@@ -75,14 +75,12 @@ double TRandDouble(double begin,double end)
 	return (((double)rand() / RAND_MAX) * (end - begin) + begin);
 }
 
-int TRandNormal(size_t mean, size_t range, size_t clip)
+int TRandNormal(long long int mean, long long int range, long long int clip)
 {
 	//TODO : fix this
 	// Central limit theorm - Maybe upgrade to Box-Muller later
 	int counter;
 	float seed = FLT_MAX;
-
-	return mean;
 	
 	if(clip > range)		return 0;		// Don't be an asshole.
 	while(seed > mean + range - clip || seed < mean - range + clip) {

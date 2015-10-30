@@ -23,11 +23,12 @@ void TTimeInitialise()
 	tCurrentTime = 0.0;
 }
 
-void TTimeComputeTime()
+double TTimeComputeTime()
 {
 	LARGE_INTEGER count;
 	QueryPerformanceCounter(&count);
 	tCurrentTime = (double)count.QuadPart * tTickInterval;
+	return tCurrentTime;
 }
 #endif
 
@@ -43,10 +44,11 @@ void TTimeInitialise()
 	tCurrentTime = 0.0;
 }
 
-void TTimeComputeTime()
+double TTimeComputeTime()
 {
 	uint64_t elapsed = mach_absolute_time() - tStart;
 	tCurrentTime = (double)elapsed * (tTimebase.numer / tTimebase.denom) / 1000000000.0;
+	return tCurrentTime;
 }
 #endif
 
@@ -60,12 +62,13 @@ void TTimeInitialise()
 	tCurrentTime = 0.0;
 }
 
-void TTimeComputeTime()
+double TTimeComputeTime()
 {
 	struct timeval now;
 	gettimeofday(&now, NULL);
 
 	tCurrentTime = (double)(now.tv_sec - tStart.tv_sec) + ((double)now.tv_usec - (double)tStart.tv_usec) / 1000000.0;
+	return tCurrentTime;
 }
 #endif
 
@@ -90,12 +93,10 @@ void TTimeSleep(size_t msec) {
 
 //------------- TTimer ---------------//
 
-TTimer *ttimer_new(void)
+TTimer *TTimerNew(void)
 {
 	TTimer *t = (TTimer *) TAlloc(sizeof(TTimer));
-	if(!t) return 0;
-
-	TTimerInit(t);
+	if(t) TTimerInit(t);
 	return t;
 }
 
